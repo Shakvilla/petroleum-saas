@@ -1,0 +1,572 @@
+{
+  "settings": {
+    "profile": {
+      "companyName": "PetroMax Energy Solutions",
+      "legalName": "PetroMax Energy Solutions LLC",
+      "industry": "Petroleum Distribution",
+      "businessRegistration": {
+        "registrationNumber": "TX-2024-001234",
+        "taxId": "12-3456789",
+        "incorporationDate": "2024-01-01T00:00:00Z",
+        "jurisdiction": "Texas, USA"
+      },
+      "primaryContact": {
+        "name": "John Smith",
+        "email": "contact@petromaxenergy.com",
+        "phone": "+1-555-0123",
+        "address": {
+          "street": "123 Main Street",
+          "city": "Houston",
+          "state": "TX",
+          "zipCode": "77001",
+          "country": "USA"
+        }
+      },
+      "companySize": "medium",
+      "employeeCount": 150,
+      "operationalRegions": ["Texas", "Louisiana", "Oklahoma"],
+      "businessType": "distributor"
+    },
+    "operations": {
+      "businessHours": {
+        "monday": { "start": "06:00", "end": "22:00", "isActive": true },
+        "tuesday": { "start": "06:00", "end": "22:00", "isActive": true },
+        "wednesday": { "start": "06:00", "end": "22:00", "isActive": true },
+        "thursday": { "start": "06:00", "end": "22:00", "isActive": true },
+        "friday": { "start": "06:00", "end": "22:00", "isActive": true },
+        "saturday": { "start": "08:00", "end": "18:00", "isActive": true },
+        "sunday": { "start": "09:00", "end": "17:00", "isActive": false }
+      },
+      "operationalParams": {
+        "fuelTypes": ["gasoline", "diesel", "kerosene", "lubricant"],
+        "capacityLimits": {
+          "maxTankCapacity": 100000,
+          "maxDeliveryCapacity": 15000,
+          "maxFleetSize": 50
+        },
+        "safetyThresholds": {
+          "lowInventoryAlert": 20,
+          "criticalInventoryAlert": 10,
+          "temperatureAlerts": {
+            "min": -10,
+            "max": 50
+          }
+        }
+      },
+      "workflowSettings": {
+        "approvalProcesses": {
+          "deliveryApproval": true,
+          "inventoryAdjustment": true,
+          "userManagement": true
+        },
+        "notificationTriggers": {
+          "inventoryAlerts": true,
+          "deliveryUpdates": true,
+          "maintenanceReminders": true
+        }
+      }
+    },
+    "security": {
+      "authentication": {
+        "ssoEnabled": false,
+        "twoFactorRequired": true,
+        "passwordPolicy": {
+          "minLength": 8,
+          "requireUppercase": true,
+          "requireLowercase": true,
+          "requireNumbers": true,
+          "requireSpecialChars": true,
+          "maxAge": 90,
+          "historyCount": 5
+        }
+      },
+      "sessionManagement": {
+        "sessionTimeout": 30,
+        "concurrentSessionLimit": 3,
+        "ipRestrictions": [
+          {
+            "ipAddress": "192.168.1.0/24",
+            "description": "Office Network",
+            "isActive": true
+          }
+        ],
+        "rememberMeEnabled": true
+      },
+      "accessControl": {
+        "roleBasedAccess": true,
+        "featureAccessLevels": {
+          "inventory": "read",
+          "sales": "write",
+          "reports": "read"
+        }
+      },
+      "auditSettings": {
+        "auditLogging": true,
+        "logRetentionDays": 365,
+        "complianceReporting": true,
+        "dataAnonymization": false
+      }
+    },
+    "integrations": {
+      "externalIntegrations": {
+        "erpSystems": [
+          {
+            "id": "erp-1",
+            "name": "SAP",
+            "type": "sap",
+            "connectionString": "https://api.sap.com/v1",
+            "isActive": true,
+            "syncSchedule": "Every 4 hours",
+            "lastSync": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "accountingSystems": [
+          {
+            "id": "acc-1",
+            "name": "QuickBooks",
+            "type": "quickbooks",
+            "connectionString": "https://api.quickbooks.com/v1",
+            "isActive": true,
+            "syncSchedule": "Daily at 2 AM",
+            "lastSync": "2024-01-15T02:00:00Z"
+          }
+        ],
+        "iotDevices": [
+          {
+            "id": "iot-1",
+            "name": "Tank Level Sensor",
+            "type": "sensor",
+            "connectionString": "mqtt://iot.petromanager.com:1883",
+            "isActive": true,
+            "syncSchedule": "Real-time",
+            "lastSync": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "thirdPartyServices": [
+          {
+            "id": "third-1",
+            "name": "Weather API",
+            "type": "weather",
+            "connectionString": "https://api.weather.com/v1",
+            "isActive": true,
+            "syncSchedule": "Every 6 hours",
+            "lastSync": "2024-01-15T06:00:00Z"
+          }
+        ]
+      },
+      "apiManagement": {
+        "apiKeys": [
+          {
+            "id": "key-1",
+            "name": "Main API Key",
+            "key": "pk_live_***",
+            "permissions": ["read", "write"],
+            "isActive": true,
+            "expiresAt": "2024-12-31T23:59:59Z"
+          }
+        ],
+        "rateLimits": [
+          {
+            "id": "limit-1",
+            "endpoint": "/api/tenants/*/tanks",
+            "requestsPerMinute": 100,
+            "requestsPerHour": 1000
+          }
+        ],
+        "webhooks": [
+          {
+            "id": "webhook-1",
+            "name": "Delivery Updates",
+            "url": "https://webhook.site/abc123",
+            "events": ["delivery.completed", "delivery.failed"],
+            "secret": "whsec_***",
+            "isActive": true,
+            "retryPolicy": {
+              "maxRetries": 3,
+              "backoffStrategy": "exponential",
+              "initialDelay": 1000
+            }
+          }
+        ],
+        "dataSync": [
+          {
+            "id": "sync-1",
+            "name": "Inventory Sync",
+            "source": "erp",
+            "target": "inventory",
+            "frequency": "hourly",
+            "isActive": true
+          }
+        ]
+      }
+    },
+    "notifications": {
+      "channels": {
+        "email": {
+          "enabled": true,
+          "smtpServer": "smtp.petromaxenergy.com",
+          "smtpPort": 587,
+          "username": "notifications@petromaxenergy.com",
+          "fromAddress": "notifications@petromaxenergy.com",
+          "replyToAddress": "support@petromaxenergy.com"
+        },
+        "sms": {
+          "enabled": true,
+          "provider": "twilio",
+          "apiKey": "***",
+          "fromNumber": "+1234567890"
+        },
+        "inApp": {
+          "enabled": true,
+          "soundEnabled": true,
+          "desktopNotifications": true,
+          "position": "top-right"
+        },
+        "push": {
+          "enabled": true,
+          "provider": "firebase",
+          "apiKey": "***",
+          "projectId": "petromax-energy"
+        }
+      },
+      "alertThresholds": {
+        "inventory": {
+          "lowLevel": 20,
+          "criticalLevel": 10,
+          "highLevel": 90
+        },
+        "delivery": {
+          "delayThreshold": 30,
+          "failureThreshold": 3
+        },
+        "safety": {
+          "temperatureHigh": 50,
+          "temperatureLow": -10,
+          "pressureHigh": 100
+        },
+        "system": {
+          "cpuUsage": 80,
+          "memoryUsage": 85,
+          "diskUsage": 90
+        }
+      },
+      "templates": {
+        "email": [
+          {
+            "id": "email-1",
+            "name": "Inventory Alert",
+            "subject": "Inventory Alert - {tankName}",
+            "body": "Tank {tankName} is at {level}% capacity",
+            "isActive": true
+          }
+        ],
+        "sms": [
+          {
+            "id": "sms-1",
+            "name": "Delivery Update",
+            "body": "Delivery {deliveryId} status: {status}",
+            "isActive": true
+          }
+        ]
+      }
+    },
+    "compliance": {
+      "regulatoryStandards": {
+        "epa": {
+          "enabled": true,
+          "reportingRequirements": [
+            "Monthly emissions report",
+            "Annual compliance certification",
+            "Incident reporting within 24 hours"
+          ],
+          "inspectionSchedule": "Quarterly",
+          "documentationRequired": [
+            "Environmental impact assessment",
+            "Waste management plan",
+            "Spill response procedures",
+            "Training records"
+          ]
+        },
+        "osha": {
+          "enabled": true,
+          "reportingRequirements": [
+            "Workplace injury reports",
+            "Safety training documentation",
+            "Equipment inspection records"
+          ],
+          "inspectionSchedule": "Annual",
+          "documentationRequired": [
+            "Safety data sheets",
+            "Emergency action plan",
+            "Personal protective equipment records",
+            "Incident investigation reports"
+          ]
+        },
+        "dot": {
+          "enabled": true,
+          "reportingRequirements": [
+            "Hazardous materials shipping papers",
+            "Driver qualification files",
+            "Vehicle inspection reports"
+          ],
+          "inspectionSchedule": "Pre-trip and post-trip",
+          "documentationRequired": [
+            "Commercial driver's license",
+            "Medical examiner's certificate",
+            "Vehicle maintenance records",
+            "Hours of service logs"
+          ]
+        },
+        "local": [
+          {
+            "id": "local-1",
+            "name": "City Environmental Department",
+            "enabled": true,
+            "reportingRequirements": ["Quarterly environmental impact report"],
+            "inspectionSchedule": "Semi-annual",
+            "documentationRequired": [
+              "Environmental permit",
+              "Noise level reports"
+            ]
+          }
+        ]
+      },
+      "reporting": {
+        "automatedReports": [
+          {
+            "id": "report-1",
+            "name": "Monthly Inventory Report",
+            "type": "inventory",
+            "schedule": "monthly",
+            "recipients": ["admin@petromaxenergy.com"],
+            "isActive": true
+          }
+        ],
+        "reportSchedules": [
+          {
+            "id": "schedule-1",
+            "name": "EPA Monthly Report",
+            "frequency": "monthly",
+            "dayOfMonth": 1,
+            "isActive": true
+          }
+        ],
+        "dataRetention": {
+          "transactionData": 2555,
+          "auditLogs": 365,
+          "userData": 2555,
+          "complianceReports": 2555
+        }
+      },
+      "safetyProtocols": {
+        "emergencyProcedures": [
+          {
+            "id": "emergency-1",
+            "name": "Fuel Spill Response",
+            "description": "Procedures for handling fuel spills",
+            "isActive": true
+          }
+        ],
+        "contactInformation": [
+          {
+            "id": "contact-1",
+            "name": "Emergency Response Team",
+            "phone": "+1-555-0123",
+            "email": "emergency@petromaxenergy.com",
+            "isActive": true
+          }
+        ],
+        "safetyTraining": [
+          {
+            "id": "training-1",
+            "name": "Hazardous Materials Handling",
+            "frequency": "annual",
+            "isActive": true
+          }
+        ]
+      }
+    },
+    "branding": {
+      "visualBranding": {
+        "logo": {
+          "primary": "/logos/petromax-logo.png",
+          "secondary": "/logos/petromax-logo-light.png",
+          "favicon": "/favicons/petromax-favicon.ico",
+          "sizes": {
+            "small": "/logos/petromax-logo-small.png",
+            "medium": "/logos/petromax-logo-medium.png",
+            "large": "/logos/petromax-logo-large.png"
+          }
+        },
+        "colorScheme": {
+          "primary": "#1e40af",
+          "secondary": "#3b82f6",
+          "accent": "#f59e0b",
+          "background": "#ffffff",
+          "surface": "#f8fafc",
+          "text": "#1f2937",
+          "success": "#10b981",
+          "warning": "#f59e0b",
+          "error": "#ef4444"
+        },
+        "typography": {
+          "fontFamily": "Inter",
+          "headingFont": "Inter",
+          "fontSizes": {
+            "xs": "0.75rem",
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.125rem",
+            "xl": "1.25rem",
+            "2xl": "1.5rem",
+            "3xl": "1.875rem",
+            "4xl": "2.25rem"
+          }
+        },
+        "favicon": "/favicons/petromax-favicon.ico"
+      },
+      "displayPreferences": {
+        "dashboardLayout": {
+          "defaultWidgets": [
+            "revenue-overview",
+            "inventory-levels",
+            "recent-deliveries",
+            "system-alerts"
+          ],
+          "widgetPositions": {
+            "revenue-overview": {
+              "x": 0,
+              "y": 0,
+              "width": 6,
+              "height": 4
+            },
+            "inventory-levels": {
+              "x": 6,
+              "y": 0,
+              "width": 6,
+              "height": 4
+            },
+            "recent-deliveries": {
+              "x": 0,
+              "y": 4,
+              "width": 8,
+              "height": 4
+            },
+            "system-alerts": {
+              "x": 8,
+              "y": 4,
+              "width": 4,
+              "height": 4
+            }
+          },
+          "sidebarCollapsed": false,
+          "theme": "light"
+        },
+        "defaultViews": [
+          {
+            "id": "view-1",
+            "name": "Dashboard Overview",
+            "type": "dashboard",
+            "isDefault": true
+          }
+        ],
+        "featureVisibility": {
+          "showAdvancedFeatures": false,
+          "showBetaFeatures": false,
+          "showExperimentalFeatures": false
+        }
+      },
+      "localization": {
+        "language": "en",
+        "currency": "USD",
+        "dateFormat": "MM/DD/YYYY",
+        "timezone": "America/Chicago",
+        "numberFormat": "en-US"
+      }
+    },
+    "dataManagement": {
+      "backup": {
+        "schedule": {
+          "frequency": "daily",
+          "time": "02:00",
+          "days": [1, 2, 3, 4, 5],
+          "isActive": true
+        },
+        "retention": {
+          "daily": 7,
+          "weekly": 4,
+          "monthly": 12
+        },
+        "storage": {
+          "type": "cloud",
+          "location": "aws-s3",
+          "credentials": {
+            "bucket": "petromax-backups",
+            "region": "us-east-1"
+          }
+        },
+        "encryption": {
+          "enabled": true,
+          "algorithm": "AES-256",
+          "keyRotation": "monthly"
+        }
+      },
+      "dataExport": {
+        "formats": [
+          {
+            "id": "csv",
+            "name": "CSV",
+            "enabled": true
+          },
+          {
+            "id": "excel",
+            "name": "Excel",
+            "enabled": true
+          },
+          {
+            "id": "pdf",
+            "name": "PDF",
+            "enabled": true
+          }
+        ],
+        "schedules": [
+          {
+            "id": "export-1",
+            "name": "Monthly Report",
+            "frequency": "monthly",
+            "dayOfMonth": 1,
+            "isActive": true
+          }
+        ],
+        "delivery": {
+          "method": "email",
+          "recipients": ["admin@petromaxenergy.com"],
+          "compression": true
+        }
+      },
+      "dataRetention": {
+        "policies": [
+          {
+            "id": "policy-1",
+            "name": "Transaction Data",
+            "retentionPeriod": 2555,
+            "dataType": "transactions",
+            "isActive": true
+          }
+        ],
+        "automaticCleanup": true,
+        "archiveSettings": {
+          "enabled": true,
+          "location": "cold-storage",
+          "compression": true
+        }
+      },
+      "privacy": {
+        "gdprCompliance": true,
+        "dataAnonymization": true,
+        "rightToErasure": true,
+        "dataPortability": true
+      }
+    }
+  }
+}

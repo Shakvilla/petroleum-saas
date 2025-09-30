@@ -1,0 +1,79 @@
+{
+  "alerts": [
+    {
+      "id": "alert-001",
+      "type": "WARNING",
+      "title": "Low Kerosene Level",
+      "message": "Kerosene tank is at 32% capacity - reorder recommended",
+      "timestamp": "2024-01-15T11:30:00Z",
+      "priority": "HIGH",
+      "status": "ACTIVE",
+      "entityType": "TANK",
+      "entityId": "tank-003",
+      "acknowledged": false,
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "alert-002",
+      "type": "INFO",
+      "title": "Delivery Scheduled",
+      "message": "Diesel delivery arriving at 2:00 PM today",
+      "timestamp": "2024-01-15T10:00:00Z",
+      "priority": "MEDIUM",
+      "status": "ACTIVE",
+      "entityType": "DELIVERY",
+      "entityId": "delivery-001",
+      "acknowledged": false,
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "alert-003",
+      "type": "SUCCESS",
+      "title": "Maintenance Completed",
+      "message": "Tanker Truck Alpha maintenance completed successfully",
+      "timestamp": "2024-01-15T09:00:00Z",
+      "priority": "LOW",
+      "status": "RESOLVED",
+      "entityType": "VEHICLE",
+      "entityId": "vehicle-001",
+      "acknowledged": true,
+      "acknowledgedBy": "admin-001",
+      "acknowledgedAt": "2024-01-15T09:15:00Z",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "alert-004",
+      "type": "ERROR",
+      "title": "Temperature Alert",
+      "message": "Tank temperature exceeded safe limits",
+      "timestamp": "2024-01-15T08:45:00Z",
+      "priority": "CRITICAL",
+      "status": "ACTIVE",
+      "entityType": "TANK",
+      "entityId": "tank-001",
+      "acknowledged": false,
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "alert-005",
+      "type": "WARNING",
+      "title": "Vehicle Maintenance Due",
+      "message": "Tanker Truck Gamma maintenance due in 2 days",
+      "timestamp": "2024-01-15T07:30:00Z",
+      "priority": "MEDIUM",
+      "status": "ACTIVE",
+      "entityType": "VEHICLE",
+      "entityId": "vehicle-003",
+      "acknowledged": false,
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "tenantId": "petromax-energy"
+    }
+  ]
+}

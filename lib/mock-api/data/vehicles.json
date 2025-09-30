@@ -1,0 +1,80 @@
+{
+  "vehicles": [
+    {
+      "id": "vehicle-001",
+      "name": "Tanker Truck Alpha",
+      "type": "TANKER",
+      "capacity": 10000,
+      "status": "ACTIVE",
+      "licensePlate": "TX-ABC123",
+      "driver": {
+        "id": "driver-001",
+        "name": "John Smith",
+        "license": "CDL-123456",
+        "phone": "+1-555-0123"
+      },
+      "lastMaintenance": "2024-01-10T00:00:00Z",
+      "nextMaintenance": "2024-02-10T00:00:00Z",
+      "mileage": 125000,
+      "fuelEfficiency": 6.5,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "vehicle-002",
+      "name": "Tanker Truck Beta",
+      "type": "TANKER",
+      "capacity": 12000,
+      "status": "ACTIVE",
+      "licensePlate": "TX-DEF456",
+      "driver": {
+        "id": "driver-002",
+        "name": "Sarah Johnson",
+        "license": "CDL-789012",
+        "phone": "+1-555-0456"
+      },
+      "lastMaintenance": "2024-01-05T00:00:00Z",
+      "nextMaintenance": "2024-02-05T00:00:00Z",
+      "mileage": 98000,
+      "fuelEfficiency": 7.2,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "vehicle-003",
+      "name": "Tanker Truck Gamma",
+      "type": "TANKER",
+      "capacity": 8000,
+      "status": "MAINTENANCE",
+      "licensePlate": "TX-GHI789",
+      "driver": {
+        "id": "driver-003",
+        "name": "Mike Wilson",
+        "license": "CDL-345678",
+        "phone": "+1-555-0789"
+      },
+      "lastMaintenance": "2024-01-15T00:00:00Z",
+      "nextMaintenance": "2024-02-15T00:00:00Z",
+      "mileage": 156000,
+      "fuelEfficiency": 5.8,
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "vehicle-004",
+      "name": "Delivery Van Delta",
+      "type": "VAN",
+      "capacity": 2000,
+      "status": "ACTIVE",
+      "licensePlate": "TX-JKL012",
+      "driver": {
+        "id": "driver-004",
+        "name": "Lisa Brown",
+        "license": "CDL-901234",
+        "phone": "+1-555-0012"
+      },
+      "lastMaintenance": "2024-01-12T00:00:00Z",
+      "nextMaintenance": "2024-02-12T00:00:00Z",
+      "mileage": 89000,
+      "fuelEfficiency": 12.5,
+      "tenantId": "petromax-energy"
+    }
+  ]
+}

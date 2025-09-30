@@ -1,0 +1,80 @@
+{
+  "tanks": [
+    {
+      "id": "tank-001",
+      "name": "Premium Gasoline Tank A",
+      "type": "GASOLINE",
+      "capacity": 50000,
+      "currentLevel": 39000,
+      "status": "ACTIVE",
+      "location": {
+        "id": "loc-001",
+        "name": "Main Station",
+        "address": "123 Main Street, Houston, TX 77001",
+        "coordinates": {
+          "lat": 29.7604,
+          "lng": -95.3698
+        }
+      },
+      "lastUpdated": "2024-01-15T10:30:00Z",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tank-002",
+      "name": "Diesel Tank B",
+      "type": "DIESEL",
+      "capacity": 75000,
+      "currentLevel": 45000,
+      "status": "ACTIVE",
+      "location": {
+        "id": "loc-001",
+        "name": "Main Station",
+        "address": "123 Main Street, Houston, TX 77001",
+        "coordinates": {
+          "lat": 29.7604,
+          "lng": -95.3698
+        }
+      },
+      "lastUpdated": "2024-01-15T09:15:00Z",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tank-003",
+      "name": "Kerosene Tank C",
+      "type": "KEROSENE",
+      "capacity": 25000,
+      "currentLevel": 8000,
+      "status": "CRITICAL",
+      "location": {
+        "id": "loc-002",
+        "name": "Secondary Station",
+        "address": "456 Oak Avenue, Houston, TX 77002",
+        "coordinates": {
+          "lat": 29.7614,
+          "lng": -95.3708
+        }
+      },
+      "lastUpdated": "2024-01-15T08:45:00Z",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tank-004",
+      "name": "Lubricant Tank D",
+      "type": "LUBRICANT",
+      "capacity": 15000,
+      "currentLevel": 12000,
+      "status": "ACTIVE",
+      "location": {
+        "id": "loc-002",
+        "name": "Secondary Station",
+        "address": "456 Oak Avenue, Houston, TX 77002",
+        "coordinates": {
+          "lat": 29.7614,
+          "lng": -95.3708
+        }
+      },
+      "lastUpdated": "2024-01-15T11:20:00Z",
+      "tenantId": "petromax-energy"
+    }
+  ]
+}

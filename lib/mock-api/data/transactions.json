@@ -1,0 +1,105 @@
+{
+  "transactions": [
+    {
+      "id": "tx-001",
+      "type": "SALE",
+      "amount": 12500,
+      "volume": 5000,
+      "fuelType": "GASOLINE",
+      "customer": {
+        "id": "customer-001",
+        "name": "ABC Transport",
+        "type": "COMMERCIAL"
+      },
+      "location": {
+        "id": "loc-001",
+        "name": "Main Station"
+      },
+      "timestamp": "2024-01-15T12:30:00Z",
+      "status": "COMPLETED",
+      "paymentMethod": "INVOICE",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tx-002",
+      "type": "DELIVERY",
+      "amount": 8500,
+      "volume": 3400,
+      "fuelType": "DIESEL",
+      "supplier": {
+        "id": "supplier-001",
+        "name": "PetroSupply Co",
+        "type": "WHOLESALER"
+      },
+      "location": {
+        "id": "loc-002",
+        "name": "Secondary Station"
+      },
+      "timestamp": "2024-01-15T10:15:00Z",
+      "status": "COMPLETED",
+      "paymentMethod": "WIRE_TRANSFER",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tx-003",
+      "type": "SALE",
+      "amount": 18900,
+      "volume": 7560,
+      "fuelType": "GASOLINE",
+      "customer": {
+        "id": "customer-002",
+        "name": "XYZ Logistics",
+        "type": "COMMERCIAL"
+      },
+      "location": {
+        "id": "loc-001",
+        "name": "Main Station"
+      },
+      "timestamp": "2024-01-15T08:45:00Z",
+      "status": "COMPLETED",
+      "paymentMethod": "CREDIT_CARD",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tx-004",
+      "type": "REFUND",
+      "amount": -2500,
+      "volume": -1000,
+      "fuelType": "DIESEL",
+      "customer": {
+        "id": "customer-003",
+        "name": "Local Fleet Services",
+        "type": "COMMERCIAL"
+      },
+      "location": {
+        "id": "loc-002",
+        "name": "Secondary Station"
+      },
+      "timestamp": "2024-01-15T07:20:00Z",
+      "status": "COMPLETED",
+      "paymentMethod": "CREDIT_CARD",
+      "reason": "Quality issue with fuel",
+      "tenantId": "petromax-energy"
+    },
+    {
+      "id": "tx-005",
+      "type": "SALE",
+      "amount": 3200,
+      "volume": 1280,
+      "fuelType": "KEROSENE",
+      "customer": {
+        "id": "customer-004",
+        "name": "Aviation Services Inc",
+        "type": "AVIATION"
+      },
+      "location": {
+        "id": "loc-003",
+        "name": "Airport Station"
+      },
+      "timestamp": "2024-01-15T06:00:00Z",
+      "status": "PENDING",
+      "paymentMethod": "INVOICE",
+      "tenantId": "petromax-energy"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sessions": [
+    {
+      "id": "session-petromax-001",
+      "userId": "admin-petromax-001",
+      "tenantId": "petromax-energy",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbi1wZXRyb21heC0wMDEiLCJ0ZW5hbnRJZCI6InBldHJvbWF4LWVuZXJneSIsInJvbGUiOiJBRE1JTiIsInBlcm1pc3Npb25zIjpbXSwiaWF0IjoxNzA2MTk4NDAwLCJleHAiOjE3MDY4MDMyMDB9.mock-signature",
+      "refreshToken": "refresh-mock-token-petromax-admin-001",
+      "expiresAt": "2024-02-15T10:30:00Z",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "lastActivity": "2024-01-15T10:30:00Z",
+      "isActive": true,
+      "ipAddress": "192.168.1.100",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+    }
+  ]
+}

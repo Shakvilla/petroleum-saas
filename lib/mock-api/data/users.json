@@ -1,0 +1,106 @@
+{
+  "users": [
+    {
+      "id": "admin-petromax-001",
+      "email": "admin@petromaxenergy.com",
+      "firstName": "John",
+      "lastName": "Administrator",
+      "role": "ADMIN",
+      "tenantId": "petromax-energy",
+      "isActive": true,
+      "lastLogin": "2024-01-15T10:30:00Z",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z",
+      "permissions": [
+        {
+          "id": "perm-001",
+          "name": "Full Access",
+          "resource": "*",
+          "action": "*"
+        }
+      ],
+      "profile": {
+        "phone": "+1-555-0123",
+        "department": "IT",
+        "position": "System Administrator",
+        "avatar": "/avatars/admin-001.jpg"
+      }
+    },
+    {
+      "id": "manager-petromax-001",
+      "email": "manager@petromaxenergy.com",
+      "firstName": "Sarah",
+      "lastName": "Manager",
+      "role": "MANAGER",
+      "tenantId": "petromax-energy",
+      "isActive": true,
+      "lastLogin": "2024-01-15T09:15:00Z",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-15T09:15:00Z",
+      "permissions": [
+        {
+          "id": "perm-002",
+          "name": "Fleet Management",
+          "resource": "fleet",
+          "action": "read"
+        },
+        {
+          "id": "perm-003",
+          "name": "Fleet Management",
+          "resource": "fleet",
+          "action": "write"
+        },
+        {
+          "id": "perm-004",
+          "name": "Inventory Management",
+          "resource": "inventory",
+          "action": "read"
+        },
+        {
+          "id": "perm-005",
+          "name": "Inventory Management",
+          "resource": "inventory",
+          "action": "write"
+        }
+      ],
+      "profile": {
+        "phone": "+1-555-0456",
+        "department": "Operations",
+        "position": "Operations Manager",
+        "avatar": "/avatars/manager-001.jpg"
+      }
+    },
+    {
+      "id": "operator-petromax-001",
+      "email": "operator@petromaxenergy.com",
+      "firstName": "Mike",
+      "lastName": "Operator",
+      "role": "OPERATOR",
+      "tenantId": "petromax-energy",
+      "isActive": true,
+      "lastLogin": "2024-01-15T08:45:00Z",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-15T08:45:00Z",
+      "permissions": [
+        {
+          "id": "perm-006",
+          "name": "Fleet View",
+          "resource": "fleet",
+          "action": "read"
+        },
+        {
+          "id": "perm-007",
+          "name": "Inventory View",
+          "resource": "inventory",
+          "action": "read"
+        }
+      ],
+      "profile": {
+        "phone": "+1-555-0789",
+        "department": "Operations",
+        "position": "Fleet Operator",
+        "avatar": "/avatars/operator-001.jpg"
+      }
+    }
+  ]
+}

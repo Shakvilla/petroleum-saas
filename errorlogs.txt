@@ -1,0 +1,413 @@
+○ Compiling /[tenant]/distribution ...
+ ⨯ ./lib/tenant-aware-design-system.ts
+Error:   × Expression expected
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │ };
+ 227 │ 
+ 228 │ // Higher-order component for tenant-aware styling
+ 229 │ export const withTenantAwareStyling = <P extends object>(
+     ·                                                        ─
+ 230 │   Component: React.ComponentType<P>
+ 231 │ ) => {
+ 232 │   return React.forwardRef<any, P>((props, ref) => {
+     ╰────
+  × An arrow function is not allowed here
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │     };
+ 227 │     
+ 228 │     // Higher-order component for tenant-aware styling
+ 229 │ ╭─▶ export const withTenantAwareStyling = <P extends object>(
+ 230 │ │     Component: React.ComponentType<P>
+ 231 │ ╰─▶ ) => {
+ 232 │       return React.forwardRef<any, P>((props, ref) => {
+ 233 │         const { getTenantStyles, generateTenantCSS } = useTenantAwareDesignSystem();
+ 234 │         
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/tenant-aware-design-system.ts
+./components/ui/tenant-aware-card.tsx
+./components/modern-dashboard-overview.tsx
+ ⨯ ./lib/tenant-aware-design-system.ts
+Error:   × Expression expected
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │ };
+ 227 │ 
+ 228 │ // Higher-order component for tenant-aware styling
+ 229 │ export const withTenantAwareStyling = <P extends object>(
+     ·                                                        ─
+ 230 │   Component: React.ComponentType<P>
+ 231 │ ) => {
+ 232 │   return React.forwardRef<any, P>((props, ref) => {
+     ╰────
+  × An arrow function is not allowed here
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │     };
+ 227 │     
+ 228 │     // Higher-order component for tenant-aware styling
+ 229 │ ╭─▶ export const withTenantAwareStyling = <P extends object>(
+ 230 │ │     Component: React.ComponentType<P>
+ 231 │ ╰─▶ ) => {
+ 232 │       return React.forwardRef<any, P>((props, ref) => {
+ 233 │         const { getTenantStyles, generateTenantCSS } = useTenantAwareDesignSystem();
+ 234 │         
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/tenant-aware-design-system.ts
+./components/ui/tenant-aware-card.tsx
+./components/modern-dashboard-overview.tsx
+ ⨯ ./lib/tenant-aware-design-system.ts
+Error:   × Expression expected
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │ };
+ 227 │ 
+ 228 │ // Higher-order component for tenant-aware styling
+ 229 │ export const withTenantAwareStyling = <P extends object>(
+     ·                                                        ─
+ 230 │   Component: React.ComponentType<P>
+ 231 │ ) => {
+ 232 │   return React.forwardRef<any, P>((props, ref) => {
+     ╰────
+  × An arrow function is not allowed here
+     ╭─[/Users/mac/Desktop/petroleum-saas/lib/tenant-aware-design-system.ts:229:1]
+ 226 │     };
+ 227 │     
+ 228 │     // Higher-order component for tenant-aware styling
+ 229 │ ╭─▶ export const withTenantAwareStyling = <P extends object>(
+ 230 │ │     Component: React.ComponentType<P>
+ 231 │ ╰─▶ ) => {
+ 232 │       return React.forwardRef<any, P>((props, ref) => {
+ 233 │         const { getTenantStyles, generateTenantCSS } = useTenantAwareDesignSystem();
+ 234 │         
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./lib/tenant-aware-design-system.ts
+./components/ui/tenant-aware-card.tsx
+./components/modern-dashboard-overview.tsx
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /auth/login 500 in 4520ms
+ GET /auth/login 500 in 82ms
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ [Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: Cannot find module 'critters'
+Require stack:
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/post-process.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/render.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/module.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/route-modules/pages/builtin/_error.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/next.js
+- /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /auth/login 500 in 235ms
+ GET /auth/login 500 in 70ms
