@@ -9,7 +9,7 @@ interface UseLazyLoadingOptions {
 }
 
 interface UseLazyLoadingReturn {
-  ref: React.RefObject<HTMLElement>;
+  ref: React.RefObject<HTMLElement | null>;
   isVisible: boolean;
   hasBeenVisible: boolean;
 }
@@ -21,7 +21,7 @@ export function useLazyLoading(
 
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement | null>(null);
 
   const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {

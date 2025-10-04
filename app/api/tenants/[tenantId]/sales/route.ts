@@ -20,7 +20,7 @@ export async function GET(
 
     // Calculate sales metrics
     const salesTransactions = transactions.filter(
-      t => t.type === 'SALE' && t.status === 'COMPLETED'
+      t => t.type === 'fuel_sale' && t.status === 'COMPLETED'
     );
     const today = new Date().toDateString();
     const todaySales = salesTransactions.filter(
@@ -32,7 +32,10 @@ export async function GET(
       0
     );
     const todayRevenue = todaySales.reduce((sum, t) => sum + t.amount, 0);
-    const totalVolume = salesTransactions.reduce((sum, t) => sum + t.volume, 0);
+    const totalVolume = salesTransactions.reduce(
+      (sum, t) => sum + (t.volume || 0),
+      0
+    );
 
     const salesData = {
       overview: {
@@ -55,16 +58,16 @@ export async function GET(
             new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         )
         .slice(0, 10),
-      topCustomers: this.getTopCustomers(salesTransactions),
-      fuelTypeBreakdown: this.getFuelTypeBreakdown(salesTransactions),
-      dailySales: this.getDailySales(salesTransactions),
+      topCustomers: getTopCustomers(salesTransactions),
+      fuelTypeBreakdown: getFuelTypeBreakdown(salesTransactions),
+      dailySales: getDailySales(salesTransactions),
       deliveryPerformance: {
         totalDeliveries: deliveries.length,
         completedDeliveries: deliveries.filter(d => d.status === 'COMPLETED')
           .length,
         inProgressDeliveries: deliveries.filter(d => d.status === 'IN_PROGRESS')
           .length,
-        averageDeliveryTime: this.calculateAverageDeliveryTime(deliveries),
+        averageDeliveryTime: calculateAverageDeliveryTime(deliveries),
       },
     };
 

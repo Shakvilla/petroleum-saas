@@ -8,6 +8,7 @@ export interface User {
   tenantId: string;
   lastLoginAt: Date;
   preferences: UserPreferences;
+  isActive: boolean;
 }
 
 export enum UserRole {
@@ -37,6 +38,12 @@ export interface NotificationPreferences {
   inApp: boolean;
 }
 
+export interface LoginCredentials {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
 // Tenant Types
 export interface Tenant {
   id: string;
@@ -45,6 +52,7 @@ export interface Tenant {
   settings: TenantSettings;
   branding: BrandingConfig;
   features: FeatureFlags;
+  theme?: TenantThemeConfig;
 }
 
 export interface TenantSettings {
@@ -65,6 +73,20 @@ export interface BrandingConfig {
   primaryColor: string;
   secondaryColor: string;
   favicon: string;
+  tagline?: string;
+}
+
+export interface TenantThemeConfig {
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  backgroundColor?: string;
+  surfaceColor?: string;
+  textColor?: string;
+  textSecondaryColor?: string;
+  borderColor?: string;
+  primaryFont?: string;
+  secondaryFont?: string;
 }
 
 export interface FeatureFlags {
@@ -111,6 +133,8 @@ export interface ErrorContext {
   userId?: string;
   tenantId?: string;
   requestId?: string;
+  component?: string;
+  action?: string;
 }
 
 // UI State Types
@@ -284,4 +308,39 @@ export interface RealTimeUpdate {
   entityId: string;
   action: 'create' | 'update' | 'delete';
   data: any;
+}
+
+// Transaction Types
+export interface Transaction {
+  id: string;
+  type: 'fuel_sale' | 'fuel_purchase' | 'maintenance' | 'delivery';
+  amount: number;
+  volume?: number;
+  currency: string;
+  description: string;
+  timestamp: Date;
+  tenantId: string;
+  userId: string;
+  fuelType?: string;
+  customer?: { name: string };
+  location?: { name: string };
+  status?: string;
+  metadata?: Record<string, any>;
+}
+
+// Alert Types
+export interface Alert {
+  id: string;
+  type: 'critical' | 'warning' | 'info';
+  title: string;
+  message: string;
+  entityType: 'tank' | 'vehicle' | 'delivery' | 'system';
+  entityId: string;
+  timestamp: Date;
+  acknowledged: boolean;
+  acknowledgedBy?: string;
+  acknowledgedAt?: Date;
+  tenantId: string;
+  status?: 'ACTIVE' | 'RESOLVED' | 'ACKNOWLEDGED';
+  priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 }

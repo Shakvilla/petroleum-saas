@@ -96,7 +96,7 @@ const TenantAwareCard = React.forwardRef<HTMLDivElement, TenantAwareCardProps>(
         variant === 'elevated');
 
     // Get tenant-specific styles
-    const tenantStyles = shouldUseTenantTheme ? getTenantStyles() : {};
+    const tenantStyles: any = shouldUseTenantTheme ? getTenantStyles() : {};
 
     // Override with custom color if provided
     if (customTenantColor) {

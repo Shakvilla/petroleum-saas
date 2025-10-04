@@ -10,6 +10,7 @@ import { designSystem } from './design-system';
 import { cn } from './utils';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantTheme } from './tenant-theme';
+import type { Tenant } from '@/types';
 
 type ClassValue =
   | string
@@ -26,28 +27,16 @@ export const tenantAwareColors = {
   ...designSystem.colors,
 
   // Tenant-specific color utilities
-  getTenantPrimary: (tenant?: any) => {
-    return (
-      tenant?.branding?.primaryColor ||
-      tenant?.theme?.primaryColor ||
-      designSystem.colors.primary[500]
-    );
+  getTenantPrimary: (tenant?: Tenant | null) => {
+    return tenant?.branding?.primaryColor || designSystem.colors.primary[500];
   },
 
-  getTenantSecondary: (tenant?: any) => {
-    return (
-      tenant?.branding?.secondaryColor ||
-      tenant?.theme?.secondaryColor ||
-      designSystem.colors.primary[600]
-    );
+  getTenantSecondary: (tenant?: Tenant | null) => {
+    return tenant?.branding?.secondaryColor || designSystem.colors.primary[600];
   },
 
-  getTenantAccent: (tenant?: any) => {
-    return (
-      tenant?.branding?.accentColor ||
-      tenant?.theme?.accentColor ||
-      designSystem.colors.primary[400]
-    );
+  getTenantAccent: (tenant?: Tenant | null) => {
+    return designSystem.colors.primary[400];
   },
 
   // Generate color palette from tenant primary color
@@ -73,20 +62,12 @@ export const tenantAwareColors = {
 export const tenantAwareTypography = {
   ...designSystem.typography,
 
-  getTenantFontFamily: (tenant?: any) => {
-    return (
-      tenant?.branding?.fontFamily ||
-      tenant?.theme?.primaryFont ||
-      designSystem.typography.fontFamily.sans
-    );
+  getTenantFontFamily: (tenant?: Tenant | null) => {
+    return designSystem.typography.fontFamily.sans;
   },
 
-  getTenantHeadingFont: (tenant?: any) => {
-    return (
-      tenant?.branding?.headingFont ||
-      tenant?.theme?.headingFont ||
-      designSystem.typography.fontFamily.sans
-    );
+  getTenantHeadingFont: (tenant?: Tenant | null) => {
+    return designSystem.typography.fontFamily.sans;
   },
 };
 
@@ -95,7 +76,7 @@ export const tenantAwareComponentVariants = {
   ...designSystem.componentVariants,
 
   // Generate tenant-specific button variants
-  generateTenantButtonVariants: (tenant?: any) => {
+  generateTenantButtonVariants: (tenant?: Tenant | null) => {
     const primaryColor = tenantAwareColors.getTenantPrimary(tenant);
     const secondaryColor = tenantAwareColors.getTenantSecondary(tenant);
 
@@ -107,7 +88,7 @@ export const tenantAwareComponentVariants = {
   },
 
   // Generate tenant-specific card variants
-  generateTenantCardVariants: (tenant?: any) => {
+  generateTenantCardVariants: (tenant?: Tenant | null) => {
     const primaryColor = tenantAwareColors.getTenantPrimary(tenant);
 
     return {
@@ -119,7 +100,7 @@ export const tenantAwareComponentVariants = {
   },
 
   // Generate tenant-specific badge variants
-  generateTenantBadgeVariants: (tenant?: any) => {
+  generateTenantBadgeVariants: (tenant?: Tenant | null) => {
     const primaryColor = tenantAwareColors.getTenantPrimary(tenant);
 
     return {
@@ -133,7 +114,11 @@ export const tenantAwareComponentVariants = {
 // Utility functions for tenant-aware styling
 export const tenantAwareUtils = {
   // Get tenant-aware class names
-  getTenantClasses: (baseClasses: string, tenant?: any, variant?: string) => {
+  getTenantClasses: (
+    baseClasses: string,
+    tenant?: Tenant | null,
+    variant?: string
+  ) => {
     if (!tenant || !variant) return baseClasses;
 
     const tenantVariants =
@@ -145,7 +130,7 @@ export const tenantAwareUtils = {
   },
 
   // Apply tenant colors to CSS custom properties
-  applyTenantColors: (tenant?: any) => {
+  applyTenantColors: (tenant?: Tenant | null) => {
     if (!tenant) return {};
 
     return {
@@ -159,7 +144,7 @@ export const tenantAwareUtils = {
   },
 
   // Generate tenant-specific CSS variables
-  generateTenantCSSVariables: (tenant?: any) => {
+  generateTenantCSSVariables: (tenant?: Tenant | null) => {
     if (!tenant) return '';
 
     const primaryColor = tenantAwareColors.getTenantPrimary(tenant);
@@ -254,7 +239,7 @@ export const useTenantAwareDesignSystem = () => {
 export function withTenantAwareStyling<P extends object>(
   Component: React.ComponentType<P>
 ) {
-  return React.forwardRef<any, P>((props, ref) => {
+  return React.forwardRef<HTMLDivElement, P>((props, ref) => {
     const { getTenantStyles, generateTenantCSS } = useTenantAwareDesignSystem();
 
     return React.createElement(

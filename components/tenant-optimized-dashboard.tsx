@@ -11,24 +11,40 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorBoundary } from '@/components/error-boundary';
 
 // Lazy load heavy components
-const ModernTankOverview = lazy(
-  () => import('@/components/modern-tank-overview')
+const ModernTankOverview = lazy(() =>
+  import('@/components/modern-tank-overview').then(module => ({
+    default: module.ModernTankOverview,
+  }))
 );
-const ModernInventoryChart = lazy(
-  () => import('@/components/modern-inventory-chart')
+const ModernInventoryChart = lazy(() =>
+  import('@/components/modern-inventory-chart').then(module => ({
+    default: module.ModernInventoryChart,
+  }))
 );
-const ModernSalesChart = lazy(() => import('@/components/modern-sales-chart'));
-const ModernPredictiveAnalytics = lazy(
-  () => import('@/components/modern-predictive-analytics')
+const ModernSalesChart = lazy(() =>
+  import('@/components/modern-sales-chart').then(module => ({
+    default: module.ModernSalesChart,
+  }))
 );
-const ModernIotMonitoring = lazy(
-  () => import('@/components/modern-iot-monitoring')
+const ModernPredictiveAnalytics = lazy(() =>
+  import('@/components/modern-predictive-analytics').then(module => ({
+    default: module.ModernPredictiveAnalytics,
+  }))
 );
-const ModernAlertsPanel = lazy(
-  () => import('@/components/modern-alerts-panel')
+const ModernIotMonitoring = lazy(() =>
+  import('@/components/modern-iot-monitoring').then(module => ({
+    default: module.ModernIoTMonitoring,
+  }))
 );
-const ModernTransactions = lazy(
-  () => import('@/components/modern-transactions')
+const ModernAlertsPanel = lazy(() =>
+  import('@/components/modern-alerts-panel').then(module => ({
+    default: module.ModernAlertsPanel,
+  }))
+);
+const ModernTransactions = lazy(() =>
+  import('@/components/modern-transactions').then(module => ({
+    default: module.ModernTransactions,
+  }))
 );
 
 // Memoized components for performance
@@ -143,7 +159,7 @@ export function TenantOptimizedDashboard() {
     },
     {
       staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 10 * 60 * 1000, // 10 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
     }
   );
 
@@ -202,7 +218,10 @@ export function TenantOptimizedDashboard() {
           >
             <Suspense fallback={<Skeleton className="h-64 w-full" />}>
               <DashboardCard title="Tank Overview" className="lg:col-span-2">
-                <ModernTankOverview />
+                <ModernTankOverview
+                  tenant={tenant?.id || 'default'}
+                  searchTerm=""
+                />
               </DashboardCard>
             </Suspense>
           </ErrorBoundary>
@@ -254,7 +273,8 @@ export function TenantOptimizedDashboard() {
 
         {/* Predictive Analytics */}
         <ProtectedComponent
-          feature="predictive_analytics"
+          resource="analytics"
+          action="read"
           fallback={<div>Predictive analytics not available in your plan</div>}
         >
           <ErrorBoundary
@@ -270,7 +290,7 @@ export function TenantOptimizedDashboard() {
                 title="Predictive Analytics"
                 className="lg:col-span-2"
               >
-                <ModernPredictiveAnalytics />
+                <ModernPredictiveAnalytics tenant={tenant?.id || 'default'} />
               </DashboardCard>
             </Suspense>
           </ErrorBoundary>
@@ -292,7 +312,7 @@ export function TenantOptimizedDashboard() {
           >
             <Suspense fallback={<Skeleton className="h-64 w-full" />}>
               <DashboardCard title="IoT Monitoring">
-                <ModernIotMonitoring />
+                <ModernIotMonitoring tenant={tenant?.id || 'default'} />
               </DashboardCard>
             </Suspense>
           </ErrorBoundary>

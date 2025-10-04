@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense, lazy, memo } from 'react';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantQuery } from '@/hooks/use-tenant-query';
 import { ProtectedComponent } from '@/components/protected-component';
@@ -13,6 +14,7 @@ import {
 import { TenantAwareBadge } from '@/components/ui/tenant-aware-badge';
 import { TenantAwareButton } from '@/components/ui/tenant-aware-button';
 import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Fuel,
   TrendingUp,
@@ -25,16 +27,34 @@ import {
   Activity,
   Target,
 } from 'lucide-react';
-import { ModernInventoryChart } from '@/components/modern-inventory-chart';
-import { ModernSalesChart } from '@/components/modern-sales-chart';
-import { ModernTransactions } from '@/components/modern-transactions';
-import { ModernAlertsPanel } from '@/components/modern-alerts-panel';
+
+// Lazy load heavy components
+const ModernInventoryChart = lazy(() =>
+  import('@/components/modern-inventory-chart').then(m => ({
+    default: m.ModernInventoryChart,
+  }))
+);
+const ModernSalesChart = lazy(() =>
+  import('@/components/modern-sales-chart').then(m => ({
+    default: m.ModernSalesChart,
+  }))
+);
+const ModernTransactions = lazy(() =>
+  import('@/components/modern-transactions').then(m => ({
+    default: m.ModernTransactions,
+  }))
+);
+const ModernAlertsPanel = lazy(() =>
+  import('@/components/modern-alerts-panel').then(m => ({
+    default: m.ModernAlertsPanel,
+  }))
+);
 
 interface ModernDashboardOverviewProps {
   tenant?: string;
 }
 
-export function ModernDashboardOverview({
+export const ModernDashboardOverview = memo(function ModernDashboardOverview({
   tenant: propTenant,
 }: ModernDashboardOverviewProps) {
   const { tenant } = useTenant();
@@ -340,23 +360,33 @@ export function ModernDashboardOverview({
         {/* Charts */}
         <div className="xl:col-span-2 space-y-6 lg:space-y-8">
           <ProtectedComponent resource="inventory" action="read">
-            <ModernInventoryChart />
-          </ProtectedComponent>
-          <ProtectedComponent resource="sales" action="read">
-            <ModernSalesChart />
+            <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+              <ModernInventoryChart />
+            </Suspense>
           </ProtectedComponent>
         </div>
+      </div>
+      <div className="grid grid-cols-1">
+        <ProtectedComponent resource="sales" action="read">
+          <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+            <ModernSalesChart />
+          </Suspense>
+        </ProtectedComponent>
       </div>
 
       {/* Bottom Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8">
         <ProtectedComponent resource="transactions" action="read">
-          <ModernTransactions />
+          <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+            <ModernTransactions />
+          </Suspense>
         </ProtectedComponent>
         <ProtectedComponent resource="alerts" action="read">
-          <ModernAlertsPanel />
+          <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+            <ModernAlertsPanel />
+          </Suspense>
         </ProtectedComponent>
       </div>
     </div>
   );
-}
+});

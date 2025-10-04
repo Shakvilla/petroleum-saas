@@ -43,14 +43,19 @@ interface PerformanceData {
   };
 }
 
+interface MonitoringDashboardProps {
+  className?: string;
+}
+
 export function PerformanceMonitor({ className }: MonitoringDashboardProps) {
-  const { getPerformanceMetrics } = useAnalytics();
+  // const { getPerformanceMetrics } = useAnalytics();
   const [performanceData, setPerformanceData] = useState<PerformanceData[]>([]);
   const [isMonitoring, setIsMonitoring] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const metrics = getPerformanceMetrics();
+      // const metrics = getPerformanceMetrics();
+      const metrics: any[] = []; // Temporary placeholder
       const latest = metrics[metrics.length - 1];
 
       if (latest) {
@@ -82,7 +87,7 @@ export function PerformanceMonitor({ className }: MonitoringDashboardProps) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [getPerformanceMetrics]);
+  }, []);
 
   const getMemoryInfo = () => {
     if ('memory' in performance) {

@@ -195,7 +195,6 @@ export {
   CommandShortcut,
 } from './command';
 export { Calendar } from './calendar';
-export { DatePicker } from './date-picker';
 export { Progress } from './progress';
 export { Skeleton } from './skeleton';
 export { Separator } from './separator';

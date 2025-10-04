@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useTouch } from '@/hooks/utils/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface GestureHandlers {
   onSwipeLeft?: () => void;
@@ -209,7 +210,7 @@ export function SwipeableCard({
     if (!isSwiping) return;
 
     const touch = e.touches[0];
-    const deltaX = touch.clientX - (touchStart?.x || 0);
+    const deltaX = touch.clientX - (touchStart?.current?.x || 0);
 
     setSwipeOffset(deltaX);
     setSwipeDirection(deltaX > 0 ? 'right' : 'left');

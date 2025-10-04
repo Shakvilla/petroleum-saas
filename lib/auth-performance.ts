@@ -44,7 +44,9 @@ export const memoizedPasswordStrength = (password: string) => {
   // Limit cache size
   if (passwordStrengthCache.size > 100) {
     const firstKey = passwordStrengthCache.keys().next().value;
-    passwordStrengthCache.delete(firstKey);
+    if (firstKey) {
+      passwordStrengthCache.delete(firstKey);
+    }
   }
 
   return result;
@@ -108,7 +110,9 @@ export const memoizedValidation = (
   // Limit cache size
   if (validationCache.size > 200) {
     const firstKey = validationCache.keys().next().value;
-    validationCache.delete(firstKey);
+    if (firstKey) {
+      validationCache.delete(firstKey);
+    }
   }
 
   return result;

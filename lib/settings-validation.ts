@@ -9,6 +9,7 @@ import type {
   BrandingSettingsData,
   DataManagementSettingsData,
 } from '@/types/settings';
+import { FuelType, AccessLevel } from '@/types/settings';
 
 // Base validation schemas
 const addressSchema = z.object({
@@ -91,7 +92,7 @@ const safetyThresholdsSchema = z.object({
 
 const operationalParamsSchema = z.object({
   fuelTypes: z
-    .array(z.enum(['gasoline', 'diesel', 'kerosene', 'lubricant', 'jet_fuel']))
+    .array(z.nativeEnum(FuelType))
     .min(1, 'At least one fuel type is required'),
   capacityLimits: capacityLimitsSchema,
   safetyThresholds: safetyThresholdsSchema,
@@ -185,7 +186,7 @@ const sessionManagementSchema = z.object({
 
 const accessControlSchema = z.object({
   roleBasedAccess: z.boolean(),
-  featureAccessLevels: z.record(z.enum(['none', 'read', 'write', 'admin'])),
+  featureAccessLevels: z.record(z.nativeEnum(AccessLevel)),
   apiAccessControl: z.boolean(),
   dataExportPermissions: z.boolean(),
 });
@@ -262,40 +263,17 @@ export const integrationSettingsSchema: z.ZodSchema<IntegrationSettingsData> =
 // Notification Settings Validation
 const emailNotificationConfigSchema = z.object({
   enabled: z.boolean(),
-  smtpServer: z
-    .string()
-    .min(1, 'SMTP server is required')
-    .when('enabled', {
-      is: true,
-      then: schema =>
-        schema.min(
-          1,
-          'SMTP server is required when email notifications are enabled'
-        ),
-      otherwise: schema => schema.optional(),
-    }),
+  smtpServer: z.string().min(1, 'SMTP server is required'),
   smtpPort: z.number().min(1).max(65535, 'Invalid SMTP port'),
-  username: z
-    .string()
-    .min(1, 'Username is required')
-    .when('enabled', {
-      is: true,
-      then: schema =>
-        schema.min(
-          1,
-          'Username is required when email notifications are enabled'
-        ),
-      otherwise: schema => schema.optional(),
-    }),
+  username: z.string().min(1, 'Username is required'),
   fromAddress: z
     .string()
     .email('Invalid from address')
-    .when('enabled', {
-      is: true,
-      then: schema => schema.email('Invalid from address'),
-      otherwise: schema => schema.optional(),
-    }),
-  replyToAddress: z.string().email('Invalid reply-to address').optional(),
+    .min(1, 'From address is required'),
+  replyToAddress: z
+    .string()
+    .email('Invalid reply-to address')
+    .min(1, 'Reply-to address is required'),
 });
 
 const inventoryAlertThresholdsSchema = z.object({
@@ -322,9 +300,9 @@ export const notificationSettingsSchema: z.ZodSchema<NotificationSettingsData> =
       email: emailNotificationConfigSchema,
       sms: z.object({
         enabled: z.boolean(),
-        provider: z.string().optional(),
-        apiKey: z.string().optional(),
-        fromNumber: z.string().optional(),
+        provider: z.string().min(1, 'Provider is required'),
+        apiKey: z.string().min(1, 'API key is required'),
+        fromNumber: z.string().min(1, 'From number is required'),
       }),
       inApp: z.object({
         enabled: z.boolean(),
@@ -333,8 +311,11 @@ export const notificationSettingsSchema: z.ZodSchema<NotificationSettingsData> =
       }),
       push: z.object({
         enabled: z.boolean(),
-        serviceWorkerUrl: z.string().url().optional(),
-        vapidKey: z.string().optional(),
+        serviceWorkerUrl: z
+          .string()
+          .url('Invalid service worker URL')
+          .min(1, 'Service worker URL is required'),
+        vapidKey: z.string().min(1, 'VAPID key is required'),
       }),
     }),
     alertThresholds: z.object({
@@ -392,7 +373,16 @@ export const notificationSettingsSchema: z.ZodSchema<NotificationSettingsData> =
 const epaComplianceSchema = z.object({
   enabled: z.boolean(),
   reportingRequirements: z.array(z.string()),
-  inspectionSchedule: z.string().optional(),
+  inspectionSchedule: z.string().min(1, 'Inspection schedule is required'),
+  documentationRequired: z.array(z.string()),
+});
+
+const localComplianceSchema = z.object({
+  id: z.string().min(1, 'ID is required'),
+  name: z.string().min(1, 'Name is required'),
+  enabled: z.boolean(),
+  reportingRequirements: z.array(z.string()),
+  inspectionSchedule: z.string().min(1, 'Inspection schedule is required'),
   documentationRequired: z.array(z.string()),
 });
 
@@ -414,7 +404,7 @@ export const complianceSettingsSchema: z.ZodSchema<ComplianceSettingsData> =
       epa: epaComplianceSchema,
       osha: epaComplianceSchema, // Same structure as EPA
       dot: epaComplianceSchema, // Same structure as EPA
-      local: z.array(epaComplianceSchema),
+      local: z.array(localComplianceSchema),
     }),
     reporting: z.object({
       automatedReports: z.array(automatedReportSchema),
@@ -435,13 +425,28 @@ export const complianceSettingsSchema: z.ZodSchema<ComplianceSettingsData> =
 
 // Branding Settings Validation
 const logoConfigSchema = z.object({
-  primary: z.string().url('Invalid logo URL').optional(),
+  primary: z
+    .string()
+    .url('Invalid logo URL')
+    .min(1, 'Primary logo URL is required'),
   secondary: z.string().url('Invalid logo URL').optional(),
-  favicon: z.string().url('Invalid favicon URL').optional(),
+  favicon: z
+    .string()
+    .url('Invalid favicon URL')
+    .min(1, 'Favicon URL is required'),
   sizes: z.object({
-    small: z.string().url('Invalid logo URL').optional(),
-    medium: z.string().url('Invalid logo URL').optional(),
-    large: z.string().url('Invalid logo URL').optional(),
+    small: z
+      .string()
+      .url('Invalid logo URL')
+      .min(1, 'Small logo URL is required'),
+    medium: z
+      .string()
+      .url('Invalid logo URL')
+      .min(1, 'Medium logo URL is required'),
+    large: z
+      .string()
+      .url('Invalid logo URL')
+      .min(1, 'Large logo URL is required'),
   }),
 });
 
@@ -494,7 +499,10 @@ export const brandingSettingsSchema: z.ZodSchema<BrandingSettingsData> =
       logo: logoConfigSchema,
       colorScheme: colorSchemeSchema,
       typography: typographyConfigSchema,
-      favicon: z.string().url('Invalid favicon URL').optional(),
+      favicon: z
+        .string()
+        .url('Invalid favicon URL')
+        .min(1, 'Favicon URL is required'),
     }),
     displayPreferences: z.object({
       dashboardLayout: dashboardLayoutSchema,

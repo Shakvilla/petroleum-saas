@@ -133,7 +133,10 @@ export function TenantProvider({
           err instanceof Error ? err.message : 'Failed to load tenant';
         setError(errorMessage);
         setStoreError(errorMessage);
-        console.error('Tenant loading error:', err);
+        // Log error for debugging in development
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Tenant loading error:', err);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -157,7 +160,10 @@ export function TenantProvider({
 
         router.push(newPath);
       } catch (err) {
-        console.error('Failed to switch tenant:', err);
+        // Log error for debugging in development
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Failed to switch tenant:', err);
+        }
         throw err;
       }
     },
@@ -245,7 +251,10 @@ export function useTenantRouter() {
   const push = useCallback(
     (path: string) => {
       if (!tenant) {
-        console.warn('Cannot navigate without tenant context');
+        // Log warning for debugging in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Cannot navigate without tenant context');
+        }
         return;
       }
 
@@ -260,7 +269,10 @@ export function useTenantRouter() {
   const replace = useCallback(
     (path: string) => {
       if (!tenant) {
-        console.warn('Cannot navigate without tenant context');
+        // Log warning for debugging in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Cannot navigate without tenant context');
+        }
         return;
       }
 

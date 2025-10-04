@@ -111,9 +111,10 @@ export class TenantPerformanceMonitor {
       const resourceObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'resource') {
+            const resourceEntry = entry as PerformanceResourceTiming;
             this.recordMetric('resource_load_time', entry.duration, 'ms', {
               resource: entry.name,
-              type: entry.initiatorType,
+              type: resourceEntry.initiatorType,
             });
           }
         }

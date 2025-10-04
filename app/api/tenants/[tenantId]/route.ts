@@ -240,7 +240,10 @@ export async function GET(
 
     return NextResponse.json(tenant);
   } catch (error) {
-    console.error('Error fetching tenant:', error);
+    // Log error for debugging in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching tenant:', error);
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

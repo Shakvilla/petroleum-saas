@@ -5,6 +5,9 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { TenantProvider, useTenant } from '@/components/tenant-provider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuthStore } from '@/stores/auth-store';
+import { useLogout } from '@/lib/auth/logout';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
@@ -57,6 +60,9 @@ function DashboardLayoutInner({ children, tenant }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   const { tenant: tenantContext } = useTenant();
+  const { user, isAuthenticated } = useAuthStore();
+  const { logout } = useLogout();
+  const { toast } = useToast();
 
   // Create tenant-aware navigation
   const navigation = navigationItems.map(item => ({
@@ -69,8 +75,30 @@ function DashboardLayoutInner({ children, tenant }: DashboardLayoutProps) {
     return pathname === href;
   };
 
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await logout({
+        redirectTo: '/auth/login',
+        clearStorage: true,
+        showToast: true,
+      });
+      
+      toast({
+        title: 'Logged out successfully',
+        description: 'You have been logged out of your account.',
+      });
+    } catch (error) {
+      toast({
+        title: 'Logout failed',
+        description: 'There was an error logging out. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-200">
       {/* Mobile sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-64 p-0">

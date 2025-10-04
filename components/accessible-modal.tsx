@@ -66,7 +66,7 @@ export function AccessibleModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        ref={containerRef}
+        ref={containerRef as any}
         className={cn('focus:outline-none', sizeClasses[size], className)}
         onPointerDownOutside={e => {
           if (!closeOnOverlayClick) {

@@ -137,13 +137,16 @@ export function useTenantMutation<
       const data = await mutationFn(variables);
       return validateTenantData(data as any, tenant.id) as TData;
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, context, meta) => {
       // Invalidate all tenant queries on successful mutation
       queryClient.invalidateQueries({
         queryKey: ['tenant', tenant.id],
       });
 
-      options?.onSuccess?.(data, variables, context);
+      // Call the original onSuccess if provided
+      if (options?.onSuccess) {
+        (options.onSuccess as any)(data, variables, context, meta);
+      }
     },
     ...options,
   });

@@ -47,7 +47,7 @@ export function SettingsContent({
         <CompanyProfileSettings
           {...commonProps}
           data={settingsData.profile}
-          onUpdate={data => onSectionUpdate('profile', data)}
+          onUpdate={data => onSectionUpdate('profile' as SettingsTab, data)}
         />
       );
 
@@ -56,7 +56,7 @@ export function SettingsContent({
         <BusinessOperationsSettings
           {...commonProps}
           data={settingsData.operations}
-          onUpdate={data => onSectionUpdate('operations', data)}
+          onUpdate={data => onSectionUpdate('operations' as SettingsTab, data)}
         />
       );
 
@@ -65,7 +65,7 @@ export function SettingsContent({
         <SecuritySettings
           {...commonProps}
           data={settingsData.security}
-          onUpdate={data => onSectionUpdate('security', data)}
+          onUpdate={data => onSectionUpdate('security' as SettingsTab, data)}
         />
       );
 
@@ -74,7 +74,9 @@ export function SettingsContent({
         <IntegrationSettings
           {...commonProps}
           data={settingsData.integrations}
-          onUpdate={data => onSectionUpdate('integrations', data)}
+          onUpdate={data =>
+            onSectionUpdate('integrations' as SettingsTab, data)
+          }
         />
       );
 
@@ -83,7 +85,9 @@ export function SettingsContent({
         <NotificationSettings
           {...commonProps}
           data={settingsData.notifications}
-          onUpdate={data => onSectionUpdate('notifications', data)}
+          onUpdate={data =>
+            onSectionUpdate('notifications' as SettingsTab, data)
+          }
         />
       );
 
@@ -92,7 +96,7 @@ export function SettingsContent({
         <ComplianceSettings
           {...commonProps}
           data={settingsData.compliance}
-          onUpdate={data => onSectionUpdate('compliance', data)}
+          onUpdate={data => onSectionUpdate('compliance' as SettingsTab, data)}
         />
       );
 
@@ -101,7 +105,7 @@ export function SettingsContent({
         <BrandingSettings
           {...commonProps}
           data={settingsData.branding}
-          onUpdate={data => onSectionUpdate('branding', data)}
+          onUpdate={data => onSectionUpdate('branding' as SettingsTab, data)}
         />
       );
 
@@ -110,7 +114,9 @@ export function SettingsContent({
         <DataManagementSettings
           {...commonProps}
           data={settingsData.dataManagement}
-          onUpdate={data => onSectionUpdate('data-management', data)}
+          onUpdate={data =>
+            onSectionUpdate('data-management' as SettingsTab, data)
+          }
         />
       );
 

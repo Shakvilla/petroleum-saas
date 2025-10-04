@@ -31,12 +31,13 @@ export async function POST(request: NextRequest) {
         user: {
           id: user.id,
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          name: user.name,
           role: user.role,
           tenantId: user.tenantId,
           permissions: user.permissions,
-          profile: user.profile,
+          lastLoginAt: user.lastLoginAt,
+          preferences: user.preferences,
+          isActive: user.isActive,
         },
       },
     });

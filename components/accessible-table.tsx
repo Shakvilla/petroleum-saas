@@ -73,7 +73,7 @@ interface AccessibleTableHeadProps
   extends React.ThHTMLAttributes<HTMLTableCellElement> {
   children: React.ReactNode;
   sortable?: boolean;
-  sortDirection?: 'asc' | 'desc' | 'none';
+  sortDirection?: 'ascending' | 'descending' | 'none';
   onSort?: () => void;
 }
 
@@ -116,9 +116,9 @@ export function AccessibleTableHead({
         {children}
         {sortable && (
           <span className="text-gray-400" aria-hidden="true">
-            {sortDirection === 'asc'
+            {sortDirection === 'ascending'
               ? '↑'
-              : sortDirection === 'desc'
+              : sortDirection === 'descending'
                 ? '↓'
                 : '↕'}
           </span>

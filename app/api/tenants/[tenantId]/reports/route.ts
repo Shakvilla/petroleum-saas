@@ -82,28 +82,29 @@ export async function GET(
         generatedAt: new Date().toISOString(),
         summary: {
           totalRevenue: transactions
-            .filter(t => t.type === 'SALE')
+            .filter(t => t.type === 'fuel_sale')
             .reduce((sum, t) => sum + t.amount, 0),
           totalVolume: transactions
-            .filter(t => t.type === 'SALE')
-            .reduce((sum, t) => sum + t.volume, 0),
-          totalTransactions: transactions.filter(t => t.type === 'SALE').length,
+            .filter(t => t.type === 'fuel_sale' && t.volume)
+            .reduce((sum, t) => sum + (t.volume || 0), 0),
+          totalTransactions: transactions.filter(t => t.type === 'fuel_sale')
+            .length,
           averageTransactionValue:
-            transactions.filter(t => t.type === 'SALE').length > 0
+            transactions.filter(t => t.type === 'fuel_sale').length > 0
               ? Math.round(
                   transactions
-                    .filter(t => t.type === 'SALE')
+                    .filter(t => t.type === 'fuel_sale')
                     .reduce((sum, t) => sum + t.amount, 0) /
-                    transactions.filter(t => t.type === 'SALE').length
+                    transactions.filter(t => t.type === 'fuel_sale').length
                 )
               : 0,
         },
         details: transactions
-          .filter(t => t.type === 'SALE')
+          .filter(t => t.type === 'fuel_sale')
           .map(transaction => ({
             id: transaction.id,
             amount: transaction.amount,
-            volume: transaction.volume,
+            volume: transaction.volume || 0,
             fuelType: transaction.fuelType,
             customer: transaction.customer?.name,
             location: transaction.location?.name,

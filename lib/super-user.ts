@@ -121,6 +121,7 @@ export const SUPER_USER: User = {
       inApp: true,
     },
   },
+  isActive: true,
 };
 
 // Alternative: Create a function to generate super user for any tenant
@@ -147,6 +148,7 @@ export function createSuperUserForTenant(
         inApp: true,
       },
     },
+    isActive: true,
   };
 }
 

@@ -82,7 +82,7 @@ export function TenantSafeDataList<
       const response = await apiClient.findMany(resource, currentFilters);
 
       // Validate tenant ownership
-      const validatedData = response.filter(item => {
+      const validatedData = (response as T[]).filter((item: T) => {
         if (item.tenantId && item.tenantId !== tenant.id) {
           console.warn('Filtering out cross-tenant data:', item);
           return false;

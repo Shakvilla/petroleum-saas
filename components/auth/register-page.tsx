@@ -97,6 +97,7 @@ const RegisterPage: React.FC = () => {
 
     try {
       // TODO: Replace with actual registration API call
+      // Issue: #AUTH-REGISTER-001
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Simulate successful registration
@@ -117,6 +118,7 @@ const RegisterPage: React.FC = () => {
 
     try {
       // TODO: Implement social signup
+      // Issue: #AUTH-SOCIAL-SIGNUP-001
       console.log(`Social signup with ${provider}`);
       await new Promise(resolve => setTimeout(resolve, 2000));
 

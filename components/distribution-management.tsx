@@ -160,7 +160,7 @@ export function DistributionManagement() {
 
   const deliveries = distributionData?.data?.deliveries || [];
 
-  const filteredDeliveries = deliveries.filter(delivery => {
+  const filteredDeliveries = deliveries.filter((delivery: any) => {
     const matchesSearch =
       delivery.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       delivery.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -389,7 +389,7 @@ export function DistributionManagement() {
 
               {/* Deliveries List */}
               <div className="space-y-4">
-                {filteredDeliveries.map(delivery => (
+                {filteredDeliveries.map((delivery: any) => (
                   <Card
                     key={delivery.id}
                     className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"

@@ -21,8 +21,9 @@ export async function GET(
     // Calculate inventory metrics
     const totalVolume = tanks.reduce((sum, tank) => sum + tank.currentLevel, 0);
     const totalCapacity = tanks.reduce((sum, tank) => sum + tank.capacity, 0);
-    const utilizationRate = totalCapacity > 0 ? (totalVolume / totalCapacity) * 100 : 0;
-    
+    const utilizationRate =
+      totalCapacity > 0 ? (totalVolume / totalCapacity) * 100 : 0;
+
     const criticalTanks = tanks.filter(tank => {
       const percentage = (tank.currentLevel / tank.capacity) * 100;
       return percentage < 20;
@@ -34,8 +35,8 @@ export async function GET(
         totalCapacity,
         utilizationRate: Math.round(utilizationRate * 100) / 100,
         activeTanks: tanks.filter(tank => tank.status === 'ACTIVE').length,
-        criticalAlerts: alerts.filter(alert => 
-          alert.entityType === 'TANK' && alert.priority === 'CRITICAL'
+        criticalAlerts: alerts.filter(
+          alert => alert.entityType === 'tank' && alert.type === 'critical'
         ).length,
       },
       tanks: tanks.map(tank => ({
@@ -49,11 +50,12 @@ export async function GET(
         location: tank.location,
         lastUpdated: tank.lastUpdated,
       })),
-      alerts: alerts.filter(alert => alert.entityType === 'TANK'),
+      alerts: alerts.filter(alert => alert.entityType === 'tank'),
       efficiency: {
         averageUtilization: Math.round(utilizationRate * 100) / 100,
         criticalTanksCount: criticalTanks.length,
-        maintenanceDue: tanks.filter(tank => tank.status === 'MAINTENANCE').length,
+        maintenanceDue: tanks.filter(tank => tank.status === 'MAINTENANCE')
+          .length,
       },
     };
 

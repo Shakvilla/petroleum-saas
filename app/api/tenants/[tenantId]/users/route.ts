@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mockApiService } from '@/lib/mock-api/mock-api-service';
+import {
+  tenantIdSchema,
+  validateQueryParams,
+  paginationSchema,
+  searchSchema,
+} from '@/lib/validation-schemas';
 
 export async function GET(
   request: NextRequest,
@@ -8,9 +14,39 @@ export async function GET(
   try {
     const { tenantId } = await params;
 
-    if (!tenantId) {
+    // Validate tenant ID
+    const tenantValidation = tenantIdSchema.safeParse(tenantId);
+    if (!tenantValidation.success) {
       return NextResponse.json(
-        { error: 'Tenant ID is required' },
+        { error: 'Invalid tenant ID', details: tenantValidation.error.errors },
+        { status: 400 }
+      );
+    }
+
+    // Validate query parameters
+    const { searchParams } = new URL(request.url);
+    const queryParams = Object.fromEntries(searchParams.entries());
+
+    // Validate pagination parameters
+    const paginationValidation = paginationSchema.safeParse(queryParams);
+    if (!paginationValidation.success) {
+      return NextResponse.json(
+        {
+          error: 'Invalid pagination parameters',
+          details: paginationValidation.error.errors,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate search parameters
+    const searchValidation = searchSchema.safeParse(queryParams);
+    if (!searchValidation.success) {
+      return NextResponse.json(
+        {
+          error: 'Invalid search parameters',
+          details: searchValidation.error.errors,
+        },
         { status: 400 }
       );
     }

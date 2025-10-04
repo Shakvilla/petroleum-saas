@@ -28,7 +28,7 @@ export function LazyWrapper({
   });
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref as any} className={className}>
       {isVisible ? (
         <Suspense fallback={fallback}>{children}</Suspense>
       ) : (

@@ -1,3 +1,4 @@
+import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useLogin, useLogout, useUser } from '@/hooks/api/use-auth';
@@ -14,11 +15,8 @@ const createWrapper = () => {
     },
   });
 
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return ({ children }: { children: React.ReactNode }) =>
+    React.createElement(QueryClientProvider, { client: queryClient }, children);
 };
 
 describe('useAuth hooks', () => {
@@ -79,7 +77,9 @@ describe('useAuth hooks', () => {
 
       expect(mockSetUser).toHaveBeenCalledWith(mockResponse.user);
       expect(mockSetToken).toHaveBeenCalledWith(mockResponse.token);
-      expect(mockSetPermissions).toHaveBeenCalledWith(mockResponse.user.permissions);
+      expect(mockSetPermissions).toHaveBeenCalledWith(
+        mockResponse.user.permissions
+      );
     });
 
     it('should handle login error', async () => {
@@ -126,7 +126,9 @@ describe('useAuth hooks', () => {
     });
 
     it('should handle logout error gracefully', async () => {
-      (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+      (global.fetch as jest.Mock).mockRejectedValueOnce(
+        new Error('Network error')
+      );
 
       const { result } = renderHook(() => useLogout(), {
         wrapper: createWrapper(),

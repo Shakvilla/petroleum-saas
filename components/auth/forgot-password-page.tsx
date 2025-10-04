@@ -82,6 +82,7 @@ const ForgotPasswordPage: React.FC = () => {
 
     try {
       // TODO: Replace with actual API call
+      // Issue: #AUTH-PASSWORD-RESET-001
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       console.log('Sending reset email to:', formData.email);
@@ -105,6 +106,7 @@ const ForgotPasswordPage: React.FC = () => {
 
     try {
       // TODO: Replace with actual API call
+      // Issue: #AUTH-PASSWORD-RESET-001
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       console.log('Resetting password with token:', token);

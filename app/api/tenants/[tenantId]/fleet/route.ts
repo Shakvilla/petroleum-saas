@@ -20,10 +20,10 @@ export async function GET(
 
     // Calculate fleet metrics
     const activeVehicles = vehicles.filter(
-      vehicle => vehicle.status === 'ACTIVE'
+      vehicle => (vehicle as any).status === 'ACTIVE'
     );
     const maintenanceVehicles = vehicles.filter(
-      vehicle => vehicle.status === 'MAINTENANCE'
+      vehicle => (vehicle as any).status === 'MAINTENANCE'
     );
     const activeDeliveries = deliveries.filter(
       delivery => delivery.status === 'IN_PROGRESS'
@@ -38,7 +38,10 @@ export async function GET(
         averageFuelEfficiency:
           vehicles.length > 0
             ? Math.round(
-                (vehicles.reduce((sum, v) => sum + v.fuelEfficiency, 0) /
+                (vehicles.reduce(
+                  (sum, v) => sum + (v as any).fuelEfficiency,
+                  0
+                ) /
                   vehicles.length) *
                   100
               ) / 100
@@ -46,16 +49,16 @@ export async function GET(
       },
       vehicles: vehicles.map(vehicle => ({
         id: vehicle.id,
-        name: vehicle.name,
-        type: vehicle.type,
-        capacity: vehicle.capacity,
-        status: vehicle.status,
-        licensePlate: vehicle.licensePlate,
-        driver: vehicle.driver,
-        lastMaintenance: vehicle.lastMaintenance,
-        nextMaintenance: vehicle.nextMaintenance,
-        mileage: vehicle.mileage,
-        fuelEfficiency: vehicle.fuelEfficiency,
+        name: (vehicle as any).name,
+        type: (vehicle as any).type,
+        capacity: (vehicle as any).capacity,
+        status: (vehicle as any).status,
+        licensePlate: (vehicle as any).licensePlate,
+        driver: (vehicle as any).driver,
+        lastMaintenance: (vehicle as any).lastMaintenance,
+        nextMaintenance: (vehicle as any).nextMaintenance,
+        mileage: (vehicle as any).mileage,
+        fuelEfficiency: (vehicle as any).fuelEfficiency,
         location:
           activeDeliveries.find(d => d.vehicleId === vehicle.id)?.route
             ?.waypoints?.[0] || null,
@@ -63,7 +66,7 @@ export async function GET(
       deliveries: activeDeliveries,
       maintenance: {
         dueSoon: vehicles.filter(vehicle => {
-          const nextMaintenance = new Date(vehicle.nextMaintenance);
+          const nextMaintenance = new Date((vehicle as any).nextMaintenance);
           const today = new Date();
           const daysUntilMaintenance = Math.ceil(
             (nextMaintenance.getTime() - today.getTime()) /
@@ -72,7 +75,7 @@ export async function GET(
           return daysUntilMaintenance <= 7 && daysUntilMaintenance >= 0;
         }),
         overdue: vehicles.filter(vehicle => {
-          const nextMaintenance = new Date(vehicle.nextMaintenance);
+          const nextMaintenance = new Date((vehicle as any).nextMaintenance);
           const today = new Date();
           return nextMaintenance.getTime() < today.getTime();
         }),

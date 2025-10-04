@@ -24,6 +24,11 @@ const data = [
   { date: 'Jan 5', sales: 139000, revenue: 208500 },
   { date: 'Jan 6', sales: 151000, revenue: 226500 },
   { date: 'Jan 7', sales: 156847, revenue: 235270 },
+  { date: 'Jan 8', sales: 156847, revenue: 235280 },
+  { date: 'Jan 9', sales: 156847, revenue: 235210 },
+  { date: 'Jan 10', sales: 156847, revenue: 235670 },
+  { date: 'Jan 11', sales: 156847, revenue: 2352270 },
+  { date: 'Jan 12', sales: 156847, revenue: 235230 },
 ];
 
 const chartConfig = {

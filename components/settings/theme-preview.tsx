@@ -414,7 +414,10 @@ export function ThemePreview({
                       const theme = JSON.parse(e.target?.result as string);
                       onImport?.(theme);
                     } catch (error) {
-                      console.error('Invalid theme file:', error);
+                      // Log error for debugging in development
+                      if (process.env.NODE_ENV === 'development') {
+                        console.error('Invalid theme file:', error);
+                      }
                     }
                   };
                   reader.readAsText(file);

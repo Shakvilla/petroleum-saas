@@ -4,6 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantQuery } from '@/hooks/use-tenant-query';
 import { UsersTable } from './users-table';
+import { UserEditDialog } from './user-edit-dialog';
+import { UserDeleteDialog } from './user-delete-dialog';
+import { UserViewDialog } from './user-view-dialog';
+import { UserCreateDialog } from './user-create-dialog';
 import {
   TenantAwareCard,
   TenantAwareCardContent,
@@ -18,7 +22,7 @@ interface User {
   name: string;
   email: string;
   role: 'ADMIN' | 'MANAGER' | 'OPERATOR' | 'VIEWER';
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'SUSPENDED';
   lastLoginAt: string;
   createdAt: string;
   permissions: Array<{
@@ -48,6 +52,11 @@ interface UsersData {
 export const UsersPageContent: React.FC = () => {
   const { tenant } = useTenant();
   const [usersData, setUsersData] = useState<UsersData | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,23 +89,40 @@ export const UsersPageContent: React.FC = () => {
   }, [data, queryError]);
 
   const handleEditUser = (user: User) => {
-    console.log('Edit user:', user);
-    // TODO: Implement edit user functionality
+    setSelectedUser(user);
+    setIsEditDialogOpen(true);
   };
 
   const handleDeleteUser = (user: User) => {
-    console.log('Delete user:', user);
-    // TODO: Implement delete user functionality
+    setSelectedUser(user);
+    setIsDeleteDialogOpen(true);
   };
 
   const handleViewUser = (user: User) => {
-    console.log('View user:', user);
-    // TODO: Implement view user functionality
+    setSelectedUser(user);
+    setIsViewDialogOpen(true);
   };
 
   const handleCreateUser = () => {
-    console.log('Create new user');
-    // TODO: Implement create user functionality
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleSaveUser = (updatedUser: User) => {
+    // TODO: Update user in the list
+    // Issue: #USER-UPDATE-LIST-001
+    console.log('User updated:', updatedUser);
+  };
+
+  const handleDeleteConfirm = (userId: string) => {
+    // TODO: Remove user from the list
+    // Issue: #USER-DELETE-LIST-001
+    console.log('User deleted:', userId);
+  };
+
+  const handleCreateConfirm = (newUser: User) => {
+    // TODO: Add user to the list
+    // Issue: #USER-ADD-LIST-001
+    console.log('User created:', newUser);
   };
 
   if (loading || isLoading) {
@@ -240,6 +266,34 @@ export const UsersPageContent: React.FC = () => {
           />
         </TenantAwareCardContent>
       </TenantAwareCard>
+
+      {/* User Dialogs */}
+      <UserEditDialog
+        user={selectedUser}
+        isOpen={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        onSave={handleSaveUser}
+      />
+
+      <UserDeleteDialog
+        user={selectedUser}
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={handleDeleteConfirm}
+      />
+
+      <UserViewDialog
+        user={selectedUser}
+        isOpen={isViewDialogOpen}
+        onClose={() => setIsViewDialogOpen(false)}
+      />
+
+      <UserCreateDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+        onCreate={handleCreateConfirm}
+        tenantId={tenant?.id || ''}
+      />
     </div>
   );
 };

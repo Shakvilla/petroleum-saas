@@ -50,6 +50,7 @@ export const MOCK_ADMIN: User = {
       inApp: true,
     },
   },
+  isActive: true,
 };
 
 // Mock Company Data for Dashboard

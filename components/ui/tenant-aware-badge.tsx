@@ -83,10 +83,11 @@ const tenantAwareBadgeVariants = cva(
 );
 
 export interface TenantAwareBadgeProps
-  extends Omit<EnhancedBadgeProps, 'variant'>,
+  extends Omit<EnhancedBadgeProps, 'variant' | 'dot'>,
     VariantProps<typeof tenantAwareBadgeVariants> {
   useTenantTheme?: boolean;
   customTenantColor?: string;
+  dotColor?: string;
 }
 
 const TenantAwareBadge = React.forwardRef<
@@ -118,7 +119,7 @@ const TenantAwareBadge = React.forwardRef<
         variant === 'outline');
 
     // Get tenant-specific styles
-    const tenantStyles = shouldUseTenantTheme ? getTenantStyles() : {};
+    const tenantStyles: any = shouldUseTenantTheme ? getTenantStyles() : {};
 
     // Override with custom color if provided
     if (customTenantColor) {

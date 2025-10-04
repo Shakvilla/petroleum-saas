@@ -35,7 +35,8 @@ export async function GET(
         completedDeliveries: completedDeliveries.length,
         scheduledDeliveries: scheduledDeliveries.length,
         totalVehicles: vehicles.length,
-        activeVehicles: vehicles.filter(v => v.status === 'ACTIVE').length,
+        activeVehicles: vehicles.filter(v => (v as any).status === 'ACTIVE')
+          .length,
         averageDeliveryTime: calculateAverageDeliveryTime(completedDeliveries),
         onTimeDeliveryRate: calculateOnTimeDeliveryRate(completedDeliveries),
       },
@@ -58,14 +59,17 @@ export async function GET(
       })),
       vehicles: vehicles.map(vehicle => ({
         id: vehicle.id,
-        name: vehicle.name,
-        type: vehicle.type,
-        capacity: vehicle.capacity,
-        status: vehicle.status,
-        licensePlate: vehicle.licensePlate,
-        driver: vehicle.driver,
+        name: (vehicle as any).name,
+        type: (vehicle as any).type,
+        capacity: (vehicle as any).capacity,
+        status: (vehicle as any).status,
+        licensePlate: (vehicle as any).licensePlate,
+        driver: (vehicle as any).driver,
         currentDelivery: activeDeliveries.find(d => d.vehicleId === vehicle.id),
-        utilizationRate: calculateVehicleUtilization(vehicle, deliveries),
+        utilizationRate: calculateVehicleUtilization(
+          vehicle as any,
+          deliveries
+        ),
       })),
       routes: getRouteAnalytics(deliveries),
       performance: {

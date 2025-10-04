@@ -99,7 +99,7 @@ const TenantAwareButton = React.forwardRef<
         variant === 'outline');
 
     // Get tenant-specific styles
-    const tenantStyles = shouldUseTenantTheme ? getTenantStyles() : {};
+    const tenantStyles: any = shouldUseTenantTheme ? getTenantStyles() : {};
 
     // Override with custom color if provided
     if (customTenantColor) {

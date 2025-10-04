@@ -62,11 +62,30 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
+  root: Element | null = null;
+  rootMargin: string = '0px';
+  thresholds: ReadonlyArray<number> = [0];
+
+  constructor(
+    callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit
+  ) {
+    this.root = (options?.root as Element) || null;
+    this.rootMargin = options?.rootMargin || '0px';
+    this.thresholds = options?.threshold
+      ? Array.isArray(options.threshold)
+        ? options.threshold
+        : [options.threshold]
+      : [0];
+  }
+
   observe() {}
   unobserve() {}
   disconnect() {}
-};
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+} as any;
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
@@ -82,8 +101,10 @@ const localStorageMock = {
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
+  length: 0,
+  key: jest.fn(),
 };
-global.localStorage = localStorageMock;
+global.localStorage = localStorageMock as any;
 
 // Mock sessionStorage
 const sessionStorageMock = {
@@ -91,8 +112,10 @@ const sessionStorageMock = {
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
+  length: 0,
+  key: jest.fn(),
 };
-global.sessionStorage = sessionStorageMock;
+global.sessionStorage = sessionStorageMock as any;
 
 // Mock fetch
 global.fetch = jest.fn();
@@ -103,7 +126,13 @@ global.WebSocket = jest.fn().mockImplementation(() => ({
   send: jest.fn(),
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
-}));
+})) as any;
+
+// Add WebSocket constants
+(global.WebSocket as any).CONNECTING = 0;
+(global.WebSocket as any).OPEN = 1;
+(global.WebSocket as any).CLOSING = 2;
+(global.WebSocket as any).CLOSED = 3;
 
 // Mock crypto
 Object.defineProperty(global, 'crypto', {
@@ -136,7 +165,7 @@ global.scrollTo = jest.fn();
 // Mock getComputedStyle
 global.getComputedStyle = jest.fn(() => ({
   getPropertyValue: jest.fn(() => ''),
-}));
+})) as any;
 
 // Mock addEventListener and removeEventListener
 global.addEventListener = jest.fn();

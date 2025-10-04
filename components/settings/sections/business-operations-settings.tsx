@@ -65,11 +65,11 @@ export function BusinessOperationsSettings({
     });
   };
 
-  const getFieldError = (fieldPath: string) => {
-    return (
-      validationErrors[fieldPath]?.[0] ||
-      errors[fieldPath as keyof BusinessOperationsData]?.message
-    );
+  const getFieldError = (fieldPath: string): string => {
+    const validationError = validationErrors[fieldPath]?.[0];
+    const formError = errors[fieldPath as keyof BusinessOperationsData]?.message;
+    return (typeof validationError === 'string' ? validationError : '') || 
+           (typeof formError === 'string' ? formError : '') || '';
   };
 
   const days = [

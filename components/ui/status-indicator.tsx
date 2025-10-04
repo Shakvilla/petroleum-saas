@@ -1,6 +1,6 @@
 /**
  * Status Indicator Component
- * 
+ *
  * Provides consistent status visualization across the application
  * with semantic colors and clear visual hierarchy.
  */
@@ -57,12 +57,15 @@ export interface StatusIndicatorProps
 }
 
 const StatusIndicator = React.forwardRef<HTMLDivElement, StatusIndicatorProps>(
-  ({ className, variant, size, showIcon, customIcon, label, ...props }, ref) => {
+  (
+    { className, variant, size, showIcon, customIcon, label, ...props },
+    ref
+  ) => {
     const getIcon = () => {
       if (customIcon) return customIcon;
-      
+
       if (!showIcon) return null;
-      
+
       switch (variant) {
         case 'success':
         case 'active':
@@ -90,7 +93,9 @@ const StatusIndicator = React.forwardRef<HTMLDivElement, StatusIndicatorProps>(
     return (
       <div
         ref={ref}
-        className={cn(statusIndicatorVariants({ variant, size, showIcon, className }))}
+        className={cn(
+          statusIndicatorVariants({ variant, size, showIcon, className })
+        )}
         {...props}
       >
         {getIcon()}
@@ -103,8 +108,13 @@ const StatusIndicator = React.forwardRef<HTMLDivElement, StatusIndicatorProps>(
 StatusIndicator.displayName = 'StatusIndicator';
 
 // Utility function to get status variant from status string
-export const getStatusVariant = (status: string): VariantProps<typeof statusIndicatorVariants>['variant'] => {
-  const statusMap: Record<string, VariantProps<typeof statusIndicatorVariants>['variant']> = {
+export const getStatusVariant = (
+  status: string
+): VariantProps<typeof statusIndicatorVariants>['variant'] => {
+  const statusMap: Record<
+    string,
+    VariantProps<typeof statusIndicatorVariants>['variant']
+  > = {
     // Status values
     active: 'active',
     inactive: 'inactive',
@@ -129,7 +139,7 @@ export const getStatusVariant = (status: string): VariantProps<typeof statusIndi
     failed: 'error',
     processing: 'pending',
   };
-  
+
   return statusMap[status.toLowerCase()] || 'neutral';
 };
 
@@ -157,7 +167,7 @@ export const getStatusLabel = (status: string): string => {
     failed: 'Failed',
     processing: 'Processing',
   };
-  
+
   return labelMap[status.toLowerCase()] || status;
 };
 
@@ -166,23 +176,18 @@ export const UserStatusIndicator = React.forwardRef<
   HTMLDivElement,
   Omit<StatusIndicatorProps, 'variant'> & { status: string }
 >(({ status, ...props }, ref) => (
-  <StatusIndicator
-    ref={ref}
-    variant={getStatusVariant(status)}
-    label={getStatusLabel(status)}
-    {...props}
-  />
+  <StatusIndicator ref={ref} variant={getStatusVariant(status)} {...props} />
 ));
 UserStatusIndicator.displayName = 'UserStatusIndicator';
 
 export const SystemStatusIndicator = React.forwardRef<
   HTMLDivElement,
   Omit<StatusIndicatorProps, 'variant'> & { status: string }
->(({ status, ...props }, ref) => (
+>(({ status, label, ...props }, ref) => (
   <StatusIndicator
     ref={ref}
     variant={getStatusVariant(status)}
-    label={getStatusLabel(status)}
+    label={label || getStatusLabel(status)}
     {...props}
   />
 ));

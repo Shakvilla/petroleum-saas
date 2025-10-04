@@ -84,9 +84,7 @@ export function usePerformance() {
     if (typeof window === 'undefined') return;
 
     try {
-      const { getCLS, getFID, getFCP, getLCP, getTTFB } = await import(
-        'web-vitals'
-      );
+      const { onCLS, onINP, onFCP, onLCP, onTTFB } = await import('web-vitals');
 
       const newMetrics: PerformanceMetrics = {
         memory: getMemoryInfo(),
@@ -94,23 +92,23 @@ export function usePerformance() {
       };
 
       // Measure Core Web Vitals
-      getFCP(metric => {
+      onFCP(metric => {
         newMetrics.fcp = metric.value;
       });
 
-      getLCP(metric => {
+      onLCP(metric => {
         newMetrics.lcp = metric.value;
       });
 
-      getFID(metric => {
-        newMetrics.fid = metric.value;
+      onINP(metric => {
+        newMetrics.fid = metric.value; // INP replaces FID in v5
       });
 
-      getCLS(metric => {
+      onCLS(metric => {
         newMetrics.cls = metric.value;
       });
 
-      getTTFB(metric => {
+      onTTFB(metric => {
         newMetrics.ttfb = metric.value;
       });
 
@@ -254,27 +252,27 @@ export function useWebVitals() {
 
     const measureVitals = async () => {
       try {
-        const { getCLS, getFID, getFCP, getLCP, getTTFB } = await import(
+        const { onCLS, onINP, onFCP, onLCP, onTTFB } = await import(
           'web-vitals'
         );
 
-        getFCP(metric => {
+        onFCP(metric => {
           setVitals(prev => ({ ...prev, fcp: metric.value }));
         });
 
-        getLCP(metric => {
+        onLCP(metric => {
           setVitals(prev => ({ ...prev, lcp: metric.value }));
         });
 
-        getFID(metric => {
-          setVitals(prev => ({ ...prev, fid: metric.value }));
+        onINP(metric => {
+          setVitals(prev => ({ ...prev, fid: metric.value })); // INP replaces FID
         });
 
-        getCLS(metric => {
+        onCLS(metric => {
           setVitals(prev => ({ ...prev, cls: metric.value }));
         });
 
-        getTTFB(metric => {
+        onTTFB(metric => {
           setVitals(prev => ({ ...prev, ttfb: metric.value }));
         });
       } catch (error) {

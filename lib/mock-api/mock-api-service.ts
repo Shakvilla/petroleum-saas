@@ -42,10 +42,10 @@ export class MockApiService {
     this.data = {
       tanks: tanksData.tanks as unknown as Tank[],
       deliveries: deliveriesData.deliveries as unknown as Delivery[],
-      transactions: transactionsData.transactions as Transaction[],
-      alerts: alertsData.alerts as Alert[],
+      transactions: transactionsData.transactions as unknown as Transaction[],
+      alerts: alertsData.alerts as unknown as Alert[],
       vehicles: vehiclesData.vehicles as Vehicle[],
-      users: usersData.users as User[],
+      users: usersData.users as unknown as User[],
       sessions: sessionsData.sessions,
       settings: settingsData.settings,
     };
@@ -205,6 +205,10 @@ export class MockApiService {
   // Resource-specific methods
   public async getTanks(tenantId?: string): Promise<Tank[]> {
     return this.findMany<Tank>('tanks', { tenantId });
+  }
+
+  public async getStats(tenantId?: string): Promise<any> {
+    return this.findMany<any>('stats', { tenantId });
   }
 
   public async getTank(id: string, tenantId?: string): Promise<Tank | null> {
@@ -397,6 +401,7 @@ export class MockApiService {
   public async getDashboardData(tenantId?: string): Promise<any> {
     await this.simulateDelay();
 
+    const stats = await this.getStats(tenantId);
     const tanks = await this.getTanks(tenantId);
     const deliveries = await this.getDeliveries(tenantId);
     const transactions = await this.getTransactions(tenantId);
@@ -404,7 +409,7 @@ export class MockApiService {
 
     // Calculate dashboard metrics
     const totalRevenue = transactions
-      .filter(t => t.type === 'SALE' && t.status === 'COMPLETED')
+      .filter(t => t.type === 'fuel_sale' && t.status === 'COMPLETED')
       .reduce((sum, t) => sum + t.amount, 0);
 
     const totalVolume = tanks.reduce((sum, tank) => sum + tank.currentLevel, 0);
@@ -419,7 +424,10 @@ export class MockApiService {
         fuelInventory: totalVolume,
         activeDeliveries,
         dailySales: transactions
-          .filter(t => t.type === 'SALE' && this.isToday(t.timestamp))
+          .filter(
+            t =>
+              t.type === 'fuel_sale' && this.isToday(t.timestamp.toISOString())
+          )
           .reduce((sum, t) => sum + t.amount, 0),
       },
       stats: {
@@ -443,7 +451,11 @@ export class MockApiService {
         },
         sales: {
           current: transactions
-            .filter(t => t.type === 'SALE' && this.isToday(t.timestamp))
+            .filter(
+              t =>
+                t.type === 'fuel_sale' &&
+                this.isToday(t.timestamp.toISOString())
+            )
             .reduce((sum, t) => sum + t.amount, 0),
           previous: 145200,
           change: 8.1,

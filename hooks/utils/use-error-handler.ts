@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useNotifications } from '@/components/toast-manager';
-import type { ErrorType, ErrorContext } from '@/types';
+import { ErrorReportingService } from '@/lib/error-reporting';
+import { ErrorLoggingService } from '@/lib/error-logging';
+import { ErrorType, type ErrorContext } from '@/types';
 
 interface ErrorHandlerOptions {
   showToast?: boolean;
@@ -74,8 +76,35 @@ export function useErrorHandler() {
         showError(title, description);
       }
 
-      // TODO: Send to error reporting service in production
-      // errorReporting.captureException(error, { extra: context });
+      // Report error to error reporting service
+      ErrorReportingService.reportError(
+        typeof error === 'string' ? new Error(error) : error,
+        {
+          component: context?.component || 'useErrorHandler',
+          action: context?.action || 'handleError',
+          userId: context?.userId,
+          tenantId: context?.tenantId,
+        },
+        {
+          errorType,
+          context,
+        }
+      );
+
+      // Log error to error logging service
+      ErrorLoggingService.error(
+        typeof error === 'string' ? new Error(error) : error,
+        {
+          component: context?.component || 'useErrorHandler',
+          action: context?.action || 'handleError',
+          userId: context?.userId,
+          tenantId: context?.tenantId,
+        },
+        {
+          errorType,
+          context,
+        }
+      );
     },
     [showError]
   );

@@ -317,33 +317,33 @@ export const InventoryManagement = ({
           <TabsContent value="overview" className="space-y-6 sm:space-y-8">
             <ProtectedComponent resource="tanks" action="read">
               <ModernTankOverview
-                tenant={currentTenant}
+                tenant={currentTenant || 'default'}
                 searchTerm={searchTerm}
               />
             </ProtectedComponent>
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6 sm:space-y-8">
-            <ProtectedComponent feature="predictive_analytics">
-              <ModernPredictiveAnalytics tenant={currentTenant} />
+            <ProtectedComponent resource="analytics" action="read">
+              <ModernPredictiveAnalytics tenant={currentTenant || 'default'} />
             </ProtectedComponent>
           </TabsContent>
 
           <TabsContent value="monitoring" className="space-y-6 sm:space-y-8">
             <ProtectedComponent resource="iot" action="read">
-              <ModernIoTMonitoring tenant={currentTenant} />
+              <ModernIoTMonitoring tenant={currentTenant || 'default'} />
             </ProtectedComponent>
           </TabsContent>
 
           <TabsContent value="alerts" className="space-y-6 sm:space-y-8">
             <ProtectedComponent resource="alerts" action="read">
-              <ModernInventoryAlerts tenant={currentTenant} />
+              <ModernInventoryAlerts tenant={currentTenant || 'default'} />
             </ProtectedComponent>
           </TabsContent>
 
           <TabsContent value="history" className="space-y-6 sm:space-y-8">
             <ProtectedComponent resource="inventory" action="read">
-              <ModernInventoryHistory tenant={currentTenant} />
+              <ModernInventoryHistory tenant={currentTenant || 'default'} />
             </ProtectedComponent>
           </TabsContent>
         </Tabs>
@@ -352,7 +352,7 @@ export const InventoryManagement = ({
       <AddInventoryDialog
         open={showAddDialog}
         onOpenChange={setShowAddDialog}
-        tenant={tenant}
+        tenant={tenant?.id || currentTenant || 'default'}
       />
     </div>
   );

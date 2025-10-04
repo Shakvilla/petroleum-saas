@@ -198,15 +198,17 @@ export function FleetTracker() {
     vehiclesLength: vehicles.length,
   });
 
-  const availableVehicles = vehicles.filter(v => v.status === 'ACTIVE').length;
+  const availableVehicles = vehicles.filter(
+    (v: any) => v.status === 'ACTIVE'
+  ).length;
   const inTransitVehicles = vehicles.filter(
-    v => v.status === 'IN_PROGRESS'
+    (v: any) => v.status === 'IN_PROGRESS'
   ).length;
   const maintenanceVehicles = vehicles.filter(
-    v => v.status === 'MAINTENANCE'
+    (v: any) => v.status === 'MAINTENANCE'
   ).length;
 
-  const filteredVehicles = vehicles.filter(vehicle => {
+  const filteredVehicles = vehicles.filter((vehicle: any) => {
     const matchesSearch =
       vehicle.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       vehicle.driver?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -336,7 +338,7 @@ export function FleetTracker() {
 
       {/* Vehicle List */}
       <div className="space-y-4">
-        {filteredVehicles.map(vehicle => (
+        {filteredVehicles.map((vehicle: any) => (
           <Card
             key={vehicle.id}
             className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"

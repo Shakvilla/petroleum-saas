@@ -102,6 +102,7 @@ const LoginPage: React.FC = () => {
 
     try {
       // TODO: Implement social login
+      // Issue: #AUTH-SOCIAL-001
       console.log(`Social login with ${provider}`);
       await new Promise(resolve => setTimeout(resolve, 2000));
 

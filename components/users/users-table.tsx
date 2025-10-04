@@ -59,7 +59,7 @@ interface User {
   name: string;
   email: string;
   role: 'ADMIN' | 'MANAGER' | 'OPERATOR' | 'VIEWER';
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'SUSPENDED';
   lastLoginAt: string;
   createdAt: string;
   permissions: Array<{
@@ -87,6 +87,8 @@ const roleColors = {
 const statusColors = {
   ACTIVE: 'bg-green-100 text-green-800',
   INACTIVE: 'bg-gray-100 text-gray-800',
+  PENDING: 'bg-yellow-100 text-yellow-800',
+  SUSPENDED: 'bg-red-100 text-red-800',
 };
 
 export const UsersTable: React.FC<UsersTableProps> = ({
@@ -107,7 +109,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         accessorKey: 'name',
         header: ({ column }) => {
           return (
-            <TenantAwareTenantAwareButton
+            <TenantAwareButton
               variant="ghost"
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === 'asc')
@@ -116,7 +118,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             >
               User
               <ChevronDown className="ml-2 h-4 w-4" />
-            </TenantAwareTenantAwareButton>
+            </TenantAwareButton>
           );
         },
         cell: ({ row }) => {

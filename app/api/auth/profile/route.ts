@@ -25,16 +25,13 @@ export async function GET(request: NextRequest) {
       data: {
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         role: user.role,
         tenantId: user.tenantId,
         permissions: user.permissions,
-        profile: user.profile,
+        lastLoginAt: user.lastLoginAt,
+        preferences: user.preferences,
         isActive: user.isActive,
-        lastLogin: user.lastLogin,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
       },
     });
   } catch (error) {
@@ -83,16 +80,13 @@ export async function PATCH(request: NextRequest) {
       data: {
         id: updatedUser.id,
         email: updatedUser.email,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        name: updatedUser.name,
         role: updatedUser.role,
         tenantId: updatedUser.tenantId,
         permissions: updatedUser.permissions,
-        profile: updatedUser.profile,
+        lastLoginAt: updatedUser.lastLoginAt,
+        preferences: updatedUser.preferences,
         isActive: updatedUser.isActive,
-        lastLogin: updatedUser.lastLogin,
-        createdAt: updatedUser.createdAt,
-        updatedAt: updatedUser.updatedAt,
       },
     });
   } catch (error) {

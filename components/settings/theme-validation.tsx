@@ -193,7 +193,7 @@ export function ThemeValidation({
       });
     }
 
-    if (!isValidFontFamily(typography.headingFont)) {
+    if (typography.headingFont && !isValidFontFamily(typography.headingFont)) {
       results.push({
         id: 'heading-font-invalid',
         type: 'error',

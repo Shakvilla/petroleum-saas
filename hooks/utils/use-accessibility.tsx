@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Hook for focus management
 export function useFocusManagement() {
@@ -161,18 +161,20 @@ export function useAriaLiveRegion() {
     }, 1000);
   }, []);
 
-  const LiveRegion = useCallback(() => (
-    <div
-      aria-live="polite"
-      aria-atomic="true"
-      className="sr-only"
-      role="status"
-    >
-      {announcements.map((announcement, index) => (
-        <div key={index}>{announcement}</div>
-      ))}
-    </div>
-  ), [announcements]);
+  const LiveRegion = useCallback(() => {
+    return (
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+        role="status"
+      >
+        {announcements.map((announcement, index) => (
+          <div key={index}>{announcement}</div>
+        ))}
+      </div>
+    );
+  }, [announcements]);
 
   return {
     announce,

@@ -83,8 +83,8 @@ export function BrandingSettings({
       ...data,
       visualBranding: {
         ...data.visualBranding,
-        colorScheme: preset.colors,
-        typography: preset.typography,
+        colorScheme: preset.colors as any,
+        typography: preset.typography as any,
       },
     };
     onUpdate(updatedData);
@@ -183,7 +183,7 @@ export function BrandingSettings({
       {activeTab === 'preview' && (
         <ThemePreview
           brandingData={data}
-          onThemeChange={onUpdate}
+          onThemeChange={onUpdate as any}
           onExport={handleExport}
           onImport={handleImport}
           onReset={handleReset}
