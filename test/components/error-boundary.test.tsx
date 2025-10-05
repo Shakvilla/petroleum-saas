@@ -57,28 +57,19 @@ describe('ErrorBoundary', () => {
 
   it('shows error details when expanded', () => {
     render(
-      <ErrorBoundary>
+      <ErrorBoundary showDetails={true}>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
 
-    const detailsButton = screen.getByText('Error Details');
-    expect(detailsButton).toBeInTheDocument();
-
-    // Click to expand details
-    detailsButton.click();
-
+    // Check that error details are shown
+    expect(screen.getByText('Error Details:')).toBeInTheDocument();
     expect(screen.getByText('Test error')).toBeInTheDocument();
+    expect(screen.getByText('Stack Trace')).toBeInTheDocument();
   });
 
-  it('has retry button that reloads the page', () => {
-    const mockReload = jest.fn();
-    Object.defineProperty(window, 'location', {
-      value: { reload: mockReload },
-      writable: true,
-    });
-
-    render(
+  it('has retry button that resets the error state', () => {
+    const { rerender } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
@@ -88,7 +79,16 @@ describe('ErrorBoundary', () => {
     expect(retryButton).toBeInTheDocument();
 
     retryButton.click();
-    expect(mockReload).toHaveBeenCalled();
+
+    // Rerender with no error to test the reset
+    rerender(
+      <ErrorBoundary>
+        <ThrowError shouldThrow={false} />
+      </ErrorBoundary>
+    );
+
+    // After retry, the error should be cleared and children should render
+    expect(screen.getByText('No error')).toBeInTheDocument();
   });
 
   it('has go home button that navigates to home', () => {
@@ -110,6 +110,9 @@ describe('ErrorBoundary', () => {
   });
 
   it('logs error to console', () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+
     const consoleSpy = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {});
@@ -121,9 +124,12 @@ describe('ErrorBoundary', () => {
     );
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Uncaught error:',
+      'ErrorBoundary caught an error:',
       expect.any(Error),
       expect.any(Object)
     );
+
+    // Restore environment
+    process.env.NODE_ENV = originalEnv;
   });
 });

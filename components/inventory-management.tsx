@@ -272,12 +272,9 @@ export const InventoryManagement = ({
         </Card>
 
         {/* Modern Tabs - Mobile Optimized */}
-        <Tabs
-          defaultValue="overview"
-          className="space-y-6 sm:space-y-8 bg-white"
-        >
+        <Tabs defaultValue="overview" className="space-y-6 sm:space-y-8">
           <div className="w-full overflow-x-auto">
-            <div className="flex min-w-max px-4 gap-x-1 justify-stretch py-3 flex-col items-stretch">
+            <div className="flex bg-white min-w-max px-4 gap-x-1 justify-stretch py-3 flex-col items-stretch">
               <TabsList className="grid grid-cols-5 bg-white/80 backdrop-blur-sm border border-gray-200 p-1 sm:p-2 rounded-xl min-w-max shadow-none sm:rounded-lg text-center sm:py-0">
                 <TabsTrigger
                   value="overview"

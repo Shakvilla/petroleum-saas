@@ -58,7 +58,11 @@ const mockUser: User = {
     },
     {
       resource: 'tanks',
-      action: 'write',
+      action: 'create',
+    },
+    {
+      resource: 'tanks',
+      action: 'update',
     },
     {
       resource: 'inventory',

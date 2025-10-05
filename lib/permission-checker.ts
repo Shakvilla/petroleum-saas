@@ -98,13 +98,12 @@ export class PermissionChecker {
     }
 
     // Check tenant plan restrictions
-    // TODO: Add plan property to Tenant interface
-    // if (
-    //   flag.tenantRestrictions?.plans &&
-    //   !flag.tenantRestrictions.plans.includes(this.tenant.plan)
-    // ) {
-    //   return false;
-    // }
+    if (
+      flag.tenantRestrictions?.plans &&
+      !flag.tenantRestrictions.plans.includes(this.tenant.plan)
+    ) {
+      return false;
+    }
 
     // Check tenant ID restrictions
     if (

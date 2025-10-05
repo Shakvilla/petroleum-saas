@@ -1,8 +1,14 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Wifi,
   WifiOff,
@@ -14,179 +20,179 @@ import {
   CheckCircle,
   Zap,
   Radio,
-} from "lucide-react"
+} from 'lucide-react';
 
 interface ModernIoTMonitoringProps {
-  tenant: string
+  tenant: string;
 }
 
 export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
   const sensors = [
     {
-      id: "IOT001",
-      name: "Tank T001 Level Sensor",
-      type: "Level",
-      status: "online",
-      value: "85.2",
-      unit: "%",
-      lastUpdate: "30 secs ago",
+      id: 'IOT001',
+      name: 'Tank T001 Level Sensor',
+      type: 'Level',
+      status: 'online',
+      value: '85.2',
+      unit: '%',
+      lastUpdate: '30 secs ago',
       battery: 87,
       signal: 95,
       alerts: 0,
-      gradient: "from-blue-500 to-blue-600",
-      bgGradient: "from-blue-50 to-blue-100",
+      gradient: 'from-blue-500 to-blue-600',
+      bgGradient: 'bg-white',
     },
     {
-      id: "IOT002",
-      name: "Tank T001 Temperature Sensor",
-      type: "Temperature",
-      status: "online",
-      value: "18.5",
-      unit: "°C",
-      lastUpdate: "45 secs ago",
+      id: 'IOT002',
+      name: 'Tank T001 Temperature Sensor',
+      type: 'Temperature',
+      status: 'online',
+      value: '18.5',
+      unit: '°C',
+      lastUpdate: '45 secs ago',
       battery: 92,
       signal: 88,
       alerts: 0,
-      gradient: "from-red-500 to-red-600",
-      bgGradient: "from-red-50 to-red-100",
+      gradient: 'from-red-500 to-red-600',
+      bgGradient: 'bg-white',
     },
     {
-      id: "IOT003",
-      name: "Tank T002 Pressure Sensor",
-      type: "Pressure",
-      status: "offline",
-      value: "N/A",
-      unit: "bar",
-      lastUpdate: "2 hours ago",
+      id: 'IOT003',
+      name: 'Tank T002 Pressure Sensor',
+      type: 'Pressure',
+      status: 'offline',
+      value: 'N/A',
+      unit: 'bar',
+      lastUpdate: '2 hours ago',
       battery: 23,
       signal: 0,
       alerts: 2,
-      gradient: "from-gray-500 to-gray-600",
-      bgGradient: "from-gray-50 to-gray-100",
+      gradient: 'from-gray-500 to-gray-600',
+      bgGradient: 'bg-white',
     },
     {
-      id: "IOT004",
-      name: "Tank T003 Flow Sensor",
-      type: "Flow",
-      status: "online",
-      value: "245.8",
-      unit: "L/min",
-      lastUpdate: "15 secs ago",
+      id: 'IOT004',
+      name: 'Tank T003 Flow Sensor',
+      type: 'Flow',
+      status: 'online',
+      value: '245.8',
+      unit: 'L/min',
+      lastUpdate: '15 secs ago',
       battery: 78,
       signal: 92,
       alerts: 0,
-      gradient: "from-purple-500 to-purple-600",
-      bgGradient: "from-purple-50 to-purple-100",
+      gradient: 'from-purple-500 to-purple-600',
+      bgGradient: 'bg-white',
     },
     {
-      id: "IOT005",
-      name: "Environmental Sensor",
-      type: "Environment",
-      status: "warning",
-      value: "Normal",
-      unit: "",
-      lastUpdate: "1 min ago",
+      id: 'IOT005',
+      name: 'Environmental Sensor',
+      type: 'Environment',
+      status: 'warning',
+      value: 'Normal',
+      unit: '',
+      lastUpdate: '1 min ago',
       battery: 45,
       signal: 76,
       alerts: 1,
-      gradient: "from-yellow-500 to-yellow-600",
-      bgGradient: "from-yellow-50 to-yellow-100",
+      gradient: 'from-yellow-500 to-yellow-600',
+      bgGradient: 'bg-white',
     },
     {
-      id: "IOT006",
-      name: "Security Motion Sensor",
-      type: "Security",
-      status: "online",
-      value: "No Motion",
-      unit: "",
-      lastUpdate: "10 secs ago",
+      id: 'IOT006',
+      name: 'Security Motion Sensor',
+      type: 'Security',
+      status: 'online',
+      value: 'No Motion',
+      unit: '',
+      lastUpdate: '10 secs ago',
       battery: 95,
       signal: 98,
       alerts: 0,
-      gradient: "from-emerald-500 to-emerald-600",
-      bgGradient: "from-emerald-50 to-emerald-100",
+      gradient: 'from-emerald-500 to-emerald-600',
+      bgGradient: 'bg-white',
     },
-  ]
+  ];
 
   const networkStats = [
     {
-      title: "Total Sensors",
-      value: "24",
-      status: "online",
+      title: 'Total Sensors',
+      value: '24',
+      status: 'online',
       icon: Activity,
-      gradient: "from-blue-500 to-blue-600",
-      bgGradient: "from-blue-50 to-blue-100",
-      description: "IoT devices deployed",
+      gradient: 'from-blue-500 to-blue-600',
+      bgGradient: 'bg-white',
+      description: 'IoT devices deployed',
     },
     {
-      title: "Online Sensors",
-      value: "22",
-      status: "active",
+      title: 'Online Sensors',
+      value: '22',
+      status: 'active',
       icon: CheckCircle,
-      gradient: "from-emerald-500 to-emerald-600",
-      bgGradient: "from-emerald-50 to-emerald-100",
-      description: "Currently active",
+      gradient: 'from-emerald-500 to-emerald-600',
+      bgGradient: 'bg-white',
+      description: 'Currently active',
     },
     {
-      title: "Offline Sensors",
-      value: "2",
-      status: "offline",
+      title: 'Offline Sensors',
+      value: '2',
+      status: 'offline',
       icon: WifiOff,
-      gradient: "from-red-500 to-red-600",
-      bgGradient: "from-red-50 to-red-100",
-      description: "Need attention",
+      gradient: 'from-red-500 to-red-600',
+      bgGradient: 'bg-white',
+      description: 'Need attention',
     },
     {
-      title: "Network Health",
-      value: "98%",
-      status: "excellent",
+      title: 'Network Health',
+      value: '98%',
+      status: 'excellent',
       icon: Radio,
-      gradient: "from-purple-500 to-purple-600",
-      bgGradient: "from-purple-50 to-purple-100",
-      description: "Overall uptime",
+      gradient: 'from-purple-500 to-purple-600',
+      bgGradient: 'bg-white',
+      description: 'Overall uptime',
     },
-  ]
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "online":
-        return "bg-emerald-100 text-emerald-800 border-emerald-200"
-      case "offline":
-        return "bg-red-100 text-red-800 border-red-200"
-      case "warning":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+      case 'online':
+        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+      case 'offline':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'warning':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
-  }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "online":
-        return <Wifi className="h-4 w-4 text-emerald-500" />
-      case "offline":
-        return <WifiOff className="h-4 w-4 text-red-500" />
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />
+      case 'online':
+        return <Wifi className="h-4 w-4 text-emerald-500" />;
+      case 'offline':
+        return <WifiOff className="h-4 w-4 text-red-500" />;
+      case 'warning':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
       default:
-        return <Activity className="h-4 w-4 text-gray-500" />
+        return <Activity className="h-4 w-4 text-gray-500" />;
     }
-  }
+  };
 
   const getSensorIcon = (type: string) => {
     switch (type) {
-      case "Level":
-        return <Droplets className="h-5 w-5 text-white" />
-      case "Temperature":
-        return <Thermometer className="h-5 w-5 text-white" />
-      case "Pressure":
-        return <Gauge className="h-5 w-5 text-white" />
-      case "Flow":
-        return <Activity className="h-5 w-5 text-white" />
+      case 'Level':
+        return <Droplets className="h-5 w-5 text-white" />;
+      case 'Temperature':
+        return <Thermometer className="h-5 w-5 text-white" />;
+      case 'Pressure':
+        return <Gauge className="h-5 w-5 text-white" />;
+      case 'Flow':
+        return <Activity className="h-5 w-5 text-white" />;
       default:
-        return <Zap className="h-5 w-5 text-white" />
+        return <Zap className="h-5 w-5 text-white" />;
     }
-  }
+  };
 
   return (
     <div className="space-y-8">
@@ -195,9 +201,11 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
         {networkStats.map((stat, index) => (
           <Card
             key={index}
-            className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            className="group relative overflow-hidden border-gray-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105"
           >
-            <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-50`}></div>
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-50`}
+            ></div>
             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/20 to-transparent rounded-full -translate-y-12 translate-x-12"></div>
 
             <CardContent className="relative p-6">
@@ -210,7 +218,9 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
+                <h3 className="text-sm font-medium text-gray-600">
+                  {stat.title}
+                </h3>
                 <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                 <p className="text-xs text-gray-500">{stat.description}</p>
               </div>
@@ -221,23 +231,29 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
 
       {/* Sensors Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {sensors.map((sensor) => (
+        {sensors.map(sensor => (
           <Card
             key={sensor.id}
-            className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            className="group relative overflow-hidden border-gray-200 bg-white hover:shadow-lg cursor-pointer transition-all duration-300 hover:scale-105"
           >
-            <div className={`absolute inset-0 bg-gradient-to-br ${sensor.bgGradient} opacity-30`}></div>
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${sensor.bgGradient} opacity-30`}
+            ></div>
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/20 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
 
             <CardHeader className="relative pb-3">
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 bg-gradient-to-br ${sensor.gradient} rounded-xl shadow-lg`}>
+                    <div
+                      className={`p-2 bg-gradient-to-br ${sensor.gradient} rounded-xl shadow-lg`}
+                    >
                       {getSensorIcon(sensor.type)}
                     </div>
                     <div>
-                      <CardTitle className="text-lg font-bold text-gray-900">{sensor.name}</CardTitle>
+                      <CardTitle className="text-lg font-bold text-gray-900">
+                        {sensor.name}
+                      </CardTitle>
                       <p className="text-sm text-gray-600">
                         {sensor.type} • {sensor.id}
                       </p>
@@ -245,7 +261,9 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge className={getStatusColor(sensor.status)}>{sensor.status}</Badge>
+                  <Badge className={getStatusColor(sensor.status)}>
+                    {sensor.status}
+                  </Badge>
                   {getStatusIcon(sensor.status)}
                 </div>
               </div>
@@ -255,10 +273,18 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
               {/* Current Reading */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">Current Reading</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Current Reading
+                  </span>
                   <div className="text-right">
-                    <span className="text-2xl font-bold text-gray-900">{sensor.value}</span>
-                    {sensor.unit && <span className="text-sm text-gray-500 ml-1">{sensor.unit}</span>}
+                    <span className="text-2xl font-bold text-gray-900">
+                      {sensor.value}
+                    </span>
+                    {sensor.unit && (
+                      <span className="text-sm text-gray-500 ml-1">
+                        {sensor.unit}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -267,18 +293,22 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-gray-600">Battery</span>
-                    <span className="text-sm font-bold text-gray-900">{sensor.battery}%</span>
+                    <span className="text-xs font-medium text-gray-600">
+                      Battery
+                    </span>
+                    <span className="text-sm font-bold text-gray-900">
+                      {sensor.battery}%
+                    </span>
                   </div>
                   <div className="relative">
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-1000 ease-out rounded-full ${
                           sensor.battery > 70
-                            ? "bg-gradient-to-r from-emerald-500 to-emerald-600"
+                            ? 'bg-gradient-to-r from-emerald-500 to-emerald-600'
                             : sensor.battery > 30
-                              ? "bg-gradient-to-r from-yellow-500 to-yellow-600"
-                              : "bg-gradient-to-r from-red-500 to-red-600"
+                              ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
+                              : 'bg-gradient-to-r from-red-500 to-red-600'
                         }`}
                         style={{ width: `${sensor.battery}%` }}
                       />
@@ -288,18 +318,22 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-gray-600">Signal</span>
-                    <span className="text-sm font-bold text-gray-900">{sensor.signal}%</span>
+                    <span className="text-xs font-medium text-gray-600">
+                      Signal
+                    </span>
+                    <span className="text-sm font-bold text-gray-900">
+                      {sensor.signal}%
+                    </span>
                   </div>
                   <div className="relative">
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-1000 ease-out rounded-full ${
                           sensor.signal > 70
-                            ? "bg-gradient-to-r from-blue-500 to-blue-600"
+                            ? 'bg-gradient-to-r from-blue-500 to-blue-600'
                             : sensor.signal > 30
-                              ? "bg-gradient-to-r from-yellow-500 to-yellow-600"
-                              : "bg-gradient-to-r from-red-500 to-red-600"
+                              ? 'bg-gradient-to-r from-yellow-500 to-yellow-600'
+                              : 'bg-gradient-to-r from-red-500 to-red-600'
                         }`}
                         style={{ width: `${sensor.signal}%` }}
                       />
@@ -314,7 +348,7 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-orange-600" />
                     <span className="text-sm font-medium text-orange-800">
-                      {sensor.alerts} active alert{sensor.alerts > 1 ? "s" : ""}
+                      {sensor.alerts} active alert{sensor.alerts > 1 ? 's' : ''}
                     </span>
                   </div>
                 </div>
@@ -333,7 +367,7 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
       </div>
 
       {/* Control Panel */}
-      <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50">
+      <Card className="border-gray-200  bg-gradient-to-br from-white to-gray-50">
         <CardHeader>
           <div className="flex items-center gap-4">
             <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
@@ -355,15 +389,24 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
               <Activity className="h-4 w-4 mr-2" />
               Refresh All Sensors
             </Button>
-            <Button variant="outline" className="bg-white/50 border-gray-200 hover:bg-white">
+            <Button
+              variant="outline"
+              className="bg-white/50 border-gray-200 hover:bg-white"
+            >
               <AlertTriangle className="h-4 w-4 mr-2" />
               Configure Alerts
             </Button>
-            <Button variant="outline" className="bg-white/50 border-gray-200 hover:bg-white">
+            <Button
+              variant="outline"
+              className="bg-white/50 border-gray-200 hover:bg-white"
+            >
               <Zap className="h-4 w-4 mr-2" />
               Network Diagnostics
             </Button>
-            <Button variant="outline" className="bg-white/50 border-gray-200 hover:bg-white">
+            <Button
+              variant="outline"
+              className="bg-white/50 border-gray-200 hover:bg-white"
+            >
               <Activity className="h-4 w-4 mr-2" />
               Export Data
             </Button>
@@ -371,5 +414,5 @@ export function ModernIoTMonitoring({ tenant }: ModernIoTMonitoringProps) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -59,7 +59,7 @@ export function ModernTankOverview({
       location: 'Bay A-1',
       supplier: 'PetroMax',
       gradient: 'from-blue-500 to-blue-600',
-      bgGradient: 'from-blue-50 to-blue-100',
+      bgGradient: 'bg-white',
     },
     {
       id: 'T002',
@@ -77,7 +77,7 @@ export function ModernTankOverview({
       location: 'Bay B-2',
       supplier: 'FuelCorp',
       gradient: 'from-emerald-500 to-emerald-600',
-      bgGradient: 'from-emerald-50 to-emerald-100',
+      bgGradient: 'bg-white',
     },
     {
       id: 'T003',
@@ -95,7 +95,7 @@ export function ModernTankOverview({
       location: 'Bay C-1',
       supplier: 'DieselPlus',
       gradient: 'from-purple-500 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
+      bgGradient: 'bg-white',
     },
     {
       id: 'T004',
@@ -113,7 +113,7 @@ export function ModernTankOverview({
       location: 'Bay D-1',
       supplier: 'KeroSupply',
       gradient: 'from-red-500 to-red-600',
-      bgGradient: 'from-red-50 to-red-100',
+      bgGradient: 'bg-white',
     },
     {
       id: 'T005',
@@ -131,7 +131,7 @@ export function ModernTankOverview({
       location: 'Bay E-1',
       supplier: 'PremiumFuel',
       gradient: 'from-indigo-500 to-indigo-600',
-      bgGradient: 'from-indigo-50 to-indigo-100',
+      bgGradient: 'bg-white',
     },
     {
       id: 'T006',
@@ -149,7 +149,7 @@ export function ModernTankOverview({
       location: 'Bay F-1',
       supplier: 'HeatOil Co',
       gradient: 'from-orange-500 to-orange-600',
-      bgGradient: 'from-orange-50 to-orange-100',
+      bgGradient: 'bg-white',
     },
   ];
 
@@ -238,7 +238,7 @@ export function ModernTankOverview({
           return (
             <Card
               key={tank.id}
-              className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+              className="group relative overflow-hidden border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
             >
               <div
                 className={`absolute inset-0 bg-gradient-to-br bg-white ${tank.bgGradient} opacity-30`}

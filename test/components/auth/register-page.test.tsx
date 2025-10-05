@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
-import { RegisterPage } from '@/components/auth/register-page';
+import RegisterPage from '@/components/auth/register-page';
 import { useTenant } from '@/components/tenant-provider';
 
 // Mock Next.js router

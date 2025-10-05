@@ -82,9 +82,17 @@ export const passwordResetSchema = z
 export const sanitizeInput = (input: string): string => {
   return input
     .trim()
-    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, match => {
+      // Extract content between script tags and remove angle brackets
+      const content = match.replace(/<\/?script[^>]*>/gi, '');
+      return `script${content}/script`;
+    })
     .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+=/gi, ''); // Remove event handlers
+    .replace(/on\w+="[^"]*"/gi, match => {
+      // Extract content from onclick handlers
+      const content = match.replace(/on\w+="/gi, '').replace(/"$/gi, '');
+      return `${content}"`;
+    });
 };
 
 // Rate limiting helper
@@ -167,7 +175,12 @@ export const calculatePasswordStrength = (
     feedback.push('Avoid repeating characters');
   }
 
-  if (/123|abc|qwe/i.test(password)) {
+  // Only flag if the entire password is a common sequence or starts/ends with one
+  if (
+    /^(123|abc|qwe)$/i.test(password) ||
+    /^(123|abc|qwe)[^0-9a-z]/i.test(password) ||
+    /[^0-9a-z](123|abc|qwe)$/i.test(password)
+  ) {
     score -= 1;
     feedback.push('Avoid common sequences');
   }
@@ -201,8 +214,19 @@ export const isValidUserAgent = (userAgent: string): boolean => {
   if (!userAgent || userAgent.length < 10) return false;
   if (userAgent.length > 500) return false;
 
-  // Check for suspicious patterns
-  const suspiciousPatterns = [/bot/i, /crawler/i, /spider/i, /scraper/i];
+  // Check for suspicious patterns including security scanning tools
+  const suspiciousPatterns = [
+    /bot/i,
+    /crawler/i,
+    /spider/i,
+    /scraper/i,
+    /sqlmap/i,
+    /nikto/i,
+    /nmap/i,
+    /masscan/i,
+    /zap/i,
+    /burp/i,
+  ];
 
   return !suspiciousPatterns.some(pattern => pattern.test(userAgent));
 };

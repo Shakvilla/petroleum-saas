@@ -63,7 +63,7 @@ const mockTenant: Tenant = {
 function TestComponent() {
   const { tenant, isLoading, error } = useTenant();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading tenant...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!tenant) return <div>No tenant</div>;
 
@@ -73,6 +73,8 @@ function TestComponent() {
 describe('TenantProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Reset fetch mock to default implementation
+    (fetch as jest.Mock).mockReset();
   });
 
   it('should provide tenant context to children', async () => {
@@ -87,7 +89,7 @@ describe('TenantProvider', () => {
       </TenantProvider>
     );
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Loading tenant...')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('Tenant: Test Tenant')).toBeInTheDocument();
