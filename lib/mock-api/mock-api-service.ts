@@ -74,7 +74,11 @@ export class MockApiService {
     tenantId?: string
   ): T[] {
     if (!tenantId) return data;
-    return data.filter(item => item.tenantId === tenantId);
+    // console.log('filtering by tenant data', data);
+    const filteredData = data.filter(item => item.tenantId === tenantId);
+    // console.log('filteredData', filteredData);
+
+    return filteredData;
   }
 
   // Generic CRUD operations
@@ -89,6 +93,8 @@ export class MockApiService {
     }
 
     const data = this.getResourceData<T>(resource);
+    // console.log('find many data', data);
+
     return this.filterByTenant(data, options.tenantId);
   }
 
@@ -204,6 +210,7 @@ export class MockApiService {
 
   // Resource-specific methods
   public async getTanks(tenantId?: string): Promise<Tank[]> {
+    // console.log('Getting tanks for tenant:', tenantId);
     return this.findMany<Tank>('tanks', { tenantId });
   }
 

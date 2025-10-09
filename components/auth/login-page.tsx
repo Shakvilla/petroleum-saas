@@ -70,6 +70,7 @@ const LoginPage: React.FC = () => {
       });
 
       const data = await response.json();
+      // console.log('response data', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
@@ -77,8 +78,8 @@ const LoginPage: React.FC = () => {
 
       if (data.success) {
         // Redirect to tenant dashboard or tenant selection
-        if (tenant?.id) {
-          router.push(`/${tenant.id}`);
+        if (data?.data?.user?.tenantId) {
+          router.push(`/${data.data.user.tenantId}`);
         } else {
           router.push('/tenant-selection');
         }

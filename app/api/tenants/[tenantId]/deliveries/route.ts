@@ -17,6 +17,7 @@ export async function GET(
 
     const deliveries = await mockApiService.getDeliveries(tenantId);
 
+    // console.log('server side deliveries', deliveries);
     return NextResponse.json({
       data: deliveries,
       meta: {

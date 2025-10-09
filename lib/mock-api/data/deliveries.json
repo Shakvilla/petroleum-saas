@@ -3,7 +3,7 @@
     {
       "id": "delivery-001",
       "vehicleId": "vehicle-001",
-      "driverId": "driver-001",
+      "driverId": "Andy Negoei",
       "route": {
         "id": "route-001",
         "name": "Houston Downtown Route",
@@ -32,17 +32,27 @@
         "distance": 15.5,
         "estimatedDuration": 45
       },
-      "status": "IN_PROGRESS",
+      "status": "in-transit",
       "scheduledAt": "2024-01-15T14:00:00Z",
       "startedAt": "2024-01-15T14:05:00Z",
       "fuelType": "DIESEL",
       "quantity": 5000,
-      "tenantId": "petromax-energy"
+      "address": "321 North Plaza Dr",
+
+      "tenantId": "petromax-energy",
+      "customer": "Shell Station Downtown",
+      "estimatedTime": "2:30 PM",
+      "priority": "high",
+      "progress": 65,
+      "product": "Premium Gasoline"
     },
+
     {
       "id": "delivery-002",
       "vehicleId": "vehicle-002",
-      "driverId": "driver-002",
+      "address": "321 North Plaza Dr",
+
+      "driverId": "Mike Johnson",
       "route": {
         "id": "route-002",
         "name": "Industrial District Route",
@@ -71,16 +81,22 @@
         "distance": 22.3,
         "estimatedDuration": 65
       },
-      "status": "SCHEDULED",
+      "status": "scheduled",
       "scheduledAt": "2024-01-15T16:00:00Z",
       "fuelType": "GASOLINE",
       "quantity": 7500,
-      "tenantId": "petromax-energy"
+      "tenantId": "petromax-energy",
+      "customer": "BP Express Highway",
+      "estimatedTime": "2:30 PM",
+      "priority": "medium",
+      "progress": 20
     },
     {
       "id": "delivery-003",
       "vehicleId": "vehicle-003",
-      "driverId": "driver-003",
+      "address": "321 North Plaza Dr",
+
+      "driverId": "Sarah Wilson",
       "route": {
         "id": "route-003",
         "name": "Airport Route",
@@ -99,13 +115,53 @@
         "distance": 8.7,
         "estimatedDuration": 25
       },
-      "status": "COMPLETED",
+      "status": "completed",
       "scheduledAt": "2024-01-15T10:00:00Z",
       "startedAt": "2024-01-15T10:02:00Z",
       "completedAt": "2024-01-15T10:28:00Z",
       "fuelType": "KEROSENE",
       "quantity": 3000,
-      "tenantId": "petromax-energy"
+      "tenantId": "petromax-energy",
+      "customer": "Naagamni Petroleum",
+      "estimatedTime": "2:30 PM",
+      "priority": "high",
+      "progress": 0
+    },
+    {
+      "id": "delivery-004",
+      "vehicleId": "vehicle-003",
+      "address": "321 North Plaza Dr",
+
+      "driverId": "David Brown",
+      "route": {
+        "id": "route-004",
+        "name": "Airport Route",
+        "waypoints": [
+          {
+            "id": "wp-005",
+            "name": "Airport Fuel Station",
+            "address": "555 Airport Blvd, Houston, TX 77005",
+            "coordinates": {
+              "lat": 29.7644,
+              "lng": -95.3738
+            },
+            "order": 1
+          }
+        ],
+        "distance": 8.7,
+        "estimatedDuration": 25
+      },
+      "status": "loading",
+      "scheduledAt": "2024-01-15T10:00:00Z",
+      "startedAt": "2024-01-15T10:02:00Z",
+      "completedAt": "2024-01-15T10:28:00Z",
+      "fuelType": "KEROSENE",
+      "quantity": 3000,
+      "tenantId": "petromax-energy",
+      "customer": "Naagamni Petroleum",
+      "estimatedTime": "2:30 PM",
+      "priority": "low",
+      "progress": 65
     }
   ]
 }

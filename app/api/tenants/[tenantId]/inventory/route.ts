@@ -18,6 +18,8 @@ export async function GET(
     const tanks = await mockApiService.getTanks(tenantId);
     const alerts = await mockApiService.getAlerts(tenantId);
 
+    // console.log('tanks', tanks);
+    // console.log('alerts', alerts);
     // Calculate inventory metrics
     const totalVolume = tanks.reduce((sum, tank) => sum + tank.currentLevel, 0);
     const totalCapacity = tanks.reduce((sum, tank) => sum + tank.capacity, 0);

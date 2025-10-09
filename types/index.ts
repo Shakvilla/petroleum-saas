@@ -267,6 +267,11 @@ export interface Delivery {
   completedAt?: Date;
   fuelType: TankType;
   quantity: number;
+  address: string;
+  customer: string;
+  estimatedTime: string;
+  priority: string;
+  progress: number;
 }
 
 export enum DeliveryStatus {

@@ -25,6 +25,7 @@ import {
   AlertTriangle,
   Navigation,
   CheckCircle,
+  ArrowUp,
 } from 'lucide-react';
 
 // Mock data for deliveries
@@ -83,6 +84,44 @@ const deliveries = [
   },
 ];
 
+const deliveryStats = [
+  {
+    id: 1,
+    title: 'Active Deliveries',
+    value: 12,
+    icon: <Truck className="h-4 w-4 text-blue-600" />,
+    percentage: '+2 from yesterday',
+    percentageColor: 'text-emerald-600',
+    percentageIcon: <ArrowUp className="h-4 w-4 text-emerald-600" />,
+  },
+  {
+    id: 2,
+    title: 'Fleet Utilization',
+    value: 85,
+    icon: <Users className="h-4 w-4 text-emerald-600" />,
+    percentage: 'Optimal range',
+    percentageColor: 'text-emerald-600',
+    percentageIcon: <ArrowUp className="h-4 w-4 text-emerald-600" />,
+  },
+  {
+    id: 3,
+    title: 'Fuel Efficiency',
+    value: 7.2,
+    icon: <Fuel className="h-4 w-4 text-amber-600" />,
+    percentage: 'per 100km',
+    percentageColor: 'text-emerald-600',
+    percentageIcon: <ArrowUp className="h-4 w-4 text-emerald-600" />,
+  },
+  {
+    id: 4,
+    title: 'Active Alerts',
+    value: 3,
+    icon: <AlertTriangle className="h-4 w-4 text-red-600" />,
+    percentage: 'Needs attention',
+    percentageColor: 'text-red-600',
+    percentageIcon: <ArrowUp className="h-4 w-4 text-red-600" />,
+  },
+];
 const getStatusColor = (status: string) => {
   switch (status) {
     case 'completed':
@@ -159,12 +198,13 @@ export function DistributionManagement() {
   }
 
   const deliveries = distributionData?.data?.deliveries || [];
+  console.log('deliveries', deliveries);
 
   const filteredDeliveries = deliveries.filter((delivery: any) => {
     const matchesSearch =
-      delivery.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      delivery.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      delivery.driver.toLowerCase().includes(searchTerm.toLowerCase());
+      delivery?.customer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      delivery?.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      delivery?.driver?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       selectedStatus === 'all' || delivery.status === selectedStatus;
@@ -172,8 +212,10 @@ export function DistributionManagement() {
     return matchesSearch && matchesStatus;
   });
 
+  // console.log('filteredDeliveries', filteredDeliveries);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen">
       <div className="space-y-6 p-4 sm:p-6 lg:p-8">
         {/* Header */}
         <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
@@ -197,29 +239,34 @@ export function DistributionManagement() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-          <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10" />
-            <CardContent className="relative p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-xs sm:text-sm font-medium text-slate-600">
-                    Active Deliveries
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                    12
-                  </p>
-                  <p className="text-xs text-emerald-600 font-medium">
-                    +2 from yesterday
-                  </p>
+          {deliveryStats.map(stat => (
+            <Card
+              className="relative overflow-hidden bg-white  border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              key={stat.id}
+            >
+              {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10" /> */}
+              <CardContent className="relative p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <p className="text-xs sm:text-sm font-medium text-slate-600">
+                      {stat.title}
+                    </p>
+                    <p className="text-xl sm:text-2xl font-bold text-slate-900">
+                      {stat.value}
+                    </p>
+                    <p className="text-xs text-emerald-600 font-medium">
+                      {stat.percentage}
+                    </p>
+                  </div>
+                  <div className="p-2 sm:p-3 bg-blue-100 rounded-full">
+                    {stat.icon}
+                  </div>
                 </div>
-                <div className="p-2 sm:p-3 bg-blue-100 rounded-full">
-                  <Truck className="h-4 w-4 sm:h-6 sm:w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ))}
 
-          <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          {/* <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-gray-200  hover:shadow-lg transition-all duration-300 hover:scale-105">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10" />
             <CardContent className="relative p-4 sm:p-6">
               <div className="flex items-center justify-between">
@@ -283,11 +330,11 @@ export function DistributionManagement() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Main Content */}
-        <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-xl">
+        <Card className="bg-white  border-gray-200">
           <Tabs defaultValue="deliveries" className="w-full">
             <div className="border-b border-slate-200/50 px-4 sm:px-6">
               <TabsList className="bg-transparent border-0 p-0 h-auto space-x-0">
@@ -392,9 +439,9 @@ export function DistributionManagement() {
                 {filteredDeliveries.map((delivery: any) => (
                   <Card
                     key={delivery.id}
-                    className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    className="relative overflow-hidden bg-white  border-gray-200  hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5" />
+                    <div className="absolute inset-0 bg-white" />
                     <CardContent className="relative p-4 sm:p-6">
                       <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                         <div className="flex-1 space-y-3">
@@ -402,7 +449,7 @@ export function DistributionManagement() {
                             <div className="flex items-center space-x-2">
                               {getStatusIcon(delivery.status)}
                               <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
-                                {delivery.customer}
+                                {delivery.driverId}
                               </h3>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -429,12 +476,12 @@ export function DistributionManagement() {
                             <div className="flex items-center space-x-2">
                               <Package className="h-4 w-4 text-slate-400" />
                               <span>
-                                {delivery.product} - {delivery.quantity}
+                                {delivery.fuelType} - {delivery.quantity}
                               </span>
                             </div>
                             <div className="flex items-center space-x-2">
                               <Users className="h-4 w-4 text-slate-400" />
-                              <span>{delivery.driver}</span>
+                              <span>{delivery.driverId}</span>
                             </div>
                             <div className="flex items-center space-x-2">
                               <Clock className="h-4 w-4 text-slate-400" />

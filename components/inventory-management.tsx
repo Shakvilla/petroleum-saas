@@ -43,65 +43,77 @@ export const InventoryManagement = ({
   const [searchTerm, setSearchTerm] = useState('');
 
   // Load inventory data
-  const { data: inventoryData, isLoading } = useTenantQuery(
+  const {
+    data: inventoryData,
+    isLoading,
+    error,
+  } = useTenantQuery(
     ['inventory', 'overview'],
     async () => {
       const response = await fetch(`/api/tenants/${currentTenant}/inventory`);
       if (!response.ok) throw new Error('Failed to load inventory');
-      return response.json();
+      const data = await response.json();
+      // console.log('Inventory API response:', data);
+      return data;
     },
     {
       enabled: !!currentTenant,
     }
   );
 
-  const inventoryStats = [
-    {
-      title: 'Total Volume',
-      value: '2.85M',
-      unit: 'L',
-      change: '+2.5%',
-      trend: 'up',
-      icon: Fuel,
-      gradient: 'from-blue-500 to-blue-600',
-      bgGradient: 'from-blue-50 to-blue-100',
-      description: 'Across all tanks',
-    },
-    {
-      title: 'Active Tanks',
-      value: '24',
-      unit: 'tanks',
-      change: '100%',
-      trend: 'stable',
-      icon: Droplets,
-      gradient: 'from-emerald-500 to-emerald-600',
-      bgGradient: 'from-emerald-50 to-emerald-100',
-      description: 'All operational',
-    },
-    {
-      title: 'Critical Alerts',
-      value: '3',
-      unit: 'alerts',
-      change: '-33%',
-      trend: 'down',
-      icon: AlertTriangle,
-      gradient: 'from-orange-500 to-orange-600',
-      bgGradient: 'from-orange-50 to-orange-100',
-      description: 'Require attention',
-    },
-    {
-      title: 'Efficiency',
-      value: '94.2',
-      unit: '%',
-      change: '+1.2%',
-      trend: 'up',
-      icon: Zap,
-      gradient: 'from-purple-500 to-purple-600',
-      bgGradient: 'from-purple-50 to-purple-100',
-      description: 'System performance',
-    },
-  ];
+  // console.log('inventoryData', inventoryData);
 
+  // Transform API data to stats format
+  const inventoryStats = inventoryData?.data
+    ? [
+        {
+          title: 'Total Volume',
+          value: `${(inventoryData.data.overview.totalVolume / 1000).toFixed(1)}K`,
+          unit: 'L',
+          change: '+2.5%', // TODO: Calculate from historical data
+          trend: 'up' as const,
+          icon: Fuel,
+          gradient: 'from-blue-500 to-blue-600',
+          bgGradient: 'from-blue-50 to-blue-100',
+          description: 'Across all tanks',
+        },
+        {
+          title: 'Active Tanks',
+          value: inventoryData.data.overview.activeTanks.toString(),
+          unit: 'tanks',
+          change: '100%',
+          trend: 'stable' as const,
+          icon: Droplets,
+          gradient: 'from-emerald-500 to-emerald-600',
+          bgGradient: 'from-emerald-50 to-emerald-100',
+          description: 'All operational',
+        },
+        {
+          title: 'Critical Alerts',
+          value: inventoryData.data.overview.criticalAlerts.toString(),
+          unit: 'alerts',
+          change: '-33%', // TODO: Calculate from historical data
+          trend: 'down' as const,
+          icon: AlertTriangle,
+          gradient: 'from-orange-500 to-orange-600',
+          bgGradient: 'from-orange-50 to-orange-100',
+          description: 'Require attention',
+        },
+        {
+          title: 'Efficiency',
+          value: inventoryData.data.efficiency.averageUtilization.toFixed(1),
+          unit: '%',
+          change: '+1.2%', // TODO: Calculate from historical data
+          trend: 'up' as const,
+          icon: Zap,
+          gradient: 'from-purple-500 to-purple-600',
+          bgGradient: 'from-purple-50 to-purple-100',
+          description: 'System performance',
+        },
+      ]
+    : [];
+
+  // Dynamic quick actions based on inventory state
   const quickActions = [
     {
       name: 'Add Inventory',
@@ -112,25 +124,65 @@ export const InventoryManagement = ({
     {
       name: 'Generate Report',
       icon: Download,
-      action: () => {},
+      action: () => {
+        // TODO: Implement report generation
+        console.log('Generate report for tenant:', currentTenant);
+      },
       color: 'bg-emerald-600 hover:bg-emerald-700',
     },
     {
       name: 'Configure Alerts',
       icon: Bell,
-      action: () => {},
+      action: () => {
+        // TODO: Implement alert configuration
+        console.log('Configure alerts for tenant:', currentTenant);
+      },
       color: 'bg-purple-600 hover:bg-purple-700',
     },
     {
       name: 'Optimize Levels',
       icon: Target,
-      action: () => {},
+      action: () => {
+        // TODO: Implement level optimization
+        console.log('Optimize levels for tenant:', currentTenant);
+      },
       color: 'bg-orange-600 hover:bg-orange-700',
     },
   ];
 
+  // Handle loading and error states
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading inventory data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Failed to load inventory data. Please try again.
+          </p>
+          <Button onClick={() => window.location.reload()} variant="outline">
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-scree">
+    <div className="min-h-screen">
       {/* Modern Header with Glassmorphism */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-emerald-600/10"></div>
@@ -178,64 +230,70 @@ export const InventoryManagement = ({
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:pb-8 space-y-6 sm:space-y-8 lg:pr-0 lg:pl-[3px] pt-[px]3px]">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:pb-8 space-y-6 sm:space-y-8">
         {/* Modern Stats Grid - Fully Responsive */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {inventoryStats.map((stat, index) => (
-            <Card
-              key={index}
-              className="group relative overflow-hidden border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
-            >
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-50`}
-              ></div>
-              <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-br from-white/20 to-transparent rounded-full -translate-y-10 translate-x-10 sm:-translate-y-16 sm:translate-x-16"></div>
+          {inventoryStats.length > 0 ? (
+            inventoryStats.map((stat, index) => (
+              <Card
+                key={index}
+                className="group relative overflow-hidden border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-50`}
+                ></div>
+                <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-br from-white/20 to-transparent rounded-full -translate-y-10 translate-x-10 sm:-translate-y-16 sm:translate-x-16"></div>
 
-              <CardContent className="relative p-4 sm:p-6 bg-white">
-                <div className="flex items-start justify-between mb-3 sm:mb-4">
-                  <div
-                    className={`p-2 sm:p-3 bg-gradient-to-br ${stat.gradient} rounded-xl sm:rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <stat.icon className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <div className="text-right">
+                <CardContent className="relative p-4 sm:p-6 bg-white">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
                     <div
-                      className={`flex items-center gap-1 text-xs sm:text-sm font-medium ${
-                        stat.trend === 'up'
-                          ? 'text-emerald-600'
-                          : stat.trend === 'down'
-                            ? 'text-red-600'
-                            : 'text-gray-600'
-                      }`}
+                      className={`p-2 sm:p-3 bg-gradient-to-br ${stat.gradient} rounded-xl sm:rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}
                     >
-                      {stat.trend === 'up' && (
-                        <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
-                      )}
-                      {stat.trend === 'down' && (
-                        <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 rotate-180" />
-                      )}
-                      <span>{stat.change}</span>
+                      <stat.icon className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className={`flex items-center gap-1 text-xs sm:text-sm font-medium ${
+                          stat.trend === 'up'
+                            ? 'text-emerald-600'
+                            : stat.trend === 'down'
+                              ? 'text-red-600'
+                              : 'text-gray-600'
+                        }`}
+                      >
+                        {stat.trend === 'up' && (
+                          <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
+                        )}
+                        {stat.trend === 'down' && (
+                          <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 rotate-180" />
+                        )}
+                        <span>{stat.change}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-1 sm:space-y-2">
-                  <h3 className="text-xs sm:text-sm font-medium text-gray-600">
-                    {stat.title}
-                  </h3>
-                  <div className="flex items-baseline gap-1 sm:gap-2">
-                    <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                      {stat.value}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      {stat.unit}
-                    </span>
+                  <div className="space-y-1 sm:space-y-2">
+                    <h3 className="text-xs sm:text-sm font-medium text-gray-600">
+                      {stat.title}
+                    </h3>
+                    <div className="flex items-baseline gap-1 sm:gap-2">
+                      <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                        {stat.value}
+                      </span>
+                      <span className="text-xs sm:text-sm text-gray-500">
+                        {stat.unit}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500">{stat.description}</p>
                   </div>
-                  <p className="text-xs text-gray-500">{stat.description}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-500">No inventory data available</p>
+            </div>
+          )}
         </div>
 
         {/* Search and Filter Bar - Mobile Optimized */}

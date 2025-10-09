@@ -48,6 +48,10 @@ export async function GET(
         fuelType: delivery.fuelType,
         quantity: delivery.quantity,
         scheduledAt: delivery.scheduledAt,
+        address: delivery.address,
+        customer: delivery.customer,
+        estimatedTime: delivery.estimatedTime,
+        priority: delivery.priority,
         startedAt: delivery.startedAt,
         completedAt: delivery.completedAt,
         route: {
