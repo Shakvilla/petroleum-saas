@@ -93,9 +93,9 @@ export function DistributionAnalytics() {
         {kpis.map((kpi) => (
           <Card
             key={kpi.title}
-            className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="relative overflow-hidden bg-white  border-gray-200  hover:shadow-lg cursor-pointer transition-all duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5" />
+            <div className="absolute inset-0 " />
             <CardContent className="relative p-4 sm:p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
@@ -123,8 +123,8 @@ export function DistributionAnalytics() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Delivery Performance */}
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5" />
+        <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0" />
           <CardHeader className="relative">
             <CardTitle className="flex items-center space-x-2">
               <Target className="h-5 w-5 text-blue-600" />
@@ -154,8 +154,8 @@ export function DistributionAnalytics() {
         </Card>
 
         {/* Route Distribution */}
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 to-blue-500/5" />
+        <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0" />
           <CardHeader className="relative">
             <CardTitle className="flex items-center space-x-2">
               <Zap className="h-5 w-5 text-blue-600" />
@@ -205,8 +205,8 @@ export function DistributionAnalytics() {
       </div>
 
       {/* Fuel Efficiency Trend */}
-      <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-yellow-500/5" />
+      <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+        <div className="absolute inset-0" />
         <CardHeader className="relative">
           <CardTitle className="flex items-center space-x-2">
             <Fuel className="h-5 w-5 text-amber-600" />
@@ -251,8 +251,8 @@ export function DistributionAnalytics() {
 
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-green-500/5" />
+        <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0" />
           <CardHeader className="relative">
             <CardTitle className="flex items-center space-x-2">
               <Target className="h-5 w-5 text-emerald-600" />
@@ -288,8 +288,8 @@ export function DistributionAnalytics() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5" />
+        <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0" />
           <CardHeader className="relative">
             <CardTitle className="flex items-center space-x-2">
               <Truck className="h-5 w-5 text-blue-600" />

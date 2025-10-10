@@ -266,76 +266,12 @@ export function DistributionManagement() {
             </Card>
           ))}
 
-          {/* <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-gray-200  hover:shadow-lg transition-all duration-300 hover:scale-105">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10" />
-            <CardContent className="relative p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-xs sm:text-sm font-medium text-slate-600">
-                    Fleet Utilization
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                    85%
-                  </p>
-                  <p className="text-xs text-emerald-600 font-medium">
-                    Optimal range
-                  </p>
-                </div>
-                <div className="p-2 sm:p-3 bg-emerald-100 rounded-full">
-                  <Users className="h-4 w-4 sm:h-6 sm:w-6 text-emerald-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10" />
-            <CardContent className="relative p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-xs sm:text-sm font-medium text-slate-600">
-                    Fuel Efficiency
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                    7.2L
-                  </p>
-                  <p className="text-xs text-emerald-600 font-medium">
-                    per 100km
-                  </p>
-                </div>
-                <div className="p-2 sm:p-3 bg-amber-100 rounded-full">
-                  <Fuel className="h-4 w-4 sm:h-6 sm:w-6 text-amber-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-rose-500/10" />
-            <CardContent className="relative p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-xs sm:text-sm font-medium text-slate-600">
-                    Active Alerts
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold text-slate-900">
-                    3
-                  </p>
-                  <p className="text-xs text-red-600 font-medium">
-                    Needs attention
-                  </p>
-                </div>
-                <div className="p-2 sm:p-3 bg-red-100 rounded-full">
-                  <AlertTriangle className="h-4 w-4 sm:h-6 sm:w-6 text-red-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card> */}
         </div>
 
         {/* Main Content */}
-        <Card className="bg-white  border-gray-200">
-          <Tabs defaultValue="deliveries" className="w-full">
+        <Card className="bg-gray-100  border-gray-200">
+          <Tabs defaultValue="deliveries" className="w-full bg-gradient-to-b from-white to-gray-50">
             <div className="border-b border-slate-200/50 px-4 sm:px-6">
               <TabsList className="bg-transparent border-0 p-0 h-auto space-x-0">
                 <TabsTrigger

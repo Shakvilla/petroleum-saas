@@ -92,8 +92,8 @@ export function RouteOptimizer() {
   return (
     <div className="space-y-6">
       {/* Route Planning */}
-      <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5" />
+      <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+        <div className="absolute inset-0" />
         <CardHeader className="relative">
           <CardTitle className="flex items-center space-x-2">
             <Route className="h-5 w-5 text-blue-600" />
@@ -231,7 +231,7 @@ export function RouteOptimizer() {
       </Card>
 
       {/* Existing Routes */}
-      <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="relative overflow-hidden bg-white border-gray-200">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 to-blue-500/5" />
         <CardHeader className="relative">
           <CardTitle className="flex items-center space-x-2">
@@ -245,9 +245,9 @@ export function RouteOptimizer() {
             {optimizedRoutes.map((route) => (
               <Card
                 key={route.id}
-                className="relative overflow-hidden bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
+                className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5" />
+                <div className="absolute inset-0 " />
                 <CardContent className="relative p-4 sm:p-6">
                   <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                     <div className="flex-1 space-y-3">

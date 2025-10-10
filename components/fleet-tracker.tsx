@@ -156,7 +156,7 @@ export function FleetTracker() {
       const response = await fetch(`/api/tenants/${tenant?.id}/fleet`);
       if (!response.ok) throw new Error('Failed to load fleet data');
       const data = await response.json();
-      console.log('Fleet API response:', data);
+      // console.log('Fleet API response:', data);
       return data;
     },
     {
@@ -191,12 +191,12 @@ export function FleetTracker() {
   const vehicles = fleetData?.data?.vehicles || [];
 
   // Debug logging
-  console.log('FleetTracker Debug:', {
-    tenant: tenant?.id,
-    fleetData,
-    vehicles,
-    vehiclesLength: vehicles.length,
-  });
+  // console.log('FleetTracker Debug:', {
+  //   tenant: tenant?.id,
+  //   fleetData,
+  //   vehicles,
+  //   vehiclesLength: vehicles.length,
+  // });
 
   const availableVehicles = vehicles.filter(
     (v: any) => v.status === 'ACTIVE'
@@ -224,8 +224,8 @@ export function FleetTracker() {
     <div className="space-y-6">
       {/* Fleet Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10" />
+        <Card className="relative overflow-hidden bg-white/80 border-gray-200 hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0" />
           <CardContent className="relative p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
@@ -242,8 +242,8 @@ export function FleetTracker() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10" />
+        <Card className="relative overflow-hidden bg-white border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
+          <div className="absolute inset-0 " />
           <CardContent className="relative p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
@@ -260,8 +260,8 @@ export function FleetTracker() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-rose-500/10" />
+        <Card className="relative overflow-hidden bg-white border-gray-200  hover:shadow-xl transition-all duration-300">
+          <div className="absolute inset-0 " />
           <CardContent className="relative p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
@@ -341,9 +341,9 @@ export function FleetTracker() {
         {filteredVehicles.map((vehicle: any) => (
           <Card
             key={vehicle.id}
-            className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
+            className="relative overflow-hidden bg-white backdrop-blur-sm border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-500/5 to-blue-500/5" />
+            <div className="absolute inset-0" />
             <CardContent className="relative p-4 sm:p-6">
               <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                 <div className="flex-1 space-y-4">
@@ -381,7 +381,7 @@ export function FleetTracker() {
                         <span>Driver</span>
                       </div>
                       <p className="font-medium text-slate-900">
-                        {vehicle.driver}
+                        {vehicle.driver?.name || 'No driver assigned'}
                       </p>
                     </div>
 
