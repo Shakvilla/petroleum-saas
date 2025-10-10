@@ -60,6 +60,7 @@ export interface TenantSettings {
   currency: string;
   dateFormat: string;
   businessHours: BusinessHours;
+  planType?: string;
 }
 
 export interface BusinessHours {

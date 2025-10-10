@@ -100,7 +100,7 @@ export class PermissionChecker {
     // Check tenant plan restrictions
     if (
       flag.tenantRestrictions?.plans &&
-      !flag.tenantRestrictions.plans.includes(this.tenant.plan)
+      !flag.tenantRestrictions.plans.includes(this.tenant.settings.planType || 'free')
     ) {
       return false;
     }
