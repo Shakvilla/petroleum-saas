@@ -1,5 +1,11 @@
 // Settings Types for Company Settings System
 
+import type {
+  ThemeCustomization,
+  ValidationResults,
+  ThemeHistoryEntry,
+} from './theme-presets';
+
 // Core Settings Types
 export enum SettingsTab {
   PROFILE = 'profile',
@@ -366,6 +372,16 @@ export interface BrandingSettingsData {
     timeFormat: string;
     timezone: string;
     numberFormat: NumberFormat;
+  };
+
+  // Theme Management (New)
+  themeManagement?: {
+    currentPresetId?: string;
+    customizations?: ThemeCustomization;
+    validationResults?: ValidationResults;
+    history?: ThemeHistoryEntry[];
+    lastApplied?: Date;
+    lastModified?: Date;
   };
 }
 

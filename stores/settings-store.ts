@@ -5,10 +5,24 @@ import type {
   SettingsData,
   ValidationError,
 } from '@/types/settings';
+import type {
+  ThemePreset,
+  ThemeCustomization,
+  ValidationResults,
+  ThemeHistoryEntry,
+} from '@/types/theme-presets';
 import { SettingsTab } from '@/types/settings';
+import { validateThemePreset, validateColorScheme, validateTypography } from '@/lib/theme-validation';
+import { getThemePresetById } from '@/lib/theme-presets-data';
 
 // Settings store state interface
 interface SettingsStoreState extends SettingsState {
+  // Theme Management Properties
+  currentThemePreset: ThemePreset | null;
+  themeCustomizations: ThemeCustomization | null;
+  themeValidationResults: ValidationResults | null;
+  themeHistory: ThemeHistoryEntry[];
+  
   // Actions
   setActiveTab: (tab: SettingsTab) => void;
   setLoading: (isLoading: boolean) => void;
@@ -22,6 +36,18 @@ interface SettingsStoreState extends SettingsState {
   setShowAdvancedOptions: (show: boolean) => void;
   resetSettings: () => void;
   clearValidationErrors: () => void;
+  
+  // Theme Management Actions
+  setThemePreset: (preset: ThemePreset) => void;
+  applyThemeCustomization: (customization: ThemeCustomization) => void;
+  saveThemeCustomization: () => void;
+  resetThemeCustomization: () => void;
+  exportTheme: () => string;
+  importTheme: (themeData: string) => void;
+  validateTheme: (theme: SettingsData) => ValidationResults;
+  addToThemeHistory: (entry: ThemeHistoryEntry) => void;
+  undoThemeChange: () => void;
+  redoThemeChange: () => void;
 }
 
 // Default settings data
@@ -281,6 +307,14 @@ const defaultSettingsData: SettingsData = {
       },
       favicon: '',
     },
+    themeManagement: {
+      currentPresetId: 'corporate-blue',
+      customizations: undefined,
+      validationResults: undefined,
+      history: [],
+      lastApplied: new Date(),
+      lastModified: new Date(),
+    },
     displayPreferences: {
       dashboardLayout: {
         defaultWidgets: ['overview', 'inventory', 'deliveries'],
@@ -395,6 +429,12 @@ export const useSettingsStore = create<SettingsStoreState>()(
       settingsData: defaultSettingsData,
       expandedSections: [],
       showAdvancedOptions: false,
+      
+      // Theme Management Initial State
+      currentThemePreset: getThemePresetById('corporate-blue') || null,
+      themeCustomizations: null,
+      themeValidationResults: null,
+      themeHistory: [],
 
       // Actions
       setActiveTab: (tab: SettingsTab) => {
@@ -469,6 +509,289 @@ export const useSettingsStore = create<SettingsStoreState>()(
       clearValidationErrors: () => {
         set({ validationErrors: {} });
       },
+
+      // Theme Management Actions
+      setThemePreset: (preset: ThemePreset) => {
+        set(state => {
+          // Validate the preset before applying
+          const validationResults = validateThemePreset(preset);
+          
+          // Add to history before applying
+          const historyEntry: ThemeHistoryEntry = {
+            id: `preset-${preset.id}-${Date.now()}`,
+            preset,
+            customizations: state.themeCustomizations || undefined,
+            appliedAt: new Date(),
+            appliedBy: 'user', // TODO: Get actual user ID
+            description: `Applied preset: ${preset.name}`,
+          };
+
+          return {
+            currentThemePreset: preset,
+            themeValidationResults: validationResults,
+            themeHistory: [...state.themeHistory, historyEntry].slice(-50),
+            settingsData: {
+              ...state.settingsData,
+              branding: {
+                ...state.settingsData.branding,
+                visualBranding: {
+                  ...state.settingsData.branding.visualBranding,
+                  colorScheme: preset.colors,
+                  typography: preset.typography,
+                },
+                themeManagement: {
+                  ...state.settingsData.branding.themeManagement,
+                  currentPresetId: preset.id,
+                  validationResults,
+                  lastApplied: new Date(),
+                  lastModified: new Date(),
+                  history: [...(state.settingsData.branding.themeManagement?.history || []), historyEntry].slice(-50),
+                },
+              },
+            },
+            hasUnsavedChanges: true,
+          };
+        });
+      },
+
+      applyThemeCustomization: (customization: ThemeCustomization) => {
+        set(state => {
+          // Create updated theme data for validation
+          const updatedThemeData = {
+            ...state.settingsData,
+            branding: {
+              ...state.settingsData.branding,
+              visualBranding: {
+                ...state.settingsData.branding.visualBranding,
+                colorScheme: {
+                  ...state.settingsData.branding.visualBranding.colorScheme,
+                  ...customization.customizations.colors,
+                },
+                typography: {
+                  ...state.settingsData.branding.visualBranding.typography,
+                  ...customization.customizations.typography,
+                },
+              },
+            },
+          };
+
+          // Validate the updated theme
+          const validationResults = get().validateTheme(updatedThemeData);
+
+          // Add to history
+          const historyEntry: ThemeHistoryEntry = {
+            id: `customization-${Date.now()}`,
+            preset: state.currentThemePreset!,
+            customizations: customization,
+            appliedAt: new Date(),
+            appliedBy: 'user', // TODO: Get actual user ID
+            description: `Applied customization to ${state.currentThemePreset?.name || 'theme'}`,
+          };
+
+          return {
+            themeCustomizations: customization,
+            themeValidationResults: validationResults,
+            themeHistory: [...state.themeHistory, historyEntry].slice(-50),
+            settingsData: updatedThemeData,
+            hasUnsavedChanges: true,
+          };
+        });
+      },
+
+      saveThemeCustomization: () => {
+        set(state => ({
+          hasUnsavedChanges: false,
+          settingsData: {
+            ...state.settingsData,
+            branding: {
+              ...state.settingsData.branding,
+              themeManagement: {
+                ...state.settingsData.branding.themeManagement,
+                lastApplied: new Date(),
+                history: state.settingsData.branding.themeManagement?.history || [],
+              },
+            },
+          },
+        }));
+      },
+
+      resetThemeCustomization: () => {
+        set(state => ({
+          themeCustomizations: null,
+          settingsData: {
+            ...state.settingsData,
+            branding: {
+              ...state.settingsData.branding,
+              themeManagement: {
+                ...state.settingsData.branding.themeManagement,
+                customizations: undefined,
+                lastModified: new Date(),
+                history: state.settingsData.branding.themeManagement?.history || [],
+              },
+            },
+          },
+          hasUnsavedChanges: true,
+        }));
+      },
+
+      exportTheme: () => {
+        const state = get();
+        const themeData = {
+          preset: state.currentThemePreset,
+          customizations: state.themeCustomizations,
+          settings: state.settingsData.branding,
+          exportedAt: new Date().toISOString(),
+        };
+        return JSON.stringify(themeData, null, 2);
+      },
+
+      importTheme: (themeData: string) => {
+        try {
+          const parsedData = JSON.parse(themeData);
+          
+          // Validate imported data structure
+          if (!parsedData.preset && !parsedData.customizations && !parsedData.settings) {
+            throw new Error('Invalid theme data: missing preset, customizations, or settings');
+          }
+
+          // Import preset if available
+          if (parsedData.preset) {
+            // Validate preset structure
+            if (!parsedData.preset.id || !parsedData.preset.colors || !parsedData.preset.typography) {
+              throw new Error('Invalid preset data: missing required fields');
+            }
+            get().setThemePreset(parsedData.preset);
+          }
+
+          // Import customizations if available
+          if (parsedData.customizations) {
+            // Validate customization structure
+            if (!parsedData.customizations.presetId || !parsedData.customizations.customizations) {
+              throw new Error('Invalid customization data: missing required fields');
+            }
+            get().applyThemeCustomization(parsedData.customizations);
+          }
+
+          // Import settings if available (for backward compatibility)
+          if (parsedData.settings) {
+            get().setSettingsData({ branding: parsedData.settings });
+          }
+
+          // Add import to history
+          const historyEntry: ThemeHistoryEntry = {
+            id: `import-${Date.now()}`,
+            preset: parsedData.preset || get().currentThemePreset!,
+            customizations: parsedData.customizations,
+            appliedAt: new Date(),
+            appliedBy: 'user', // TODO: Get actual user ID
+            description: `Imported theme configuration`,
+          };
+          get().addToThemeHistory(historyEntry);
+
+        } catch (error) {
+          console.error('Failed to import theme:', error);
+          throw new Error(`Invalid theme data format: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      },
+
+      validateTheme: (theme: SettingsData) => {
+        const { branding } = theme;
+        if (!branding?.visualBranding) {
+          return {
+            isCompliant: false,
+            contrastRatios: {},
+            warnings: [],
+            recommendations: ['Theme configuration is incomplete'],
+            score: 0,
+            lastValidated: new Date(),
+          };
+        }
+
+        // Validate color scheme
+        const colorResults = validateColorScheme(branding.visualBranding.colorScheme);
+        
+        // Validate typography
+        const typographyResults = validateTypography(branding.visualBranding.typography);
+
+        // Combine results
+        const allWarnings = [...colorResults.warnings, ...typographyResults.warnings];
+        const allRecommendations = [...colorResults.recommendations, ...typographyResults.recommendations];
+        const overallScore = Math.round((colorResults.score + typographyResults.score) / 2);
+
+        const validationResults: ValidationResults = {
+          isCompliant: colorResults.isCompliant && typographyResults.isCompliant,
+          contrastRatios: colorResults.contrastRatios,
+          warnings: allWarnings,
+          recommendations: allRecommendations,
+          score: overallScore,
+          lastValidated: new Date(),
+        };
+
+        // Update store with validation results
+        set({ themeValidationResults: validationResults });
+
+        return validationResults;
+      },
+
+      addToThemeHistory: (entry: ThemeHistoryEntry) => {
+        set(state => ({
+          themeHistory: [...state.themeHistory, entry].slice(-50), // Keep last 50 entries
+        }));
+      },
+
+      undoThemeChange: () => {
+        set(state => {
+          if (state.themeHistory.length > 0) {
+            const lastEntry = state.themeHistory[state.themeHistory.length - 1];
+            const newHistory = state.themeHistory.slice(0, -1);
+            
+            // Apply the previous theme state
+            const updatedState: Partial<SettingsStoreState> = {
+              themeHistory: newHistory,
+              currentThemePreset: lastEntry.preset,
+              themeCustomizations: lastEntry.customizations,
+              hasUnsavedChanges: true,
+            };
+
+            // Update settings data to match the restored theme
+            if (lastEntry.preset) {
+              updatedState.settingsData = {
+                ...state.settingsData,
+                branding: {
+                  ...state.settingsData.branding,
+                  visualBranding: {
+                    ...state.settingsData.branding.visualBranding,
+                    colorScheme: lastEntry.preset.colors,
+                    typography: lastEntry.preset.typography,
+                  },
+                  themeManagement: {
+                    ...state.settingsData.branding.themeManagement,
+                    currentPresetId: lastEntry.preset.id,
+                    customizations: lastEntry.customizations,
+                    lastModified: new Date(),
+                    history: newHistory,
+                  },
+                },
+              };
+            }
+
+            // Validate the restored theme
+            if (updatedState.settingsData) {
+              const validationResults = get().validateTheme(updatedState.settingsData);
+              updatedState.themeValidationResults = validationResults;
+            }
+
+            return updatedState;
+          }
+          return state;
+        });
+      },
+
+      redoThemeChange: () => {
+        // For now, redo is not implemented as it requires a separate redo stack
+        // This would need to be implemented with a more complex history management system
+        console.log('Redo theme change - requires redo stack implementation');
+      },
     }),
     {
       name: 'settings-store',
@@ -476,6 +799,10 @@ export const useSettingsStore = create<SettingsStoreState>()(
         settingsData: state.settingsData,
         expandedSections: state.expandedSections,
         showAdvancedOptions: state.showAdvancedOptions,
+        currentThemePreset: state.currentThemePreset,
+        themeCustomizations: state.themeCustomizations,
+        themeValidationResults: state.themeValidationResults,
+        themeHistory: state.themeHistory,
       }),
     }
   )
@@ -497,6 +824,16 @@ export const useExpandedSections = () =>
   useSettingsStore(state => state.expandedSections);
 export const useShowAdvancedOptions = () =>
   useSettingsStore(state => state.showAdvancedOptions);
+
+// Theme Management Selector Hooks
+export const useCurrentThemePreset = () =>
+  useSettingsStore(state => state.currentThemePreset);
+export const useThemeCustomizations = () =>
+  useSettingsStore(state => state.themeCustomizations);
+export const useThemeValidationResults = () =>
+  useSettingsStore(state => state.themeValidationResults);
+export const useThemeHistory = () =>
+  useSettingsStore(state => state.themeHistory);
 
 // Action hooks
 export const useSettingsActions = () => {
@@ -523,6 +860,18 @@ export const useSettingsActions = () => {
     state => state.clearValidationErrors
   );
 
+  // Theme Management Actions
+  const setThemePreset = useSettingsStore(state => state.setThemePreset);
+  const applyThemeCustomization = useSettingsStore(state => state.applyThemeCustomization);
+  const saveThemeCustomization = useSettingsStore(state => state.saveThemeCustomization);
+  const resetThemeCustomization = useSettingsStore(state => state.resetThemeCustomization);
+  const exportTheme = useSettingsStore(state => state.exportTheme);
+  const importTheme = useSettingsStore(state => state.importTheme);
+  const validateTheme = useSettingsStore(state => state.validateTheme);
+  const addToThemeHistory = useSettingsStore(state => state.addToThemeHistory);
+  const undoThemeChange = useSettingsStore(state => state.undoThemeChange);
+  const redoThemeChange = useSettingsStore(state => state.redoThemeChange);
+
   return {
     setActiveTab,
     setLoading,
@@ -536,5 +885,17 @@ export const useSettingsActions = () => {
     setShowAdvancedOptions,
     resetSettings,
     clearValidationErrors,
+    
+    // Theme Management Actions
+    setThemePreset,
+    applyThemeCustomization,
+    saveThemeCustomization,
+    resetThemeCustomization,
+    exportTheme,
+    importTheme,
+    validateTheme,
+    addToThemeHistory,
+    undoThemeChange,
+    redoThemeChange,
   };
 };
