@@ -1,18 +1,1 @@
-rror occurred prerendering page "/demo". Read more: https://nextjs.org/docs/messages/prerender-error
-Error: Event handlers cannot be passed to Client Component props.
-  {onClick: function onClick, className: ..., children: ...}
-            ^^^^^^^^^^^^^^^^
-If you need interactivity, consider converting part of this to a Client Component.
-    at e$ (/Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:23404)
-    at Object.toJSON (/Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:14854)
-    at stringify (<anonymous>)
-    at eF (/Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26079)
-    at eq (/Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26391)
-    at ez (/Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26887)
-    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14)
-    at /Users/mac/Desktop/petroleum-saas/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:27678
-    at node:internal/process/task_queues:151:7
-    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
-Export encountered an error on /demo/page: /demo, exiting the build.
- ⨯ Next.js build worker exited with code: 1 and signal: null
-error: script "build" exited with code 1
+

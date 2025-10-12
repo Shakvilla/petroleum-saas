@@ -403,9 +403,12 @@ export interface ColorScheme {
   background: string;
   surface: string;
   text: string;
+  textSecondary: string;
+  border: string;
   success: string;
   warning: string;
   error: string;
+  info: string;
 }
 
 export interface DashboardLayout {
@@ -737,6 +740,8 @@ export interface TypographyConfig {
   fontFamily: string;
   headingFont?: string;
   fontSizes: Record<string, string>;
+  fontWeight: Record<string, string>;
+  lineHeight: Record<string, string>;
 }
 
 export interface BackupStorage {

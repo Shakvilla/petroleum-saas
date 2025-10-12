@@ -3,6 +3,9 @@ import { Poppins } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
 import { TenantProvider } from '@/components/tenant-provider';
+import { ThemeApplicationProvider } from '@/components/theme-application-provider';
+import { UnifiedThemeProvider } from '@/components/unified-theme-provider';
+import { ThemeVariableInjector, DynamicTailwindInjector } from '@/components/theme-variable-injector';
 import RouteProgressBar from '@/components/route-progress-bar';
 
 const poppins = Poppins({
@@ -24,11 +27,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+      </head>
       <body className={poppins.variable}>
         <Suspense fallback={null}>
           <RouteProgressBar />
         </Suspense>
-        <TenantProvider>{children}</TenantProvider>
+        <TenantProvider>
+          <ThemeApplicationProvider>
+            <ThemeVariableInjector />
+            <DynamicTailwindInjector />
+            <UnifiedThemeProvider>
+              {children}
+            </UnifiedThemeProvider>
+          </ThemeApplicationProvider>
+        </TenantProvider>
       </body>
     </html>
   );

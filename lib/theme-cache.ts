@@ -226,6 +226,11 @@ export class ThemeCacheManager {
   // Save to localStorage
   private saveToStorage(): void {
     try {
+      // Check if we're in a browser environment
+      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+        return;
+      }
+      
       const data = {
         cache: Array.from(this.cache.entries()),
         stats: {
@@ -244,6 +249,11 @@ export class ThemeCacheManager {
   // Load from localStorage
   private loadFromStorage(): void {
     try {
+      // Check if we're in a browser environment
+      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+        return;
+      }
+      
       const data = localStorage.getItem(this.config.persistenceKey);
       
       if (data) {
@@ -270,10 +280,18 @@ export class ThemeCacheManager {
 
 // Theme-specific cache operations
 export class ThemeCacheOperations {
+  private static instance: ThemeCacheOperations;
   private cache: ThemeCacheManager;
 
   constructor(cache?: ThemeCacheManager) {
     this.cache = cache || ThemeCacheManager.getInstance();
+  }
+
+  static getInstance(cache?: ThemeCacheManager): ThemeCacheOperations {
+    if (!ThemeCacheOperations.instance) {
+      ThemeCacheOperations.instance = new ThemeCacheOperations(cache);
+    }
+    return ThemeCacheOperations.instance;
   }
 
   // Cache theme preset
@@ -478,10 +496,18 @@ export const cachedCalculateContrast = memoizeThemeFunction(
 
 // Cache invalidation strategies
 export class CacheInvalidationStrategy {
+  private static instance: CacheInvalidationStrategy;
   private cache: ThemeCacheManager;
 
   constructor(cache?: ThemeCacheManager) {
     this.cache = cache || ThemeCacheManager.getInstance();
+  }
+
+  static getInstance(cache?: ThemeCacheManager): CacheInvalidationStrategy {
+    if (!CacheInvalidationStrategy.instance) {
+      CacheInvalidationStrategy.instance = new CacheInvalidationStrategy(cache);
+    }
+    return CacheInvalidationStrategy.instance;
   }
 
   // Invalidate by pattern

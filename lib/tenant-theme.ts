@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTenant } from '@/components/tenant-provider';
 import type { Tenant } from '@/types';
 
@@ -319,6 +319,64 @@ export function useTenantTheme() {
     branding: themeManager.getCurrentBranding(),
     applyTheme: (tenant: Tenant) => themeManager.applyTheme(tenant),
     resetTheme: () => themeManager.resetToDefault(),
+  };
+}
+
+// Enhanced hook with unified theme integration
+export function useEnhancedTenantTheme() {
+  const { tenant } = useTenant();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Apply theme when tenant changes
+  useEffect(() => {
+    const applyTenantTheme = async () => {
+      if (tenant) {
+        try {
+          setIsLoading(true);
+          setError(null);
+          
+          // Import integration dynamically to avoid circular dependencies
+          const { tenantThemeIntegration } = await import('./tenant-theme-integration');
+          await tenantThemeIntegration.applyTenantTheme(tenant);
+        } catch (err) {
+          console.error('Error applying tenant theme:', err);
+          setError(err instanceof Error ? err.message : 'Unknown error');
+          
+          // Fallback to original theme manager
+          themeManager.applyTheme(tenant);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        try {
+          setIsLoading(true);
+          setError(null);
+          
+          const { tenantThemeIntegration } = await import('./tenant-theme-integration');
+          await tenantThemeIntegration.resetTenantTheme();
+        } catch (err) {
+          console.error('Error resetting tenant theme:', err);
+          setError(err instanceof Error ? err.message : 'Unknown error');
+          
+          // Fallback to original theme manager
+          themeManager.resetToDefault();
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    applyTenantTheme();
+  }, [tenant]);
+
+  return {
+    theme: themeManager.getCurrentTheme(),
+    branding: themeManager.getCurrentBranding(),
+    applyTheme: (tenant: Tenant) => themeManager.applyTheme(tenant),
+    resetTheme: () => themeManager.resetToDefault(),
+    isLoading,
+    error,
   };
 }
 

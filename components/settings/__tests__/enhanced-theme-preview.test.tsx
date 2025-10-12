@@ -122,9 +122,12 @@ describe('Enhanced Theme Preview Components', () => {
       background: '#ffffff',
       surface: '#f8fafc',
       text: '#000000',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
       success: '#10b981',
       warning: '#f59e0b',
       error: '#ef4444',
+      info: '#3b82f6',
     },
     typography: {
       fontFamily: 'Inter, sans-serif',
@@ -138,6 +141,17 @@ describe('Enhanced Theme Preview Components', () => {
         '2xl': '1.5rem',
         '3xl': '1.875rem',
         '4xl': '2.25rem',
+      },
+      fontWeight: {
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+      },
+      lineHeight: {
+        tight: '1.25',
+        normal: '1.5',
+        relaxed: '1.75',
       },
     },
   };
