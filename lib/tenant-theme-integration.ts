@@ -3,7 +3,8 @@
 import type { Tenant } from '@/types';
 import type { TenantTheme, TenantBranding } from './tenant-theme';
 import type { UnifiedTheme } from '@/types/unified-theme';
-import { TenantThemeManager } from './tenant-theme';
+// Remove direct import to break circular dependency
+// import { TenantThemeManager } from './tenant-theme';
 import { UnifiedThemeManager } from './unified-theme-manager';
 import { EnhancedCSSVariableManager } from './enhanced-css-variables';
 
@@ -14,32 +15,46 @@ import { EnhancedCSSVariableManager } from './enhanced-css-variables';
  * to maintain backward compatibility while providing enhanced functionality.
  */
 export class TenantThemeIntegration {
-  private tenantThemeManager: TenantThemeManager;
+  private tenantThemeManager: any; // Changed to any to avoid circular dependency
   private unifiedThemeManager: UnifiedThemeManager;
   private cssVariableManager: EnhancedCSSVariableManager;
   private isIntegrated: boolean = false;
 
   constructor(
-    tenantThemeManager: TenantThemeManager,
     unifiedThemeManager: UnifiedThemeManager,
     cssVariableManager: EnhancedCSSVariableManager
   ) {
-    this.tenantThemeManager = tenantThemeManager;
     this.unifiedThemeManager = unifiedThemeManager;
     this.cssVariableManager = cssVariableManager;
   }
 
   /**
-   * Initialize integration
+   * Initialize integration with lazy loading
    */
-  initialize(): void {
+  async initialize(): Promise<void> {
     if (this.isIntegrated) return;
 
-    // Override tenant theme manager methods to integrate with unified system
-    this.overrideTenantThemeManager();
-    
-    this.isIntegrated = true;
-    console.log('Tenant theme integration initialized');
+    try {
+      // Dynamic import to avoid circular dependency
+      const { TenantThemeManager } = await import('./tenant-theme');
+      this.tenantThemeManager = new TenantThemeManager();
+
+      // Override tenant theme manager methods to integrate with unified system
+      this.overrideTenantThemeManager();
+      
+      this.isIntegrated = true;
+      console.log('Tenant theme integration initialized');
+    } catch (error) {
+      console.error('Failed to initialize tenant theme integration:', error);
+      // Create a mock tenant theme manager to prevent errors
+      this.tenantThemeManager = {
+        applyTheme: () => Promise.resolve(),
+        resetToDefault: () => {},
+        getCurrentTheme: () => null,
+        getCurrentBranding: () => null,
+      } as any;
+      this.isIntegrated = true;
+    }
   }
 
   /**
@@ -47,6 +62,11 @@ export class TenantThemeIntegration {
    */
   async applyTenantTheme(tenant: Tenant): Promise<void> {
     try {
+      // Ensure initialization
+      if (!this.isIntegrated) {
+        await this.initialize();
+      }
+
       // Build tenant theme using existing logic
       const tenantTheme = this.buildTenantTheme(tenant);
       const tenantBranding = this.buildTenantBranding(tenant);
@@ -73,8 +93,14 @@ export class TenantThemeIntegration {
       }
     } catch (error) {
       console.error('Error applying tenant theme:', error);
-      // Fallback to original tenant theme manager
-      this.tenantThemeManager.applyTheme(tenant);
+      // Fallback to original tenant theme manager if available
+      if (this.tenantThemeManager && typeof this.tenantThemeManager.applyTheme === 'function') {
+        try {
+          await this.tenantThemeManager.applyTheme(tenant);
+        } catch (fallbackError) {
+          console.error('Fallback tenant theme application also failed:', fallbackError);
+        }
+      }
     }
   }
 
@@ -86,8 +112,10 @@ export class TenantThemeIntegration {
       // Reset unified theme manager
       this.unifiedThemeManager.resetToDefault();
       
-      // Reset tenant theme manager
-      this.tenantThemeManager.resetToDefault();
+      // Reset tenant theme manager if available
+      if (this.tenantThemeManager && typeof this.tenantThemeManager.resetToDefault === 'function') {
+        this.tenantThemeManager.resetToDefault();
+      }
       
       console.log('Tenant theme reset successfully');
     } catch (error) {
@@ -99,20 +127,30 @@ export class TenantThemeIntegration {
    * Get current tenant theme
    */
   getCurrentTenantTheme(): TenantTheme | null {
-    return this.tenantThemeManager.getCurrentTheme();
+    if (this.tenantThemeManager && typeof this.tenantThemeManager.getCurrentTheme === 'function') {
+      return this.tenantThemeManager.getCurrentTheme();
+    }
+    return null;
   }
 
   /**
    * Get current tenant branding
    */
   getCurrentTenantBranding(): TenantBranding | null {
-    return this.tenantThemeManager.getCurrentBranding();
+    if (this.tenantThemeManager && typeof this.tenantThemeManager.getCurrentBranding === 'function') {
+      return this.tenantThemeManager.getCurrentBranding();
+    }
+    return null;
   }
 
   /**
    * Get current unified theme
    */
   getCurrentUnifiedTheme(): UnifiedTheme | null {
+    if (!this.unifiedThemeManager) {
+      console.warn('UnifiedThemeManager not initialized');
+      return null;
+    }
     return this.unifiedThemeManager.currentTheme;
   }
 
@@ -561,9 +599,21 @@ export class TenantThemeIntegration {
   }
 }
 
-// Export singleton instance
-export const tenantThemeIntegration = new TenantThemeIntegration(
-  new TenantThemeManager(),
-  new UnifiedThemeManager(),
-  new EnhancedCSSVariableManager()
-);
+// Export singleton instance (lazy initialization)
+let _tenantThemeIntegration: TenantThemeIntegration | null = null;
+
+export const getTenantThemeIntegration = async (): Promise<TenantThemeIntegration> => {
+  if (!_tenantThemeIntegration) {
+    const { UnifiedThemeManager } = await import('./unified-theme-manager');
+    const { EnhancedCSSVariableManager } = await import('./enhanced-css-variables');
+    
+    _tenantThemeIntegration = new TenantThemeIntegration(
+      new UnifiedThemeManager(),
+      new EnhancedCSSVariableManager()
+    );
+    
+    // Initialize the integration
+    await _tenantThemeIntegration.initialize();
+  }
+  return _tenantThemeIntegration;
+};

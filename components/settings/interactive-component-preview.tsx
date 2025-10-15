@@ -2,18 +2,25 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+// Lazy load heavy UI components
+const Select = lazy(() => import('@/components/ui/select').then(m => ({ default: m.Select })));
+const SelectContent = lazy(() => import('@/components/ui/select').then(m => ({ default: m.SelectContent })));
+const SelectItem = lazy(() => import('@/components/ui/select').then(m => ({ default: m.SelectItem })));
+const SelectTrigger = lazy(() => import('@/components/ui/select').then(m => ({ default: m.SelectTrigger })));
+const SelectValue = lazy(() => import('@/components/ui/select').then(m => ({ default: m.SelectValue })));
+const Checkbox = lazy(() => import('@/components/ui/checkbox').then(m => ({ default: m.Checkbox })));
+const RadioGroup = lazy(() => import('@/components/ui/radio-group').then(m => ({ default: m.RadioGroup })));
+const RadioGroupItem = lazy(() => import('@/components/ui/radio-group').then(m => ({ default: m.RadioGroupItem })));
+const Switch = lazy(() => import('@/components/ui/switch').then(m => ({ default: m.Switch })));
+const Slider = lazy(() => import('@/components/ui/slider').then(m => ({ default: m.Slider })));
+const Progress = lazy(() => import('@/components/ui/progress').then(m => ({ default: m.Progress })));
 import { 
   Play, 
   Pause, 
@@ -23,10 +30,10 @@ import {
   Eye,
   MousePointer,
   Keyboard,
-  Touch,
   Monitor,
   Smartphone,
-  Tablet
+  Tablet,
+  Touchpad
 } from 'lucide-react';
 import type { ColorScheme, TypographyConfig } from '@/types/settings';
 
@@ -41,7 +48,7 @@ interface InteractiveComponentPreviewProps {
 type InteractionMode = 'hover' | 'focus' | 'active' | 'disabled';
 type DeviceType = 'desktop' | 'tablet' | 'mobile';
 
-export function InteractiveComponentPreview({
+function InteractiveComponentPreviewComponent({
   theme,
   className
 }: InteractiveComponentPreviewProps) {
@@ -147,7 +154,7 @@ export function InteractiveComponentPreview({
                     </SelectItem>
                     <SelectItem value="active">
                       <div className="flex items-center gap-2">
-                        <Touch className="h-3 w-3" />
+                        <Touchpad className="h-3 w-3" />
                         Active
                       </div>
                     </SelectItem>
@@ -815,6 +822,15 @@ export function InteractiveComponentPreview({
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+// Export with Suspense wrapper for lazy-loaded components
+export function InteractiveComponentPreview(props: InteractiveComponentPreviewProps) {
+  return (
+    <Suspense fallback={<div className="p-4 text-center">Loading preview...</div>}>
+      <InteractiveComponentPreviewComponent {...props} />
+    </Suspense>
   );
 }
 

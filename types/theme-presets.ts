@@ -5,7 +5,7 @@ import type { ColorScheme, TypographyConfig, LogoConfig } from './settings';
 /**
  * Theme preset categories for organizing presets
  */
-export type ThemeCategory = 'corporate' | 'modern' | 'vibrant' | 'minimal' | 'dark';
+export type ThemeCategory = 'corporate' | 'modern' | 'vibrant' | 'minimal' | 'dark' | 'accessible';
 
 /**
  * Validation warning severity levels

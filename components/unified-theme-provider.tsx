@@ -59,7 +59,24 @@ interface UnifiedThemeProviderProps {
 export function UnifiedThemeProvider({ children }: UnifiedThemeProviderProps) {
   const { tenant } = useTenant();
   const themeApplication = useThemeApplication();
-  const themeStore = useThemeStore();
+  
+  // Use specific selectors to avoid infinite rerenders
+  const currentTheme = useThemeStore(state => state.currentTheme);
+  const isApplying = useThemeStore(state => state.isApplying);
+  const lastApplied = useThemeStore(state => state.lastApplied);
+  const errors = useThemeStore(state => state.errors);
+  const setThemePresets = useThemeStore(state => state.setThemePresets);
+  const applyTheme = useThemeStore(state => state.applyTheme);
+  const applyPreset = useThemeStore(state => state.applyPreset);
+  const applyCustomization = useThemeStore(state => state.applyCustomization);
+  const getThemeById = useThemeStore(state => state.getThemeById);
+  const searchThemes = useThemeStore(state => state.searchThemes);
+  const getThemesByCategory = useThemeStore(state => state.getThemesByCategory);
+  const validateTheme = useThemeStore(state => state.validateTheme);
+  const undoThemeChange = useThemeStore(state => state.undoThemeChange);
+  const redoThemeChange = useThemeStore(state => state.redoThemeChange);
+  const exportTheme = useThemeStore(state => state.exportTheme);
+  const importTheme = useThemeStore(state => state.importTheme);
 
   // Initialize theme presets on mount
   useEffect(() => {
@@ -75,14 +92,14 @@ export function UnifiedThemeProvider({ children }: UnifiedThemeProviderProps) {
           presetsMap.set(preset.id, preset);
         });
         
-        themeStore.setThemePresets(presetsMap);
+        setThemePresets(presetsMap);
       } catch (error) {
         console.error('Failed to load theme presets:', error);
       }
     };
 
     loadThemePresets();
-  }, [themeStore]);
+  }, [setThemePresets]);
 
   // Apply tenant theme when tenant changes
   useEffect(() => {
@@ -90,15 +107,8 @@ export function UnifiedThemeProvider({ children }: UnifiedThemeProviderProps) {
       if (tenant) {
         try {
           // Import tenant theme integration
-          const { tenantThemeIntegration } = await import('@/lib/tenant-theme-integration');
-          
-          // Initialize integration if not already done
-          if (!tenantThemeIntegration.isIntegrated) {
-            tenantThemeIntegration.initialize();
-          }
-          
-          // Apply tenant theme
-          await tenantThemeIntegration.applyTenantTheme(tenant);
+          const { getTenantThemeIntegration } = await import('@/lib/tenant-theme-integration');
+          const tenantThemeIntegration = await getTenantThemeIntegration();
           
           // Get the unified theme and apply it with real-time updates
           const unifiedTheme = tenantThemeIntegration.getCurrentUnifiedTheme();
@@ -116,37 +126,53 @@ export function UnifiedThemeProvider({ children }: UnifiedThemeProviderProps) {
     };
 
     applyTenantTheme();
-  }, [tenant, themeApplication]);
+  }, [tenant, themeApplication.applyTheme]);
 
   // Context value
   const contextValue: UnifiedThemeContextValue = useMemo(() => ({
     // Current theme state
-    currentTheme: themeStore.currentTheme,
-    isApplying: themeStore.isApplying,
-    lastApplied: themeStore.lastApplied,
-    errors: themeStore.errors,
+    currentTheme,
+    isApplying,
+    lastApplied,
+    errors,
     
     // Theme management
-    applyTheme: themeStore.applyTheme,
-    applyPreset: themeStore.applyPreset,
-    applyCustomization: themeStore.applyCustomization,
+    applyTheme,
+    applyPreset,
+    applyCustomization,
     
     // Theme utilities
-    getThemeById: themeStore.getThemeById,
-    searchThemes: themeStore.searchThemes,
-    getThemesByCategory: themeStore.getThemesByCategory,
+    getThemeById,
+    searchThemes,
+    getThemesByCategory,
     
     // Validation
-    validateTheme: themeStore.validateTheme,
+    validateTheme,
     
     // History
-    undoThemeChange: themeStore.undoThemeChange,
-    redoThemeChange: themeStore.redoThemeChange,
+    undoThemeChange,
+    redoThemeChange,
     
     // Export/Import
-    exportTheme: themeStore.exportTheme,
-    importTheme: themeStore.importTheme,
-  }), [themeStore, themeApplication]);
+    exportTheme,
+    importTheme,
+  }), [
+    currentTheme,
+    isApplying,
+    lastApplied,
+    errors,
+    applyTheme,
+    applyPreset,
+    applyCustomization,
+    getThemeById,
+    searchThemes,
+    getThemesByCategory,
+    validateTheme,
+    undoThemeChange,
+    redoThemeChange,
+    exportTheme,
+    importTheme,
+  ]);
 
   return (
     <UnifiedThemeContext.Provider value={contextValue}>

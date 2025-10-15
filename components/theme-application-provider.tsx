@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState, useRef } from 'react';
 import type { UnifiedTheme, ThemeApplicationResult } from '@/types/unified-theme';
 import { UnifiedThemeManager } from '@/lib/unified-theme-manager';
 import { EnhancedCSSVariableManager } from '@/lib/enhanced-css-variables';
@@ -92,6 +92,9 @@ export function ThemeApplicationProvider({
   const [isApplying, setIsApplying] = useState(false);
   const [lastApplied, setLastApplied] = useState<Date | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  
+  // Ref to track initialization
+  const isInitialized = useRef(false);
 
   // Apply theme with real-time updates
   const applyTheme = async (theme: UnifiedTheme): Promise<ThemeApplicationResult> => {
@@ -319,16 +322,17 @@ export function ThemeApplicationProvider({
     resetToPreset,
   };
 
-  // Initialize with default theme on mount
+  // Initialize with default theme on mount (only once)
   useEffect(() => {
-    if (!currentTheme) {
+    if (!isInitialized.current && !currentTheme) {
+      isInitialized.current = true;
       // Load default theme or first available preset
       const defaultTheme = themeManager.loadTheme('default');
       if (defaultTheme) {
         applyTheme(defaultTheme);
       }
     }
-  }, [currentTheme, themeManager]);
+  }, []); // Empty dependency array - only run once on mount
 
   // Cleanup on unmount
   useEffect(() => {

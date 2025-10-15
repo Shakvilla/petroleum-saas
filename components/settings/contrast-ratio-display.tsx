@@ -248,7 +248,6 @@ function ContrastRatioItem({
   ratio: number; 
 }) {
   const [foreground, background] = pair.split('-');
-  const level = getComplianceLevel(ratio);
   
   const getComplianceLevel = (ratio: number) => {
     if (ratio >= 7.0) return 'AAA';
@@ -256,6 +255,9 @@ function ContrastRatioItem({
     if (ratio >= 3.0) return 'AA Large';
     return 'Fail';
   };
+
+  const level = getComplianceLevel(ratio);
+
 
   return (
     <div className="flex items-center justify-between p-2 border rounded">
