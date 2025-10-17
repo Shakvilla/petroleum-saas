@@ -90,7 +90,7 @@ After analyzing the entire petroleum SaaS application, I've identified the follo
   - Performance monitoring
   - CSS variable batching
   - Dynamic Tailwind updates
-- **Location**: `lib/theme-performance.ts`, `lib/theme-cache.ts`
+- **Location**: `lib/theme-performance.tsx`, `lib/theme-cache.ts`
 
 ### Integration Strategy
 

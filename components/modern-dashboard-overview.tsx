@@ -4,6 +4,8 @@ import { Suspense, lazy, memo } from 'react';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantQuery } from '@/hooks/use-tenant-query';
 import { ProtectedComponent } from '@/components/protected-component';
+import { useResponsive } from '@/components/responsive-provider';
+import { cn } from '@/lib/utils';
 import {
   TenantAwareCard,
   TenantAwareCardContent,
@@ -59,6 +61,7 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
 }: ModernDashboardOverviewProps) {
   const { tenant } = useTenant();
   const currentTenant = propTenant || tenant?.id;
+  const { isMobile, isTablet } = useResponsive();
 
   // Load dashboard data
   const { data: dashboardData, isLoading } = useTenantQuery(
@@ -203,61 +206,105 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
                 Live Dashboard
               </TenantAwareBadge>
             </div>
-            <h1 className="text-2xl lg:text-4xl font-bold mb-2 capitalize">
+            <h1 className={cn(
+              'font-bold mb-2 capitalize',
+              isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-2xl lg:text-4xl'
+            )}>
               {tenant?.name || currentTenant} Petroleum Operations
             </h1>
-            <p className="text-blue-100 text-sm lg:text-lg">
+            <p className={cn(
+              'text-blue-100',
+              isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm lg:text-lg'
+            )}>
               Real-time monitoring and management of your petroleum distribution
               network
             </p>
           </div>
-          <div className="flex flex-wrap gap-2 lg:gap-3">
+          <div className={cn(
+            'flex flex-wrap',
+            isMobile ? 'gap-1' : isTablet ? 'gap-2' : 'gap-2 lg:gap-3'
+          )}>
             {quickActions.map(action => (
               <TenantAwareButton
                 key={action.name}
-                className={`${action.color} text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm`}
+                className={cn(
+                  `${action.color} text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105`,
+                  isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-xs lg:text-sm'
+                )}
                 size="sm"
               >
-                <action.icon className="mr-1 lg:mr-2 h-3 w-3 lg:h-4 lg:w-4" />
-                <span className="hidden sm:inline">{action.name}</span>
+                <action.icon className={cn(
+                  'mr-1 h-3 w-3',
+                  isMobile ? 'mr-1' : isTablet ? 'mr-1' : 'mr-1 lg:mr-2 lg:h-4 lg:w-4'
+                )} />
+                <span className={cn(
+                  isMobile ? 'hidden' : isTablet ? 'inline' : 'hidden sm:inline'
+                )}>
+                  {action.name}
+                </span>
               </TenantAwareButton>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Modern Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      {/* Responsive Modern Stats Grid */}
+      <div className={cn(
+        'grid gap-4',
+        isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4',
+        isMobile ? 'gap-3' : isTablet ? 'gap-4' : 'gap-4 lg:gap-6'
+      )}>
         {stats.map(stat => (
           <TenantAwareCard
             key={stat.name}
             className="relative overflow-hidden bg-white border border-gray-200  hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
             <TenantAwareCardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <TenantAwareCardTitle className="text-xs lg:text-sm font-medium text-gray-600 truncate pr-2">
+              <TenantAwareCardTitle className={cn(
+                'font-medium text-gray-600 truncate pr-2',
+                isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-xs lg:text-sm'
+              )}>
                 {stat.name}
               </TenantAwareCardTitle>
               <div
-                className={`p-1.5 lg:p-2 rounded-xl ${stat.iconBg} flex-shrink-0`}
+                className={cn(
+                  `rounded-xl ${stat.iconBg} flex-shrink-0`,
+                  isMobile ? 'p-1' : isTablet ? 'p-1.5' : 'p-1.5 lg:p-2'
+                )}
               >
                 <stat.icon
-                  className={`h-3 w-3 lg:h-4 lg:w-4 ${stat.iconColor}`}
+                  className={cn(
+                    `${stat.iconColor}`,
+                    isMobile ? 'h-3 w-3' : isTablet ? 'h-3 w-3' : 'h-3 w-3 lg:h-4 lg:w-4'
+                  )}
                 />
               </div>
             </TenantAwareCardHeader>
             <TenantAwareCardContent>
               <div
-                className="text-xl lg:text-3xl font-bold text-gray-900 mb-1"
+                className={cn(
+                  'font-bold text-gray-900 mb-1',
+                  isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-xl lg:text-3xl'
+                )}
                 title={stat.fullValue}
               >
                 {stat.value}
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-center text-xs lg:text-sm">
+                <div className={cn(
+                  'flex items-center',
+                  isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-xs lg:text-sm'
+                )}>
                   {stat.changeType === 'increase' ? (
-                    <TrendingUp className="mr-1 h-3 w-3 lg:h-4 lg:w-4 text-emerald-500" />
+                    <TrendingUp className={cn(
+                      'mr-1 text-emerald-500',
+                      isMobile ? 'h-3 w-3' : isTablet ? 'h-3 w-3' : 'h-3 w-3 lg:h-4 lg:w-4'
+                    )} />
                   ) : (
-                    <TrendingDown className="mr-1 h-3 w-3 lg:h-4 lg:w-4 text-red-500" />
+                    <TrendingDown className={cn(
+                      'mr-1 text-red-500',
+                      isMobile ? 'h-3 w-3' : isTablet ? 'h-3 w-3' : 'h-3 w-3 lg:h-4 lg:w-4'
+                    )} />
                   )}
                   <span
                     className={
@@ -269,7 +316,10 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
                     {stat.change}
                   </span>
                 </div>
-                <span className="text-xs text-gray-500 hidden sm:block">
+                <span className={cn(
+                  'text-gray-500',
+                  isMobile ? 'text-xs hidden' : isTablet ? 'text-xs' : 'text-xs hidden sm:block'
+                )}>
                   {stat.description}
                 </span>
               </div>
@@ -278,34 +328,62 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
         ))}
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+      {/* Responsive Main Content Grid */}
+      <div className={cn(
+        'grid gap-6',
+        isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-3',
+        isMobile ? 'gap-4' : isTablet ? 'gap-6' : 'gap-6 lg:gap-8'
+      )}>
         {/* Modern Tank Levels */}
         <ProtectedComponent resource="tanks" action="read">
-          <TenantAwareCard className="xl:col-span-1 border-gray-100 hover:shadow-lg  hover:cursor-pointer bg-white">
+          <TenantAwareCard className={cn(
+            'border-gray-100 hover:shadow-lg hover:cursor-pointer bg-white',
+            isMobile ? 'col-span-1' : isTablet ? 'col-span-1' : 'xl:col-span-1'
+          )}>
             <TenantAwareCardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <TenantAwareCardTitle className="text-lg lg:text-xl font-bold text-gray-900">
+                  <TenantAwareCardTitle className={cn(
+                    'font-bold text-gray-900',
+                    isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-lg lg:text-xl'
+                  )}>
                     Tank Levels
                   </TenantAwareCardTitle>
-                  <TenantAwareCardDescription className="text-gray-600 text-sm">
+                  <TenantAwareCardDescription className={cn(
+                    'text-gray-600',
+                    isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'
+                  )}>
                     Real-time fuel inventory status
                   </TenantAwareCardDescription>
                 </div>
-                <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
-                  <Droplets className="h-4 w-4 lg:h-5 lg:w-5 text-white" />
+                <div className={cn(
+                  'bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl',
+                  isMobile ? 'p-1.5' : isTablet ? 'p-2' : 'p-2'
+                )}>
+                  <Droplets className={cn(
+                    'text-white',
+                    isMobile ? 'h-3 w-3' : isTablet ? 'h-4 w-4' : 'h-4 w-4 lg:h-5 lg:w-5'
+                  )} />
                 </div>
               </div>
             </TenantAwareCardHeader>
-            <TenantAwareCardContent className="space-y-4 lg:space-y-6">
+            <TenantAwareCardContent className={cn(
+              'space-y-4',
+              isMobile ? 'space-y-3' : isTablet ? 'space-y-4' : 'space-y-4 lg:space-y-6'
+            )}>
               {tankLevels.map(tank => (
                 <div
                   key={tank.name}
-                  className={`p-3 lg:p-4 rounded-2xl ${tank.bgColor} border border-gray-200/50`}
+                  className={cn(
+                    `rounded-2xl ${tank.bgColor} border border-gray-200/50`,
+                    isMobile ? 'p-2' : isTablet ? 'p-3' : 'p-3 lg:p-4'
+                  )}
                 >
                   <div className="flex justify-between items-center mb-3">
-                    <span className="font-semibold text-gray-900 text-sm lg:text-base truncate pr-2">
+                    <span className={cn(
+                      'font-semibold text-gray-900 truncate pr-2',
+                      isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm lg:text-base'
+                    )}>
                       {tank.name}
                     </span>
                     <TenantAwareBadge
@@ -316,14 +394,20 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
                             ? 'default'
                             : 'secondary'
                       }
-                      className="text-xs font-medium flex-shrink-0"
+                      className={cn(
+                        'font-medium flex-shrink-0',
+                        isMobile ? 'text-xs' : 'text-xs'
+                      )}
                     >
                       {tank.status}
                     </TenantAwareBadge>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex justify-between text-xs lg:text-sm text-gray-600">
+                    <div className={cn(
+                      'flex justify-between text-gray-600',
+                      isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-xs lg:text-sm'
+                    )}>
                       <span>{tank.current.toLocaleString()}L</span>
                       <span>{tank.capacity.toLocaleString()}L</span>
                     </div>
@@ -331,21 +415,36 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
                     <div className="relative">
                       <Progress
                         value={tank.level}
-                        className="h-2 lg:h-3 bg-gray-200"
+                        className={cn(
+                          'bg-gray-200',
+                          isMobile ? 'h-1.5' : isTablet ? 'h-2' : 'h-2 lg:h-3'
+                        )}
                       />
                       <div
-                        className={`absolute top-0 left-0 h-2 lg:h-3 rounded-full bg-gradient-to-r ${tank.color} transition-all duration-500`}
+                        className={cn(
+                          `absolute top-0 left-0 rounded-full bg-gradient-to-r ${tank.color} transition-all duration-500`,
+                          isMobile ? 'h-1.5' : isTablet ? 'h-2' : 'h-2 lg:h-3'
+                        )}
                         style={{ width: `${tank.level}%` }}
                       ></div>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-xs lg:text-sm font-medium text-gray-700">
+                      <span className={cn(
+                        'font-medium text-gray-700',
+                        isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-xs lg:text-sm'
+                      )}>
                         {tank.level}% Full
                       </span>
                       <div className="flex items-center space-x-1">
-                        <Target className="h-3 w-3 text-gray-400" />
-                        <span className="text-xs text-gray-500">
+                        <Target className={cn(
+                          'text-gray-400',
+                          isMobile ? 'h-2.5 w-2.5' : isTablet ? 'h-3 w-3' : 'h-3 w-3'
+                        )} />
+                        <span className={cn(
+                          'text-gray-500',
+                          isMobile ? 'text-xs' : 'text-xs'
+                        )}>
                           Target: 80%
                         </span>
                       </div>
@@ -357,32 +456,54 @@ export const ModernDashboardOverview = memo(function ModernDashboardOverview({
           </TenantAwareCard>
         </ProtectedComponent>
 
-        {/* Charts */}
-        <div className="xl:col-span-2 space-y-6 lg:space-y-8">
+        {/* Responsive Charts */}
+        <div className={cn(
+          'space-y-6',
+          isMobile ? 'col-span-1' : isTablet ? 'col-span-1' : 'xl:col-span-2',
+          isMobile ? 'space-y-4' : isTablet ? 'space-y-6' : 'space-y-6 lg:space-y-8'
+        )}>
           <ProtectedComponent resource="inventory" action="read">
-            <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-[200px]' : isTablet ? 'h-[250px]' : 'h-[300px]'
+            )} />}>
               <ModernInventoryChart />
             </Suspense>
           </ProtectedComponent>
         </div>
       </div>
+      
+      {/* Responsive Sales Chart */}
       <div className="grid grid-cols-1">
         <ProtectedComponent resource="sales" action="read">
-          <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+          <Suspense fallback={<Skeleton className={cn(
+            'w-full',
+            isMobile ? 'h-[200px]' : isTablet ? 'h-[250px]' : 'h-[300px]'
+          )} />}>
             <ModernSalesChart />
           </Suspense>
         </ProtectedComponent>
       </div>
 
-      {/* Bottom Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8">
+      {/* Responsive Bottom Grid */}
+      <div className={cn(
+        'grid gap-6',
+        isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-2',
+        isMobile ? 'gap-4' : isTablet ? 'gap-6' : 'gap-6 lg:gap-8'
+      )}>
         <ProtectedComponent resource="transactions" action="read">
-          <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+          <Suspense fallback={<Skeleton className={cn(
+            'w-full',
+            isMobile ? 'h-[300px]' : isTablet ? 'h-[350px]' : 'h-[400px]'
+          )} />}>
             <ModernTransactions />
           </Suspense>
         </ProtectedComponent>
         <ProtectedComponent resource="alerts" action="read">
-          <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+          <Suspense fallback={<Skeleton className={cn(
+            'w-full',
+            isMobile ? 'h-[300px]' : isTablet ? 'h-[350px]' : 'h-[400px]'
+          )} />}>
             <ModernAlertsPanel />
           </Suspense>
         </ProtectedComponent>

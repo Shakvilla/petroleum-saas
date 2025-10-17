@@ -9,6 +9,8 @@ import { ProtectedComponent } from '@/components/protected-component';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorBoundary } from '@/components/error-boundary';
+import { useResponsive } from '@/components/responsive-provider';
+import { cn } from '@/lib/utils';
 
 // Lazy load heavy components
 const ModernTankOverview = lazy(() =>
@@ -69,21 +71,40 @@ const DashboardCard = memo(
 
 DashboardCard.displayName = 'DashboardCard';
 
-// Loading skeleton component
-const DashboardSkeleton = memo(() => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {Array.from({ length: 6 }).map((_, i) => (
-      <Card key={i}>
-        <CardHeader>
-          <Skeleton className="h-6 w-3/4" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-32 w-full" />
-        </CardContent>
-      </Card>
-    ))}
-  </div>
-));
+// Responsive loading skeleton component
+const DashboardSkeleton = memo(() => {
+  const { isMobile, isTablet } = useResponsive();
+  
+  const getGridCols = () => {
+    if (isMobile) return 'grid-cols-1';
+    if (isTablet) return 'grid-cols-2';
+    return 'grid-cols-3';
+  };
+  
+  const getSkeletonCount = () => {
+    if (isMobile) return 4;
+    if (isTablet) return 6;
+    return 6;
+  };
+  
+  return (
+    <div className={cn('grid gap-4 sm:gap-6', getGridCols())}>
+      {Array.from({ length: getSkeletonCount() }).map((_, i) => (
+        <Card key={i}>
+          <CardHeader>
+            <Skeleton className="h-6 w-3/4" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-24' : isTablet ? 'h-32' : 'h-32'
+            )} />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+});
 
 DashboardSkeleton.displayName = 'DashboardSkeleton';
 
@@ -183,25 +204,54 @@ export function TenantOptimizedDashboard() {
     );
   }
 
+  const { isMobile, isTablet } = useResponsive();
+  
+  // Responsive grid configuration
+  const getGridCols = () => {
+    if (isMobile) return 'grid-cols-1';
+    if (isTablet) return 'grid-cols-2';
+    return 'grid-cols-3';
+  };
+  
+  const getGap = () => {
+    if (isMobile) return 'gap-4';
+    return 'gap-6';
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Dashboard Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Responsive Dashboard Header */}
+      <div className={cn(
+        'flex items-center justify-between',
+        isMobile && 'flex-col space-y-4',
+        isTablet && 'flex-col space-y-4 md:flex-row md:space-y-0'
+      )}>
+        <div className={cn(
+          'text-center',
+          !isMobile && 'text-left'
+        )}>
+          <h1 className={cn(
+            'font-bold text-gray-900',
+            isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-3xl'
+          )}>
             {tenant.name} Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className={cn(
+            'text-gray-600',
+            isMobile ? 'text-sm' : 'text-base'
+          )}>
             Welcome back! Here's what's happening with your operations.
           </p>
         </div>
-        <div className="text-sm text-gray-500">
-          Last updated: {new Date().toLocaleTimeString()}
-        </div>
+        {!isMobile && (
+          <div className="text-sm text-gray-500">
+            Last updated: {new Date().toLocaleTimeString()}
+          </div>
+        )}
       </div>
 
-      {/* Dashboard Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Responsive Dashboard Grid */}
+      <div className={cn('grid', getGridCols(), getGap())}>
         {/* Tank Overview */}
         <ProtectedComponent
           resource="tanks"
@@ -216,8 +266,18 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-              <DashboardCard title="Tank Overview" className="lg:col-span-2">
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
+              <DashboardCard 
+                title="Tank Overview" 
+                className={cn(
+                  isMobile ? 'col-span-1' : 
+                  isTablet ? 'col-span-2' : 
+                  'lg:col-span-2'
+                )}
+              >
                 <ModernTankOverview
                   tenant={tenant?.id || 'default'}
                   searchTerm=""
@@ -241,7 +301,10 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard title="Inventory Levels">
                 <ModernInventoryChart />
               </DashboardCard>
@@ -263,7 +326,10 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard title="Sales Performance">
                 <ModernSalesChart />
               </DashboardCard>
@@ -285,10 +351,17 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard
                 title="Predictive Analytics"
-                className="lg:col-span-2"
+                className={cn(
+                  isMobile ? 'col-span-1' : 
+                  isTablet ? 'col-span-2' : 
+                  'lg:col-span-2'
+                )}
               >
                 <ModernPredictiveAnalytics tenant={tenant?.id || 'default'} />
               </DashboardCard>
@@ -310,7 +383,10 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard title="IoT Monitoring">
                 <ModernIotMonitoring tenant={tenant?.id || 'default'} />
               </DashboardCard>
@@ -332,7 +408,10 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard title="Active Alerts">
                 <ModernAlertsPanel />
               </DashboardCard>
@@ -354,10 +433,17 @@ export function TenantOptimizedDashboard() {
               />
             }
           >
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            <Suspense fallback={<Skeleton className={cn(
+              'w-full',
+              isMobile ? 'h-48' : isTablet ? 'h-56' : 'h-64'
+            )} />}>
               <DashboardCard
                 title="Recent Transactions"
-                className="lg:col-span-3"
+                className={cn(
+                  isMobile ? 'col-span-1' : 
+                  isTablet ? 'col-span-2' : 
+                  'lg:col-span-3'
+                )}
               >
                 <ModernTransactions />
               </DashboardCard>

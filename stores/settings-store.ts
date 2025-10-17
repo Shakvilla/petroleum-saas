@@ -51,6 +51,7 @@ interface SettingsStoreState extends SettingsState {
 }
 
 // Default settings data
+// @ts-ignore
 const defaultSettingsData: SettingsData = {
   profile: {
     companyName: '',
@@ -286,6 +287,9 @@ const defaultSettingsData: SettingsData = {
         secondary: '#3b82f6',
         accent: '#f59e0b',
         background: '#ffffff',
+        textSecondary: '',
+        border: '',
+        info: '',
         surface: '#f8fafc',
         text: '#1f2937',
         success: '#10b981',
@@ -304,6 +308,7 @@ const defaultSettingsData: SettingsData = {
           '3xl': '1.875rem',
           '4xl': '2.25rem',
         },
+
       },
       favicon: '',
     },

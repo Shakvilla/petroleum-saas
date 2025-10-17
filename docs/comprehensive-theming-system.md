@@ -342,7 +342,7 @@ class ThemeCacheManager {
 }
 ```
 
-#### 2. Performance Monitoring (`lib/theme-performance.ts`)
+#### 2. Performance Monitoring (`lib/theme-performance.tsx`)
 
 ```typescript
 class ThemePerformanceMonitor {

@@ -15,6 +15,8 @@ export { InventoryManagement } from './inventory-management';
 export { FleetTracker } from './fleet-tracker';
 export { RouteOptimizer } from './route-optimizer';
 export { DistributionManagement } from './distribution-management';
+export { SalesManagement } from './sales-management';
+export { TransactionsDataTable } from './transactions-data-table';
 
 // Auth Components
 export { default as LoginPage } from './auth/login-page';

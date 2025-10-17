@@ -12,6 +12,8 @@ import { DistributionAnalytics } from './distribution-analytics';
 import { DeliveryScheduler } from './delivery-scheduler';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantQuery } from '@/hooks/use-tenant-query';
+import { useResponsive } from '@/components/responsive-provider';
+import { cn } from '@/lib/utils';
 import {
   Truck,
   MapPin,
@@ -167,6 +169,7 @@ const getStatusIcon = (status: string) => {
 
 export function DistributionManagement() {
   const { tenant } = useTenant();
+  const { isMobile, isTablet } = useResponsive();
   const [searchTerm, setSearchTerm] = useState('');
   const [showScheduler, setShowScheduler] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -216,74 +219,114 @@ export function DistributionManagement() {
 
   return (
     <div className="min-h-screen">
-      <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <div className={cn(
+        'space-y-6',
+        isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6 lg:p-8'
+      )}>
         {/* Header */}
-        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div className={cn(
+          'flex flex-col space-y-4',
+          isMobile ? 'space-y-3' : 'sm:flex-row sm:items-center sm:justify-between sm:space-y-0'
+        )}>
           <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+            <h1 className={cn(
+              'font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent',
+              isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-2xl sm:text-3xl'
+            )}>
               Distribution Management
             </h1>
-            <p className="text-sm sm:text-base text-slate-600">
+            <p className={cn(
+              'text-slate-600',
+              isMobile ? 'text-xs' : 'text-sm sm:text-base'
+            )}>
               Manage deliveries, routes, and fleet operations
             </p>
           </div>
           <Button
             onClick={() => setShowScheduler(true)}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            className={cn(
+              'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105',
+              isMobile ? 'w-full' : 'w-auto'
+            )}
           >
-            <Plus className="h-4 w-4 mr-2" />
-            <span className="hidden sm:inline">Schedule Delivery</span>
-            <span className="sm:hidden">Schedule</span>
+            <Plus className={cn('mr-2', isMobile ? 'h-4 w-4' : 'h-4 w-4')} />
+            <span className={cn(isMobile ? 'inline' : 'hidden sm:inline')}>Schedule Delivery</span>
+            <span className={cn(isMobile ? 'hidden' : 'sm:hidden')}>Schedule</span>
           </Button>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+        <div className={cn(
+          'grid gap-3',
+          isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4',
+          isMobile ? 'gap-3' : isTablet ? 'gap-4' : 'gap-3 sm:gap-4 lg:gap-6'
+        )}>
           {deliveryStats.map(stat => (
             <Card
-              className="relative overflow-hidden bg-white  border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="relative overflow-hidden bg-white border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
               key={stat.id}
             >
-              {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10" /> */}
-              <CardContent className="relative p-4 sm:p-6">
+              <CardContent className={cn(
+                'relative',
+                isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+              )}>
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="text-xs sm:text-sm font-medium text-slate-600">
+                    <p className={cn(
+                      'font-medium text-slate-600',
+                      isMobile ? 'text-xs' : 'text-xs sm:text-sm'
+                    )}>
                       {stat.title}
                     </p>
-                    <p className="text-xl sm:text-2xl font-bold text-slate-900">
+                    <p className={cn(
+                      'font-bold text-slate-900',
+                      isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-xl sm:text-2xl'
+                    )}>
                       {stat.value}
                     </p>
-                    <p className="text-xs text-emerald-600 font-medium">
+                    <p className={cn(
+                      'text-emerald-600 font-medium',
+                      isMobile ? 'text-xs' : 'text-xs'
+                    )}>
                       {stat.percentage}
                     </p>
                   </div>
-                  <div className="p-2 sm:p-3 bg-blue-100 rounded-full">
+                  <div className={cn(
+                    'bg-blue-100 rounded-full',
+                    isMobile ? 'p-2' : isTablet ? 'p-2' : 'p-2 sm:p-3'
+                  )}>
                     {stat.icon}
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
-
-
         </div>
 
         {/* Main Content */}
-        <Card className="bg-gray-100  border-gray-200">
+        <Card className="bg-gray-100 border-gray-200">
           <Tabs defaultValue="deliveries" className="w-full bg-gradient-to-b from-white to-gray-50">
-            <div className="border-b border-slate-200/50 px-4 sm:px-6">
+            <div className={cn(
+              'border-b border-slate-200/50',
+              isMobile ? 'px-3' : isTablet ? 'px-4' : 'px-4 sm:px-6'
+            )}>
               <TabsList className="bg-transparent border-0 p-0 h-auto space-x-0">
                 <TabsTrigger
                   value="deliveries"
-                  className="relative bg-transparent border-0 rounded-none px-4 py-3 text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors"
+                  className={cn(
+                    'relative bg-transparent border-0 rounded-none text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors',
+                    isMobile ? 'px-3 py-2 text-sm' : isTablet ? 'px-4 py-3 text-sm' : 'px-4 py-3'
+                  )}
                 >
                   <span className="relative z-10 font-medium">Deliveries</span>
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 transform scale-x-0 data-[state=active]:scale-x-100 transition-transform" />
                 </TabsTrigger>
                 <TabsTrigger
                   value="fleet"
-                  className="relative bg-transparent border-0 rounded-none px-4 py-3 text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors"
+                  className={cn(
+                    'relative bg-transparent border-0 rounded-none text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors',
+                    isMobile ? 'px-3 py-2 text-sm' : isTablet ? 'px-4 py-3 text-sm' : 'px-4 py-3'
+                  )}
                 >
                   <span className="relative z-10 font-medium">
                     Fleet Tracker
@@ -292,14 +335,20 @@ export function DistributionManagement() {
                 </TabsTrigger>
                 <TabsTrigger
                   value="routes"
-                  className="relative bg-transparent border-0 rounded-none px-4 py-3 text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors"
+                  className={cn(
+                    'relative bg-transparent border-0 rounded-none text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors',
+                    isMobile ? 'px-3 py-2 text-sm' : isTablet ? 'px-4 py-3 text-sm' : 'px-4 py-3'
+                  )}
                 >
                   <span className="relative z-10 font-medium">Routes</span>
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 transform scale-x-0 data-[state=active]:scale-x-100 transition-transform" />
                 </TabsTrigger>
                 <TabsTrigger
                   value="analytics"
-                  className="relative bg-transparent border-0 rounded-none px-4 py-3 text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors"
+                  className={cn(
+                    'relative bg-transparent border-0 rounded-none text-slate-600 data-[state=active]:text-blue-600 data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:text-blue-600 transition-colors',
+                    isMobile ? 'px-3 py-2 text-sm' : isTablet ? 'px-4 py-3 text-sm' : 'px-4 py-3'
+                  )}
                 >
                   <span className="relative z-10 font-medium">Analytics</span>
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 transform scale-x-0 data-[state=active]:scale-x-100 transition-transform" />
@@ -307,29 +356,45 @@ export function DistributionManagement() {
               </TabsList>
             </div>
 
-            <TabsContent value="deliveries" className="p-4 sm:p-6 space-y-6">
+            <TabsContent value="deliveries" className={cn(
+              'space-y-6',
+              isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+            )}>
               {/* Search and Filter */}
-              <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-                <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
+              <div className={cn(
+                'flex flex-col space-y-3',
+                isMobile ? 'space-y-3' : 'sm:flex-row sm:items-center sm:justify-between sm:space-y-0'
+              )}>
+                <div className={cn(
+                  'flex flex-col space-y-3',
+                  isMobile ? 'space-y-3' : 'sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3'
+                )}>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <Input
                       placeholder="Search deliveries..."
                       value={searchTerm}
                       onChange={e => setSearchTerm(e.target.value)}
-                      className="pl-10 w-full sm:w-64 bg-white/50 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                      className={cn(
+                        'pl-10 bg-white/50 border-slate-200 focus:border-blue-500 focus:ring-blue-500',
+                        isMobile ? 'w-full' : isTablet ? 'w-64' : 'w-full sm:w-64'
+                      )}
                     />
                   </div>
-                  <div className="flex space-x-2">
+                  <div className={cn(
+                    'flex space-x-2',
+                    isMobile ? 'flex-wrap gap-2' : 'flex-nowrap'
+                  )}>
                     <Button
                       variant={selectedStatus === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setSelectedStatus('all')}
-                      className={
+                      className={cn(
                         selectedStatus === 'all'
                           ? 'bg-blue-600 hover:bg-blue-700'
-                          : ''
-                      }
+                          : '',
+                        isMobile ? 'flex-1' : 'flex-none'
+                      )}
                     >
                       All
                     </Button>
@@ -339,11 +404,12 @@ export function DistributionManagement() {
                       }
                       size="sm"
                       onClick={() => setSelectedStatus('in-transit')}
-                      className={
+                      className={cn(
                         selectedStatus === 'in-transit'
                           ? 'bg-blue-600 hover:bg-blue-700'
-                          : ''
-                      }
+                          : '',
+                        isMobile ? 'flex-1' : 'flex-none'
+                      )}
                     >
                       In Transit
                     </Button>
@@ -353,20 +419,24 @@ export function DistributionManagement() {
                       }
                       size="sm"
                       onClick={() => setSelectedStatus('scheduled')}
-                      className={
+                      className={cn(
                         selectedStatus === 'scheduled'
                           ? 'bg-blue-600 hover:bg-blue-700'
-                          : ''
-                      }
+                          : '',
+                        isMobile ? 'flex-1' : 'flex-none'
+                      )}
                     >
                       Scheduled
                     </Button>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="bg-white/50">
+                <Button variant="outline" size="sm" className={cn(
+                  'bg-white/50',
+                  isMobile ? 'w-full' : 'w-auto'
+                )}>
                   <Filter className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">More Filters</span>
-                  <span className="sm:hidden">Filter</span>
+                  <span className={cn(isMobile ? 'inline' : 'hidden sm:inline')}>More Filters</span>
+                  <span className={cn(isMobile ? 'hidden' : 'sm:hidden')}>Filter</span>
                 </Button>
               </div>
 
@@ -375,20 +445,35 @@ export function DistributionManagement() {
                 {filteredDeliveries.map((delivery: any) => (
                   <Card
                     key={delivery.id}
-                    className="relative overflow-hidden bg-white  border-gray-200  hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    className="relative overflow-hidden bg-white border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   >
                     <div className="absolute inset-0 bg-white" />
-                    <CardContent className="relative p-4 sm:p-6">
-                      <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
+                    <CardContent className={cn(
+                      'relative',
+                      isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+                    )}>
+                      <div className={cn(
+                        'flex flex-col space-y-4',
+                        isMobile ? 'space-y-3' : 'lg:flex-row lg:items-center lg:justify-between lg:space-y-0'
+                      )}>
                         <div className="flex-1 space-y-3">
-                          <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
+                          <div className={cn(
+                            'flex flex-col space-y-2',
+                            isMobile ? 'space-y-2' : 'sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3'
+                          )}>
                             <div className="flex items-center space-x-2">
                               {getStatusIcon(delivery.status)}
-                              <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
+                              <h3 className={cn(
+                                'font-semibold text-slate-900',
+                                isMobile ? 'text-sm' : 'text-sm sm:text-base'
+                              )}>
                                 {delivery.driverId}
                               </h3>
                             </div>
-                            <div className="flex flex-wrap gap-2">
+                            <div className={cn(
+                              'flex gap-2',
+                              isMobile ? 'flex-wrap' : 'flex-wrap'
+                            )}>
                               <Badge
                                 className={`${getStatusColor(delivery.status)} text-xs font-medium border`}
                               >
@@ -402,7 +487,10 @@ export function DistributionManagement() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs sm:text-sm text-slate-600">
+                          <div className={cn(
+                            'grid gap-3 text-slate-600',
+                            isMobile ? 'grid-cols-1 text-xs' : isTablet ? 'grid-cols-2 text-xs sm:text-sm' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 text-xs sm:text-sm'
+                          )}>
                             <div className="flex items-center space-x-2">
                               <MapPin className="h-4 w-4 text-slate-400" />
                               <span className="truncate">
@@ -441,18 +529,27 @@ export function DistributionManagement() {
                           )}
                         </div>
 
-                        <div className="flex flex-row space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
+                        <div className={cn(
+                          'flex space-x-2',
+                          isMobile ? 'flex-row' : 'lg:flex-col lg:space-x-0 lg:space-y-2'
+                        )}>
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 lg:flex-none bg-white/50 hover:bg-white"
+                            className={cn(
+                              'bg-white/50 hover:bg-white',
+                              isMobile ? 'flex-1' : 'lg:flex-none'
+                            )}
                           >
                             Track
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 lg:flex-none bg-white/50 hover:bg-white"
+                            className={cn(
+                              'bg-white/50 hover:bg-white',
+                              isMobile ? 'flex-1' : 'lg:flex-none'
+                            )}
                           >
                             Details
                           </Button>
@@ -476,15 +573,21 @@ export function DistributionManagement() {
               )}
             </TabsContent>
 
-            <TabsContent value="fleet" className="p-4 sm:p-6">
+            <TabsContent value="fleet" className={cn(
+              isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+            )}>
               <FleetTracker />
             </TabsContent>
 
-            <TabsContent value="routes" className="p-4 sm:p-6">
+            <TabsContent value="routes" className={cn(
+              isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+            )}>
               <RouteOptimizer />
             </TabsContent>
 
-            <TabsContent value="analytics" className="p-4 sm:p-6">
+            <TabsContent value="analytics" className={cn(
+              isMobile ? 'p-3' : isTablet ? 'p-4' : 'p-4 sm:p-6'
+            )}>
               <DistributionAnalytics />
             </TabsContent>
           </Tabs>

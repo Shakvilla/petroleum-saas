@@ -13,6 +13,8 @@ import {
   ColumnFiltersState,
   VisibilityState,
 } from '@tanstack/react-table';
+import { useResponsive } from '@/components/responsive-provider';
+import { cn } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -102,6 +104,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const { isMobile, isTablet } = useResponsive();
 
   const columns: ColumnDef<User>[] = useMemo(
     () => [
@@ -114,10 +117,16 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === 'asc')
               }
-              className="h-8 px-2 lg:px-3"
+              className={cn(
+                'h-8',
+                isMobile ? 'px-1' : isTablet ? 'px-2' : 'px-2 lg:px-3'
+              )}
             >
               User
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className={cn(
+                'ml-2',
+                isMobile ? 'h-3 w-3' : 'h-4 w-4'
+              )} />
             </TenantAwareButton>
           );
         },
@@ -130,17 +139,54 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             .toUpperCase();
 
           return (
-            <div className="flex items-center space-x-3">
-              <Avatar className="h-8 w-8">
+            <div className={cn(
+              'flex items-center',
+              isMobile ? 'space-x-2' : 'space-x-3'
+            )}>
+              <Avatar className={cn(
+                isMobile ? 'h-6 w-6' : isTablet ? 'h-7 w-7' : 'h-8 w-8'
+              )}>
                 <AvatarImage src="" alt={user.name} />
-                <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                <AvatarFallback className={cn(
+                  isMobile ? 'text-xs' : 'text-xs'
+                )}>
+                  {initials}
+                </AvatarFallback>
               </Avatar>
-              <div>
-                <div className="font-medium">{user.name}</div>
-                <div className="text-sm text-muted-foreground flex items-center">
-                  <Mail className="h-3 w-3 mr-1" />
-                  {user.email}
+              <div className="min-w-0 flex-1">
+                <div className={cn(
+                  'font-medium truncate',
+                  isMobile ? 'text-sm' : 'text-base'
+                )}>
+                  {user.name}
                 </div>
+                <div className={cn(
+                  'text-muted-foreground flex items-center truncate',
+                  isMobile ? 'text-xs' : 'text-sm'
+                )}>
+                  <Mail className={cn(
+                    'mr-1',
+                    isMobile ? 'h-2.5 w-2.5' : 'h-3 w-3'
+                  )} />
+                  <span className="truncate">{user.email}</span>
+                </div>
+                {/* Mobile: Show role and status inline */}
+                {isMobile && (
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Badge className={cn(
+                      'text-xs',
+                      roleColors[user.role as keyof typeof roleColors]
+                    )}>
+                      {user.role}
+                    </Badge>
+                    <Badge className={cn(
+                      'text-xs',
+                      statusColors[user.status as keyof typeof statusColors]
+                    )}>
+                      {user.status}
+                    </Badge>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -155,23 +201,36 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === 'asc')
               }
-              className="h-8 px-2 lg:px-3"
+              className={cn(
+                'h-8',
+                isMobile ? 'px-1' : isTablet ? 'px-2' : 'px-2 lg:px-3'
+              )}
             >
               Role
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className={cn(
+                'ml-2',
+                isMobile ? 'h-3 w-3' : 'h-4 w-4'
+              )} />
             </TenantAwareButton>
           );
         },
         cell: ({ row }) => {
           const role = row.getValue('role') as string;
           return (
-            <Badge className={roleColors[role as keyof typeof roleColors]}>
+            <Badge className={cn(
+              roleColors[role as keyof typeof roleColors],
+              isMobile ? 'text-xs' : 'text-sm'
+            )}>
               {role}
             </Badge>
           );
         },
         filterFn: (row, id, value) => {
           return value.includes(row.getValue(id));
+        },
+        // Hide on mobile since we show it inline in the name column
+        meta: {
+          className: isMobile ? 'hidden' : '',
         },
       },
       {
@@ -183,25 +242,36 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === 'asc')
               }
-              className="h-8 px-2 lg:px-3"
+              className={cn(
+                'h-8',
+                isMobile ? 'px-1' : isTablet ? 'px-2' : 'px-2 lg:px-3'
+              )}
             >
               Status
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className={cn(
+                'ml-2',
+                isMobile ? 'h-3 w-3' : 'h-4 w-4'
+              )} />
             </TenantAwareButton>
           );
         },
         cell: ({ row }) => {
           const status = row.getValue('status') as string;
           return (
-            <Badge
-              className={statusColors[status as keyof typeof statusColors]}
-            >
+            <Badge className={cn(
+              statusColors[status as keyof typeof statusColors],
+              isMobile ? 'text-xs' : 'text-sm'
+            )}>
               {status}
             </Badge>
           );
         },
         filterFn: (row, id, value) => {
           return value.includes(row.getValue(id));
+        },
+        // Hide on mobile since we show it inline in the name column
+        meta: {
+          className: isMobile ? 'hidden' : '',
         },
       },
       {
@@ -213,21 +283,37 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === 'asc')
               }
-              className="h-8 px-2 lg:px-3"
+              className={cn(
+                'h-8',
+                isMobile ? 'px-1' : isTablet ? 'px-2' : 'px-2 lg:px-3'
+              )}
             >
               Last Login
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className={cn(
+                'ml-2',
+                isMobile ? 'h-3 w-3' : 'h-4 w-4'
+              )} />
             </TenantAwareButton>
           );
         },
         cell: ({ row }) => {
           const date = new Date(row.getValue('lastLoginAt'));
           return (
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Calendar className="h-3 w-3 mr-1" />
-              {format(date, 'MMM dd, yyyy')}
+            <div className={cn(
+              'flex items-center text-muted-foreground',
+              isMobile ? 'text-xs' : 'text-sm'
+            )}>
+              <Calendar className={cn(
+                'mr-1',
+                isMobile ? 'h-2.5 w-2.5' : 'h-3 w-3'
+              )} />
+              {isMobile ? format(date, 'MMM dd') : format(date, 'MMM dd, yyyy')}
             </div>
           );
+        },
+        // Hide on mobile to save space
+        meta: {
+          className: isMobile ? 'hidden' : '',
         },
       },
       {
@@ -239,13 +325,20 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             action: string;
           }>;
           return (
-            <div className="text-sm text-muted-foreground">
+            <div className={cn(
+              'text-muted-foreground',
+              isMobile ? 'text-xs' : 'text-sm'
+            )}>
               {permissions.length} permission
               {permissions.length !== 1 ? 's' : ''}
             </div>
           );
         },
         enableSorting: false,
+        // Hide on mobile to save space
+        meta: {
+          className: isMobile ? 'hidden' : '',
+        },
       },
       {
         id: 'actions',
@@ -256,21 +349,34 @@ export const UsersTable: React.FC<UsersTableProps> = ({
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <TenantAwareButton variant="ghost" className="h-8 w-8 p-0">
+                <TenantAwareButton variant="ghost" className={cn(
+                  'p-0',
+                  isMobile ? 'h-6 w-6' : 'h-8 w-8'
+                )}>
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                  <MoreHorizontal className={cn(
+                    isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                  )} />
                 </TenantAwareButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className={cn(
+                isMobile ? 'w-48' : 'w-56'
+              )}>
                 {onView && (
                   <DropdownMenuCheckboxItem onClick={() => onView(user)}>
-                    <Eye className="mr-2 h-4 w-4" />
+                    <Eye className={cn(
+                      'mr-2',
+                      isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                    )} />
                     View Details
                   </DropdownMenuCheckboxItem>
                 )}
                 {onEdit && (
                   <DropdownMenuCheckboxItem onClick={() => onEdit(user)}>
-                    <Edit className="mr-2 h-4 w-4" />
+                    <Edit className={cn(
+                      'mr-2',
+                      isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                    )} />
                     Edit User
                   </DropdownMenuCheckboxItem>
                 )}
@@ -279,7 +385,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                     onClick={() => onDelete(user)}
                     className="text-red-600"
                   >
-                    <Trash2 className="mr-2 h-4 w-4" />
+                    <Trash2 className={cn(
+                      'mr-2',
+                      isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                    )} />
                     Delete User
                   </DropdownMenuCheckboxItem>
                 )}
@@ -289,7 +398,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         },
       },
     ],
-    [onEdit, onDelete, onView]
+    [onEdit, onDelete, onView, isMobile, isTablet]
   );
 
   const table = useReactTable({
@@ -313,16 +422,24 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   return (
     <div className="w-full space-y-4">
-      {/* Header with filters and actions */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+      {/* Responsive Header with filters and actions */}
+      <div className={cn(
+        'flex items-center justify-between',
+        isMobile ? 'flex-col space-y-3' : 'flex-row'
+      )}>
+        <div className={cn(
+          'flex items-center',
+          isMobile ? 'w-full space-x-2' : isTablet ? 'space-x-2' : 'space-x-2'
+        )}>
           <Input
             placeholder="Filter users..."
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={event =>
               table.getColumn('name')?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className={cn(
+              isMobile ? 'flex-1' : 'max-w-sm'
+            )}
           />
           <Select
             value={(table.getColumn('role')?.getFilterValue() as string) ?? ''}
@@ -332,7 +449,9 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                 ?.setFilterValue(value === 'all' ? '' : value)
             }
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className={cn(
+              isMobile ? 'w-32' : 'w-[180px]'
+            )}>
               <SelectValue placeholder="Filter by role" />
             </SelectTrigger>
             <SelectContent>
@@ -353,7 +472,9 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                 ?.setFilterValue(value === 'all' ? '' : value)
             }
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className={cn(
+              isMobile ? 'w-32' : 'w-[180px]'
+            )}>
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -363,13 +484,24 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className={cn(
+          'flex items-center',
+          isMobile ? 'w-full justify-between' : 'space-x-2'
+        )}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <TenantAwareButton variant="outline" className="ml-auto">
-                <Filter className="mr-2 h-4 w-4" />
+              <TenantAwareButton variant="outline" className={cn(
+                isMobile ? 'text-xs' : 'text-sm'
+              )}>
+                <Filter className={cn(
+                  'mr-2',
+                  isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                )} />
                 View
-                <ChevronDown className="ml-2 h-4 w-4" />
+                <ChevronDown className={cn(
+                  'ml-2',
+                  isMobile ? 'h-3 w-3' : 'h-4 w-4'
+                )} />
               </TenantAwareButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -392,87 +524,134 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <TenantAwareButton variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
-            Export
+          <TenantAwareButton variant="outline" size={isMobile ? 'sm' : 'sm'}>
+            <Download className={cn(
+              'mr-2',
+              isMobile ? 'h-3 w-3' : 'h-4 w-4'
+            )} />
+            {isMobile ? 'Export' : 'Export'}
           </TenantAwareButton>
           {onCreate && (
-            <TenantAwareButton onClick={onCreate}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add User
+            <TenantAwareButton onClick={onCreate} size={isMobile ? 'sm' : 'default'}>
+              <Plus className={cn(
+                'mr-2',
+                isMobile ? 'h-3 w-3' : 'h-4 w-4'
+              )} />
+              {isMobile ? 'Add' : 'Add User'}
             </TenantAwareButton>
           )}
         </div>
       </div>
 
-      {/* Table */}
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+      {/* Responsive Table */}
+      <div className="rounded-md border overflow-hidden">
+        <div className={cn(
+          'overflow-x-auto',
+          isMobile ? 'max-w-full' : ''
+        )}>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map(header => {
+                    return (
+                      <TableHead 
+                        key={header.id}
+                        className={cn(
+                          header.column.columnDef.meta?.className || ''
+                        )}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No users found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={cn(
+                      isMobile ? 'hover:bg-gray-50' : ''
+                    )}
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell 
+                        key={cell.id}
+                        className={cn(
+                          cell.column.columnDef.meta?.className || '',
+                          isMobile ? 'py-3' : 'py-4'
+                        )}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className={cn(
+                      'text-center',
+                      isMobile ? 'h-20' : 'h-24'
+                    )}
+                  >
+                    No users found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+      {/* Responsive Pagination */}
+      <div className={cn(
+        'flex items-center justify-between py-4',
+        isMobile ? 'flex-col space-y-3' : 'space-x-2'
+      )}>
+        <div className={cn(
+          'text-muted-foreground',
+          isMobile ? 'text-xs' : 'text-sm'
+        )}>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
+        <div className={cn(
+          'flex items-center',
+          isMobile ? 'space-x-4' : 'space-x-6 lg:space-x-8'
+        )}>
+          <div className={cn(
+            'flex items-center',
+            isMobile ? 'space-x-1' : 'space-x-2'
+          )}>
+            <p className={cn(
+              'font-medium',
+              isMobile ? 'text-xs' : 'text-sm'
+            )}>
+              Rows per page
+            </p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={value => {
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className={cn(
+                isMobile ? 'h-6 w-[60px]' : 'h-8 w-[70px]'
+              )}>
                 <SelectValue
                   placeholder={table.getState().pagination.pageSize}
                 />
@@ -486,14 +665,23 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className={cn(
+            'flex items-center justify-center font-medium',
+            isMobile ? 'text-xs w-[80px]' : 'text-sm w-[100px]'
+          )}>
             Page {table.getState().pagination.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className={cn(
+            'flex items-center',
+            isMobile ? 'space-x-1' : 'space-x-2'
+          )}>
             <TenantAwareButton
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className={cn(
+                'p-0',
+                isMobile ? 'hidden h-6 w-6' : 'hidden h-8 w-8 lg:flex'
+              )}
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
@@ -502,7 +690,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             </TenantAwareButton>
             <TenantAwareButton
               variant="outline"
-              className="h-8 w-8 p-0"
+              className={cn(
+                'p-0',
+                isMobile ? 'h-6 w-6' : 'h-8 w-8'
+              )}
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
@@ -511,7 +702,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             </TenantAwareButton>
             <TenantAwareButton
               variant="outline"
-              className="h-8 w-8 p-0"
+              className={cn(
+                'p-0',
+                isMobile ? 'h-6 w-6' : 'h-8 w-8'
+              )}
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
@@ -520,7 +714,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             </TenantAwareButton>
             <TenantAwareButton
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className={cn(
+                'p-0',
+                isMobile ? 'hidden h-6 w-6' : 'hidden h-8 w-8 lg:flex'
+              )}
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >

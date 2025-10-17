@@ -41,7 +41,7 @@ export function SettingsHeader({
     <div className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Left side - Title and status */}
-        <div className="flex items-center gap-4">
+        <div className="lg:flex items-center gap-4">
           <div>
             <h1 className="text-xl font-semibold text-gray-900">
               {tabLabels[activeTab]}
@@ -63,7 +63,7 @@ export function SettingsHeader({
         </div>
 
         {/* Right side - Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-end lg:items-center gap-3">
           {hasUnsavedChanges && (
             <>
               <TenantAwareButton
@@ -90,7 +90,7 @@ export function SettingsHeader({
             </>
           )}
 
-          <Separator orientation="vertical" className="h-6" />
+          <Separator orientation="vertical" className="h-6 hidden lg:block" />
 
           <TenantAwareButton
             onClick={onSave}

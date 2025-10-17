@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useTenant } from '@/components/tenant-provider';
 import { useTenantQuery } from '@/hooks/use-tenant-query';
+import { TransactionsDataTable } from '@/components/transactions-data-table';
 import {
   DollarSign,
   TrendingUp,
@@ -23,7 +24,6 @@ interface SalesManagementProps {
 export function SalesManagement({ tenant: propTenant }: SalesManagementProps) {
   const { tenant } = useTenant();
   const currentTenant = propTenant || tenant?.id;
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Load sales data from API
   const { data: salesData, isLoading } = useTenantQuery(
@@ -57,13 +57,32 @@ export function SalesManagement({ tenant: propTenant }: SalesManagementProps) {
   const topCustomers = salesData?.data?.topCustomers || [];
   const fuelTypeBreakdown = salesData?.data?.fuelTypeBreakdown || [];
 
-  const filteredTransactions = recentTransactions.filter(
-    (transaction: any) =>
-      transaction.customer?.name
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      transaction.id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Transform transactions data for the data table
+  const transformedTransactions = recentTransactions.map((transaction: any) => ({
+    id: transaction.id,
+    customer: {
+      id: transaction.customer?.id || '',
+      name: transaction.customer?.name || 'Unknown Customer',
+      type: transaction.customer?.type || 'Unknown',
+    },
+    fuelType: transaction.fuelType,
+    volume: transaction.volume,
+    amount: transaction.amount,
+    status: transaction.status,
+    timestamp: transaction.timestamp,
+    deliveryMethod: transaction.deliveryMethod,
+    paymentMethod: transaction.paymentMethod,
+  }));
+
+  const handleViewTransaction = (transaction: any) => {
+    console.log('View transaction:', transaction);
+    // TODO: Implement transaction details modal/page
+  };
+
+  const handleExportTransactions = () => {
+    console.log('Export transactions');
+    // TODO: Implement CSV/Excel export
+  };
 
   return (
     <div className="space-y-6">
@@ -134,73 +153,24 @@ export function SalesManagement({ tenant: propTenant }: SalesManagementProps) {
         </Card>
       </div>
 
-      {/* Recent Transactions */}
+      {/* Recent Transactions Data Table */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Recent Transactions</CardTitle>
               <p className="text-sm text-gray-600">
-                Latest sales and deliveries
+                Latest sales and deliveries with advanced filtering
               </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search transactions..."
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </div>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {filteredTransactions.map((transaction: any) => (
-              <div
-                key={transaction.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <DollarSign className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {transaction.customer?.name || 'Unknown Customer'}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {transaction.fuelType} • {transaction.volume}L
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-semibold text-gray-900">
-                    ${transaction.amount.toLocaleString()}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant={
-                        transaction.status === 'COMPLETED'
-                          ? 'default'
-                          : transaction.status === 'PENDING'
-                            ? 'secondary'
-                            : 'outline'
-                      }
-                    >
-                      {transaction.status}
-                    </Badge>
-                    <span className="text-xs text-gray-500">
-                      {new Date(transaction.timestamp).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TransactionsDataTable
+            data={transformedTransactions}
+            onView={handleViewTransaction}
+            onExport={handleExportTransactions}
+          />
         </CardContent>
       </Card>
 

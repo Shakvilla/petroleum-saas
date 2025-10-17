@@ -197,7 +197,7 @@ export const componentVariants = {
   },
 } as const;
 
-// Responsive Breakpoints
+// Responsive Breakpoints (aligned with responsive-config.ts)
 export const breakpoints = {
   sm: '640px',
   md: '768px',
@@ -206,7 +206,7 @@ export const breakpoints = {
   '2xl': '1536px',
 } as const;
 
-// Touch Target Sizes
+// Touch Target Sizes (aligned with responsive-config.ts)
 export const touchTargets = {
   minimum: 'min-h-[44px] min-w-[44px]',
   comfortable: 'min-h-[48px] min-w-[48px]',

@@ -2,18 +2,60 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// Responsive table variants
+type TableVariant = 'default' | 'compact' | 'spacious'
+type TableSize = 'sm' | 'md' | 'lg'
+
+interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  variant?: TableVariant
+  size?: TableSize
+  responsive?: boolean
+}
+
 const Table = React.forwardRef<
   HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
-  </div>
-))
+  TableProps
+>(({ className, variant = 'default', size = 'md', responsive = true, ...props }, ref) => {
+  const getVariantClasses = () => {
+    switch (variant) {
+      case 'compact':
+        return 'text-xs'
+      case 'spacious':
+        return 'text-base'
+      default:
+        return 'text-sm'
+    }
+  }
+
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return 'text-xs'
+      case 'lg':
+        return 'text-base'
+      default:
+        return 'text-sm'
+    }
+  }
+
+  return (
+    <div className={cn(
+      "relative w-full",
+      responsive ? "overflow-auto" : "overflow-hidden"
+    )}>
+      <table
+        ref={ref}
+        className={cn(
+          "w-full caption-bottom",
+          getVariantClasses(),
+          getSizeClasses(),
+          className
+        )}
+        {...props}
+      />
+    </div>
+  )
+})
 Table.displayName = "Table"
 
 const TableHeader = React.forwardRef<
@@ -51,46 +93,109 @@ const TableFooter = React.forwardRef<
 ))
 TableFooter.displayName = "TableFooter"
 
+interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  size?: TableSize
+  interactive?: boolean
+}
+
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      className
-    )}
-    {...props}
-  />
-))
+  TableRowProps
+>(({ className, size = 'md', interactive = true, ...props }, ref) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return 'h-8'
+      case 'lg':
+        return 'h-16'
+      default:
+        return 'h-12'
+    }
+  }
+
+  return (
+    <tr
+      ref={ref}
+      className={cn(
+        "border-b transition-colors",
+        interactive && "hover:bg-muted/50 data-[state=selected]:bg-muted",
+        getSizeClasses(),
+        className
+      )}
+      {...props}
+    />
+  )
+})
 TableRow.displayName = "TableRow"
+
+interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  size?: TableSize
+  responsive?: boolean
+}
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      className
-    )}
-    {...props}
-  />
-))
+  TableHeadProps
+>(({ className, size = 'md', responsive = true, ...props }, ref) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return 'h-8 px-2 text-xs'
+      case 'lg':
+        return 'h-14 px-6 text-base'
+      default:
+        return 'h-12 px-4 text-sm'
+    }
+  }
+
+  return (
+    <th
+      ref={ref}
+      className={cn(
+        "text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        getSizeClasses(),
+        responsive && "sm:px-4 md:px-6",
+        className
+      )}
+      {...props}
+    />
+  )
+})
 TableHead.displayName = "TableHead"
+
+interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  size?: TableSize
+  responsive?: boolean
+}
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
-    {...props}
-  />
-))
+  TableCellProps
+>(({ className, size = 'md', responsive = true, ...props }, ref) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return 'p-2 text-xs'
+      case 'lg':
+        return 'p-6 text-base'
+      default:
+        return 'p-4 text-sm'
+    }
+  }
+
+  return (
+    <td
+      ref={ref}
+      className={cn(
+        "align-middle [&:has([role=checkbox])]:pr-0",
+        getSizeClasses(),
+        responsive && "sm:p-3 md:p-4",
+        className
+      )}
+      {...props}
+    />
+  )
+})
 TableCell.displayName = "TableCell"
 
 const TableCaption = React.forwardRef<
@@ -104,6 +209,96 @@ const TableCaption = React.forwardRef<
   />
 ))
 TableCaption.displayName = "TableCaption"
+
+// Responsive table utilities
+export const ResponsiveTableWrapper = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    variant?: 'scroll' | 'stack' | 'card'
+    breakpoint?: 'sm' | 'md' | 'lg'
+  }
+>(({ className, variant = 'scroll', breakpoint = 'md', children, ...props }, ref) => {
+  const getVariantClasses = () => {
+    switch (variant) {
+      case 'scroll':
+        return 'overflow-x-auto'
+      case 'stack':
+        return 'overflow-hidden'
+      case 'card':
+        return 'overflow-hidden'
+      default:
+        return 'overflow-x-auto'
+    }
+  }
+
+  const getBreakpointClasses = () => {
+    switch (breakpoint) {
+      case 'sm':
+        return 'sm:block'
+      case 'md':
+        return 'md:block'
+      case 'lg':
+        return 'lg:block'
+      default:
+        return 'md:block'
+    }
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "relative w-full",
+        getVariantClasses(),
+        variant === 'stack' && `hidden ${getBreakpointClasses()}`,
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+})
+ResponsiveTableWrapper.displayName = "ResponsiveTableWrapper"
+
+// Mobile card view for tables
+export const MobileTableCard = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    title?: string
+    subtitle?: string
+    actions?: React.ReactNode
+  }
+>(({ className, title, subtitle, actions, children, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "block md:hidden bg-white border border-gray-200 rounded-lg p-4 mb-3",
+      className
+    )}
+    {...props}
+  >
+    {(title || subtitle || actions) && (
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          {title && (
+            <h3 className="font-medium text-gray-900">{title}</h3>
+          )}
+          {subtitle && (
+            <p className="text-sm text-gray-500">{subtitle}</p>
+          )}
+        </div>
+        {actions && (
+          <div className="flex items-center space-x-2">
+            {actions}
+          </div>
+        )}
+      </div>
+    )}
+    {children}
+  </div>
+))
+MobileTableCard.displayName = "MobileTableCard"
 
 export {
   Table,

@@ -1,29 +1,45 @@
 import { useEffect, useState } from 'react';
+import { getBreakpoint, isMobile, isTablet, isDesktop, isLargeDesktop } from '@/lib/responsive-config';
 
-// Hook to detect mobile devices
+// Enhanced hook to detect mobile devices with responsive system integration
 export function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [deviceState, setDeviceState] = useState({
+    isMobile: false,
+    isTablet: false,
+    isDesktop: false,
+    isLargeDesktop: false,
+    breakpoint: 'desktop' as string,
+    userAgent: '',
+    isTouchDevice: false
+  });
 
   useEffect(() => {
     const checkDevice = () => {
       const width = window.innerWidth;
       const userAgent = navigator.userAgent;
+      const breakpoint = getBreakpoint(width);
       
-      // Check for mobile devices
+      // Enhanced mobile detection combining viewport and user agent
       const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
       const isMobileDevice = mobileRegex.test(userAgent) || width < 768;
       
-      // Check for tablet devices
-      const isTabletDevice = width >= 768 && width < 1024;
+      // Use responsive system for breakpoint detection
+      const isTabletDevice = isTablet(width);
+      const isDesktopDevice = isDesktop(width);
+      const isLargeDesktopDevice = isLargeDesktop(width);
       
-      // Check for desktop devices
-      const isDesktopDevice = width >= 1024;
+      // Touch device detection
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       
-      setIsMobile(isMobileDevice);
-      setIsTablet(isTabletDevice);
-      setIsDesktop(isDesktopDevice);
+      setDeviceState({
+        isMobile: isMobileDevice,
+        isTablet: isTabletDevice,
+        isDesktop: isDesktopDevice,
+        isLargeDesktop: isLargeDesktopDevice,
+        breakpoint,
+        userAgent,
+        isTouchDevice
+      });
     };
 
     checkDevice();
@@ -35,61 +51,153 @@ export function useMobile() {
   }, []);
 
   return {
-    isMobile,
-    isTablet,
-    isDesktop,
+    isMobile: deviceState.isMobile,
+    isTablet: deviceState.isTablet,
+    isDesktop: deviceState.isDesktop,
+    isLargeDesktop: deviceState.isLargeDesktop,
+    breakpoint: deviceState.breakpoint,
+    userAgent: deviceState.userAgent,
+    isTouchDevice: deviceState.isTouchDevice,
+    // Convenience methods
+    isMobileOrTablet: deviceState.isMobile || deviceState.isTablet,
+    isDesktopOrLarger: deviceState.isDesktop || deviceState.isLargeDesktop
   };
 }
 
-// Hook to detect touch devices
+// Enhanced hook to detect touch devices with capabilities
 export function useTouch() {
-  const [isTouch, setIsTouch] = useState(false);
+  const [touchState, setTouchState] = useState({
+    isTouch: false,
+    maxTouchPoints: 0,
+    hasHover: false,
+    hasPointer: false
+  });
 
   useEffect(() => {
     const checkTouch = () => {
-      setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const maxTouchPoints = navigator.maxTouchPoints || 0;
+      const hasHover = window.matchMedia('(hover: hover)').matches;
+      const hasPointer = window.matchMedia('(pointer: fine)').matches;
+
+      setTouchState({
+        isTouch,
+        maxTouchPoints,
+        hasHover,
+        hasPointer
+      });
     };
 
     checkTouch();
+    
+    // Listen for changes in media queries
+    const hoverMediaQuery = window.matchMedia('(hover: hover)');
+    const pointerMediaQuery = window.matchMedia('(pointer: fine)');
+    
+    hoverMediaQuery.addEventListener('change', checkTouch);
+    pointerMediaQuery.addEventListener('change', checkTouch);
+
+    return () => {
+      hoverMediaQuery.removeEventListener('change', checkTouch);
+      pointerMediaQuery.removeEventListener('change', checkTouch);
+    };
   }, []);
 
-  return isTouch;
+  return {
+    isTouch: touchState.isTouch,
+    maxTouchPoints: touchState.maxTouchPoints,
+    hasHover: touchState.hasHover,
+    hasPointer: touchState.hasPointer,
+    // Convenience methods
+    isTouchOnly: touchState.isTouch && !touchState.hasHover,
+    isMouseAndTouch: touchState.isTouch && touchState.hasHover
+  };
 }
 
-// Hook to detect device orientation
+// Enhanced hook to detect device orientation with responsive integration
 export function useOrientation() {
-  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
+  const [orientationState, setOrientationState] = useState({
+    orientation: 'portrait' as 'portrait' | 'landscape',
+    angle: 0,
+    isPortrait: true,
+    isLandscape: false,
+    width: 0,
+    height: 0
+  });
 
   useEffect(() => {
     const checkOrientation = () => {
-      setOrientation(window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const orientation = height > width ? 'portrait' : 'landscape';
+      const angle = window.screen?.orientation?.angle || 0;
+      
+      setOrientationState({
+        orientation,
+        angle,
+        isPortrait: orientation === 'portrait',
+        isLandscape: orientation === 'landscape',
+        width,
+        height
+      });
     };
 
     checkOrientation();
     window.addEventListener('resize', checkOrientation);
     window.addEventListener('orientationchange', checkOrientation);
 
+    // Listen for screen orientation changes if available
+    if (window.screen?.orientation) {
+      window.screen.orientation.addEventListener('change', checkOrientation);
+    }
+
     return () => {
       window.removeEventListener('resize', checkOrientation);
       window.removeEventListener('orientationchange', checkOrientation);
+      
+      if (window.screen?.orientation) {
+        window.screen.orientation.removeEventListener('change', checkOrientation);
+      }
     };
   }, []);
 
-  return orientation;
+  return {
+    orientation: orientationState.orientation,
+    angle: orientationState.angle,
+    isPortrait: orientationState.isPortrait,
+    isLandscape: orientationState.isLandscape,
+    width: orientationState.width,
+    height: orientationState.height
+  };
 }
 
-// Hook to detect viewport size
+// Enhanced hook to detect viewport size with responsive integration
 export function useViewport() {
   const [viewport, setViewport] = useState({
     width: 0,
     height: 0,
+    aspectRatio: 0,
+    breakpoint: 'desktop' as string,
+    isSmall: false,
+    isMedium: false,
+    isLarge: false
   });
 
   useEffect(() => {
     const updateViewport = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const aspectRatio = width / height;
+      const breakpoint = getBreakpoint(width);
+      
       setViewport({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width,
+        height,
+        aspectRatio,
+        breakpoint,
+        isSmall: width < 768,
+        isMedium: width >= 768 && width < 1024,
+        isLarge: width >= 1024
       });
     };
 

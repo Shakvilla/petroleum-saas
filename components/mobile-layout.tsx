@@ -6,9 +6,22 @@ import {
   useOrientation,
   useSafeArea,
 } from '@/hooks/utils/use-mobile';
+import { useResponsive } from '@/components/responsive-provider';
 import { Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { MobileNavigationSystem, MobileBottomNavigation } from './mobile-navigation-system';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Bell, Search, LogOut, User, Settings, HelpCircle } from 'lucide-react';
 
 interface MobileLayoutProps {
   children: React.ReactNode;
@@ -16,6 +29,24 @@ interface MobileLayoutProps {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  // Enhanced props for better mobile experience
+  user?: {
+    name: string;
+    email: string;
+    avatar?: string;
+    role?: string;
+  };
+  notifications?: number;
+  onLogout?: () => void;
+  showBottomNavigation?: boolean;
+  bottomNavItems?: Array<{
+    name: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: number;
+  }>;
+  activePath?: string;
+  onNavigation?: (href: string) => void;
 }
 
 export function MobileLayout({
@@ -24,8 +55,16 @@ export function MobileLayout({
   header,
   footer,
   className,
+  user,
+  notifications = 0,
+  onLogout,
+  showBottomNavigation = false,
+  bottomNavItems = [],
+  activePath,
+  onNavigation,
 }: MobileLayoutProps) {
   const { isMobile, isTablet } = useMobile();
+  const { isMobile: isResponsiveMobile, isTablet: isResponsiveTablet } = useResponsive();
   const orientation = useOrientation();
   const safeArea = useSafeArea();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -72,7 +111,96 @@ export function MobileLayout({
     };
   }, [sidebarOpen]);
 
-  if (!isMobile && !isTablet) {
+  // Enhanced header component
+  const EnhancedHeader = () => (
+    <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center space-x-3">
+        <MobileNavigationSystem
+          user={user}
+          notifications={notifications}
+          onLogout={onLogout}
+        />
+        {header && (
+          <div className="flex-1">
+            {header}
+          </div>
+        )}
+      </div>
+      
+      <div className="flex items-center space-x-2">
+        {/* Search button for mobile */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="p-2"
+          aria-label="Search"
+        >
+          <Search className="h-4 w-4" />
+        </Button>
+        
+        {/* Notifications */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="relative p-2"
+          aria-label="Notifications"
+        >
+          <Bell className="h-4 w-4" />
+          {notifications > 0 && (
+            <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs">
+              {notifications > 99 ? '99+' : notifications}
+            </Badge>
+          )}
+        </Button>
+        
+        {/* User menu */}
+        {user && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback>
+                    {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <HelpCircle className="mr-2 h-4 w-4" />
+                <span>Help</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    </div>
+  );
+
+  if (!isMobile && !isTablet && !isResponsiveMobile && !isResponsiveTablet) {
     // Desktop layout
     return (
       <div className={cn('flex h-screen', className)}>
@@ -104,36 +232,25 @@ export function MobileLayout({
   // Mobile/Tablet layout
   return (
     <div className={cn('flex flex-col h-screen', className)}>
-      {/* Header */}
-      {header && (
-        <header
-          ref={headerRef}
-          className="bg-white border-b border-gray-200 z-40"
-          style={{
-            paddingTop: `${safeArea.top}px`,
-          }}
-        >
-          <div className="flex items-center justify-between px-4 py-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleSidebar}
-              className="p-2"
-              aria-label="Toggle sidebar"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-            <div className="flex-1 text-center">{header}</div>
-            <div className="w-9" /> {/* Spacer for balance */}
-          </div>
-        </header>
-      )}
+      {/* Enhanced Header */}
+      <header
+        ref={headerRef}
+        className="bg-white border-b border-gray-200 z-40"
+        style={{
+          paddingTop: `${safeArea.top}px`,
+        }}
+      >
+        <EnhancedHeader />
+      </header>
 
       {/* Main content */}
       <main
-        className="flex-1 overflow-auto"
+        className={cn(
+          'flex-1 overflow-auto',
+          showBottomNavigation && 'pb-16' // Add padding for bottom navigation
+        )}
         style={{
-          paddingBottom: `${safeArea.bottom}px`,
+          paddingBottom: showBottomNavigation ? '0' : `${safeArea.bottom}px`,
         }}
       >
         {children}
@@ -151,7 +268,16 @@ export function MobileLayout({
         </footer>
       )}
 
-      {/* Sidebar overlay */}
+      {/* Bottom Navigation */}
+      {showBottomNavigation && bottomNavItems.length > 0 && (
+        <MobileBottomNavigation
+          items={bottomNavItems}
+          activePath={activePath}
+          onNavigation={onNavigation}
+        />
+      )}
+
+      {/* Legacy Sidebar overlay (for backward compatibility) */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50"
@@ -160,7 +286,7 @@ export function MobileLayout({
         />
       )}
 
-      {/* Sidebar */}
+      {/* Legacy Sidebar (for backward compatibility) */}
       {sidebar && (
         <aside
           className={cn(

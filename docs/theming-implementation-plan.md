@@ -402,13 +402,13 @@ export class ThemeCacheOptimization {
 **Dependencies**: Task 3.1
 
 #### Deliverables:
-- Enhanced `lib/theme-performance.ts`
+- Enhanced `lib/theme-performance.tsx`
 - `lib/theme-performance-dashboard.tsx`
 - Performance monitoring tests
 
 #### Implementation Details:
 ```typescript
-// lib/theme-performance.ts
+// lib/theme-performance.tsx
 export class ThemePerformanceMonitor {
   private metrics: Map<string, PerformanceMetric[]> = new Map();
   
